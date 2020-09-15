@@ -44,6 +44,6 @@ Signed agreement is at the bottom of the page
 
 # WBA Signed Agreement
 
-Alden:
+Alden: I accept this WBA.
 
 Nick: I accept this WBA.
