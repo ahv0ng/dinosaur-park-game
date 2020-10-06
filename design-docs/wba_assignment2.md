@@ -25,3 +25,4 @@ Team meetings to be done on:
 cupOfJava will aim to have Assignment 2 ready for submission by the end of Thursday 15th October.
 
 ## Signed Agreement
+Alden: I accept this WBA.
