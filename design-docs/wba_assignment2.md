@@ -26,3 +26,4 @@ cupOfJava will aim to have Assignment 2 ready for submission by the end of Thurs
 
 ## Signed Agreement
 Alden: I accept this WBA.
+Nick: I accept this WBA.
