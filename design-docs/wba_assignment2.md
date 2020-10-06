@@ -14,10 +14,10 @@ Nick is responsible for implementing all the functionality described in:
 Team meetings to be done on:
 
 - Saturday 10th October
--   Each team member to have completed at least one section (as described above)
+  - Each team member to have completed at least one section (as described above)
 
 - Tuesday 13th October
--   During scheduled class
--   Each team member to have at least made a full attempt at their respective remaining sections to maximise ability to discuss problems with each other and ask questions to tutors
+  -   During scheduled class
+  -   Each team member to have at least made a full attempt at their respective remaining sections to maximise ability to discuss problems with each other and ask questions to tutors
 
 cupOfJava will aim to complete Assignment 2 by the end of Thursday 8th October.
