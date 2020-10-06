@@ -1,6 +1,6 @@
 # Work Breakdown Agreement for Assignment 2 (cupOfJava)
 
-Referencing the subheadings of the Assignment 1: Planning and Design document, the work for Assignment 2 will be divided as follows:
+Referencing the subheadings of the **Assignment 1: Planning and Design** document, the work for Assignment 2 will be divided as follows:
 
 - Alden is responsible for implementing all the functionality described in:
   - Hungry dinosaurs
