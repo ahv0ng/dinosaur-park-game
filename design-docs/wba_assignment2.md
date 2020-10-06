@@ -9,7 +9,7 @@ Referencing the subheadings of the **Assignment 1: Planning and Design** documen
 
 - Nick is responsible for implementing all the functionality described in:
   - Grass
-  - Ecopoints and purchasing
+  - Eco points and purchasing
 
 ## Deadlines
 
