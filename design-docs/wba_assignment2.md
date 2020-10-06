@@ -22,6 +22,6 @@ Team meetings to be done on:
   - During scheduled class
   - Each team member to have at least made a full attempt at their respective remaining sections to maximise ability to discuss problems with each other and ask questions to tutors
 
-cupOfJava will aim to have Assignment 2 ready for submission by the end of Thursday 8th October.
+cupOfJava will aim to have Assignment 2 ready for submission by the end of Thursday 15th October.
 
 ## Signed Agreement
