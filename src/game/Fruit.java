@@ -1,5 +1,7 @@
 package game;
 
+import edu.monash.fit2099.engine.Location;
+
 public class Fruit extends Food {
     private int age;
 
@@ -9,6 +11,7 @@ public class Fruit extends Food {
     static final int POINTS_WHEN_FED = 15;
 
     Fruit() {
+        super("aFruit", 'f');
         this.age = 0;
     }
 
@@ -24,10 +27,17 @@ public class Fruit extends Food {
     }
 
     public void feed(Dinosaur dinosaur) {
-        if (!(dinosaur instanceOf Stegosaurus)) {
-            raise new IllegalArgumentMethod("Fruit can only be fed to Stegosaurus.")
+        if (!(dinosaur instanceof Stegosaur)) {
+            throw new IllegalArgumentException("Fruit can only be fed to a stegosaur.");
+        }
+        try {
+            dinosaur.increaseHunger(Fruit.FILL);
+        }
+        // TODO: Decide so that player can choose to do something else, or just bad luck (they wasted a turn)?
+        catch(Exception e) {
+            System.out.println("Dinosaur is at its maximum food level already.");
         }
 
-        dinosaur.increaseHunger(Fruit.FILL);
+
     }
 }

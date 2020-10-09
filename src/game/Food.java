@@ -4,5 +4,9 @@ public abstract class Food extends PortableItem {
     private int FILL;
     private int COST;
 
-    private abstract void feed(Dinosaur dinosaur)
+    public Food(String name, char displayChar) {
+        super(name, displayChar);
+    }
+
+    abstract void feed(Dinosaur dinosaur);
 }

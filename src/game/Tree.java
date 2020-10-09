@@ -44,6 +44,8 @@ public class Tree extends Ground {
 		if (number < Tree.HARVEST_CHANCE) {
 			return new Fruit();
 		}
-		System.out.println("You search the tree for fruit, but you can't find any ripe ones.")
+		System.out.println("You search the tree for fruit, but you can't find any ripe ones.");
+		// To account for case where nothing is returned
+		return null;
 	}
 }

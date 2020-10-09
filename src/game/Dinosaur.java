@@ -1,17 +1,14 @@
 package game;
 
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Display;
-import edu.monash.fit2099.engine.DoNothingAction;
-import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.*;
+
 import java.util.Random;
 
 public abstract class Dinosaur extends Actor {
     private int age;
     private int hungerLevel;
     private int daysUnconscious;
+    private int daysUntilDeath;
     private String sex;
     private Behaviour behaviour;
     private Random random = new Random();
@@ -34,11 +31,12 @@ public abstract class Dinosaur extends Actor {
         this.behaviour = new WanderBehaviour();
     }
 
-    /**
-     * Constructor for when egg hatches
-     */
+/*    //**
+    // Constructor for when egg hatches
+    //*
     public Dinosaur() {
         this.age = 0;
+        this.hungerLevel = 10;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
         this.behaviour = new WanderBehaviour();
@@ -46,7 +44,7 @@ public abstract class Dinosaur extends Actor {
         // Randomise sex for this dinosaur
         String[] sexTypes = {"Male", "Female"};
         this.sex = sexTypes[random.nextInt(2)];
-    }
+    }*/
 
     public String getSex() { return this.sex; }
 
@@ -59,7 +57,7 @@ public abstract class Dinosaur extends Actor {
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         this.hungerLevel -= 1;
         if (this.isHungry()) {
-            location = map.locationOf(this)
+            Location location = map.locationOf(this);
             System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is getting hungry!");
             return new DoNothingAction();
         }
@@ -77,14 +75,15 @@ public abstract class Dinosaur extends Actor {
          */
     }
 
-    private boolean isHungry() { return this.hungerLevel == 0; }
+    private boolean isHungry() { return this.hungerLevel < 50; }
 
-    public void increaseHunger(int hunger) {
+    // TODO: Caller needs to be able to handle this exception
+    public void increaseHunger(int hunger) throws Exception {
         if (this.hungerLevel >= MAX_HUNGER) {
-            raise new Exception("Hunger level is already maximum.")
+            throw new Exception("Hunger level is already maximum.");
         }
 
-        totalHunger = this.hungerLevel + hunger;
+        int totalHunger = this.hungerLevel + hunger;
         if (totalHunger >= MAX_HUNGER) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
             this.hungerLevel = MAX_HUNGER;
@@ -97,7 +96,7 @@ public abstract class Dinosaur extends Actor {
 
     private void resetDeathDays() { this.daysUntilDeath = 0; }
 
-    public abstract void mate();
+/*    public abstract void mate();
     public abstract Egg layEgg();
 
     private void canMate(Dinosaur dinosaur) {
@@ -108,7 +107,7 @@ public abstract class Dinosaur extends Actor {
             return false;
         }
         return true;
-    }
+    }*/
 
     public void die() {
         this.hungerLevel = 0;
