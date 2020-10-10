@@ -7,8 +7,8 @@ import edu.monash.fit2099.engine.*;
  *
  */
 public class Stegosaur extends Dinosaur {
-    public Stegosaur(String sex) { super(sex); }}
-/*    public Stegosaur() { super(); }}*/
+    public Stegosaur(String sex) { super(sex); }
+    public Stegosaur() { super(); }}
 
 /*    @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
