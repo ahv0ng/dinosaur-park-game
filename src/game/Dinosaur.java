@@ -31,12 +31,12 @@ public abstract class Dinosaur extends Actor {
         this.behaviour = new WanderBehaviour();
     }
 
-/*    //**
+    //**
     // Constructor for when egg hatches
     //*
     public Dinosaur() {
+        super("aDinosaurName", 'd', 100);
         this.age = 0;
-        this.hungerLevel = 10;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
         this.behaviour = new WanderBehaviour();
@@ -44,7 +44,7 @@ public abstract class Dinosaur extends Actor {
         // Randomise sex for this dinosaur
         String[] sexTypes = {"Male", "Female"};
         this.sex = sexTypes[random.nextInt(2)];
-    }*/
+    }
 
     public String getSex() { return this.sex; }
 
