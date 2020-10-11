@@ -49,7 +49,7 @@ public class Dirt extends Ground {
 		this.displayChar = '^';
 	}
 
-/*	public Hay harvestGrass() {
+	public Hay harvestGrass() {
 		this.grass = false;
 		this.displayChar = '.';
 		return new Hay("someHay",'#'); // TODO: Need to change this
