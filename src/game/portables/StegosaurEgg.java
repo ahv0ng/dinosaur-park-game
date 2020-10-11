@@ -1,4 +1,7 @@
-package game;
+package game.portables;
+
+import game.actors.Dinosaur;
+import game.actors.Stegosaur;
 
 public class StegosaurEgg extends Egg {
     private int COST = 200;

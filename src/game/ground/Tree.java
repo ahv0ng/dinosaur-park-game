@@ -1,12 +1,14 @@
-package game;
+package game.ground;
 
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
+import game.portables.Fruit;
+
 import java.util.Random;
 
 public class Tree extends Ground {
 	private int age = 0;
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	static final int DROP_CHANCE = 5;
 	static final int HARVEST_CHANCE = 40;

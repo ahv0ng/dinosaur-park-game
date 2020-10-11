@@ -1,4 +1,6 @@
-package game;
+package game.portables;
+
+import game.actors.Dinosaur;
 
 public abstract class Food extends PortableItem {
     private int FILL;

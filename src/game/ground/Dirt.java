@@ -1,4 +1,4 @@
-package game;
+package game.ground;
 
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Dirt extends Ground {
 	private Boolean grass;
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	static final int POINTS_WHEN_HARVEST_OR_GROW_GRASS = 1;
 	static final int GROW_CHANCE_AT_START = 2;
@@ -19,19 +19,14 @@ public class Dirt extends Ground {
 
 	public Dirt() {
 		super('.');
-		if (random.nextInt(100) < GROW_CHANCE_AT_START) {
-			this.grass = true;
-		}
-		else {
-			this.grass = false;
-		}
+		this.grass = random.nextInt(100) < GROW_CHANCE_AT_START;
 	}
 
 	public boolean hasGrass() { return this.grass; }
 
 	public void tick(Location location) {
 		if (!this.grass) {
-			if (this.chanceOfGrass())
+			if (this.chanceOfGrass(location))
 			{
 				this.growGrass();
 			}
@@ -45,10 +40,7 @@ public class Dirt extends Ground {
 		if (numberOfGrass > 2 && random.nextInt(100) < GROW_CHANCE_FOR_TWO_GRASS) {
 			return true;
 		}
-		else if (numberOfTrees > 1 && random.nextInt(100) < GROW_CHANCE_FOR_ADJACENT_TREE) {
-			return true;
-		}
-		return false;
+		else return numberOfTrees > 1 && random.nextInt(100) < GROW_CHANCE_FOR_ADJACENT_TREE;
 	}
 
 	private void growGrass() {

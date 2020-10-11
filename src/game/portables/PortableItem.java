@@ -1,4 +1,4 @@
-package game;
+package game.portables;
 
 import edu.monash.fit2099.engine.Item;
 

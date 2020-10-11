@@ -1,6 +1,6 @@
-package game;
+package game.actors;
 
-import edu.monash.fit2099.engine.*;
+import game.actors.Dinosaur;
 
 /**
  * A herbivorous dinosaur.

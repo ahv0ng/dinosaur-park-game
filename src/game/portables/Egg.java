@@ -1,4 +1,6 @@
-package game;
+package game.portables;
+
+import game.actors.Dinosaur;
 
 public abstract class Egg extends PortableItem {
     private int timeAlive;
