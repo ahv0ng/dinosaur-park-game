@@ -1,3 +1,4 @@
+/*
 package game.portables;
 
 import game.actors.Dinosaur;
@@ -26,3 +27,4 @@ public class CarnivoreMealKit extends MealKit {
         }
     }
 }
+*/

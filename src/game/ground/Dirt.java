@@ -48,11 +48,11 @@ public class Dirt extends Ground {
 		this.displayChar = '^';
 	}
 
-	public Hay harvestGrass() {
+/*	public Hay harvestGrass() {
 		this.grass = false;
 		this.displayChar = '.';
 		return new Hay();
-	}
+	}*/
 
 	public void removeGrass() {
 		this.grass = false;

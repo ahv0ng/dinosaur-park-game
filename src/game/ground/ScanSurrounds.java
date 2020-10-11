@@ -1,28 +1,26 @@
 package game.ground;
 
+import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 
+import java.util.ArrayList;
+
 public class ScanSurrounds {
-    public static Ground[] querySurroundings(Location location) {
-        GameMap map = location.map();
-        int x = location.x();
-        int y = location.y();
-
-        Ground north = map.at(x, y-1).getGround();
-        Ground east = map.at(x+1, y).getGround();
-        Ground south = map.at(x, y+1).getGround();
-        Ground west = map.at(x-1, y).getGround();
-
-        return new Ground[] {north, east, south, west};
+    public static ArrayList<Ground> querySurroundings(Location location) {
+        ArrayList<Ground> groundArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            groundArrayList.add(exit.getDestination().getGround());
+        }
+        return groundArrayList;
     }
 
     public static int adjacentTrees(Location location) {
-        Ground[] groundList = querySurroundings(location);
+        ArrayList<Ground> groundArrayList = querySurroundings(location);
         int numberOfTrees = 0;
 
-        for (Ground ground : groundList) {
+        for (Ground ground : groundArrayList) {
             if (isTree(ground)) {
                 numberOfTrees++;
             }
@@ -40,10 +38,10 @@ public class ScanSurrounds {
     }
 
     public static int adjacentGrass(Location location) {
-        Ground[] groundList = querySurroundings(location);
+        ArrayList<Ground> groundArrayList = querySurroundings(location);
         int numberOfGrass = 0;
 
-        for (Ground ground : groundList) {
+        for (Ground ground : groundArrayList) {
             if (isGrass(ground)) {
                 numberOfGrass++;
             }

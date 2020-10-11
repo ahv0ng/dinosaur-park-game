@@ -1,3 +1,4 @@
+/*
 package game.portables;
 
 import edu.monash.fit2099.engine.Location;
@@ -18,3 +19,4 @@ public class AllosaurEgg extends Egg {
         location.addActor(new Allosaur());
     }
 }
+*/
