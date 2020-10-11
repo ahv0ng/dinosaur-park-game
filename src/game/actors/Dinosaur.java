@@ -25,8 +25,8 @@ public abstract class Dinosaur extends Actor {
      * the start.
      * @param sex: String type that represent the dinosaur's sex
      */
-    public Dinosaur(String sex) {
-        super("aDinosaurName", 'd', 100);
+    public Dinosaur(String sex, String name, Character displayChar) {
+        super(name, displayChar, 100);
         this.age = 30;
         this.hungerLevel = 50;
         this.daysUnconscious = 0;
@@ -37,8 +37,8 @@ public abstract class Dinosaur extends Actor {
     //**
     // Constructor for when egg hatches
     //*
-    public Dinosaur() {
-        super("aDinosaurName", 'd', 100);
+    public Dinosaur(String name, Character displayChar) {
+        super(name, displayChar, 100);
         this.age = 0;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
@@ -58,13 +58,16 @@ public abstract class Dinosaur extends Actor {
 
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        this.hungerLevel -= 1;
+        if (this.hungerLevel > 0) {
+            this.hungerLevel -= 1;
+        }
         if (this.isHungry()) {
             Location location = map.locationOf(this);
             System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is getting hungry!");
-            return new DoNothingAction();
         }
-
+        if (this.hungerLevel == 0) {
+        return new DoNothingAction();
+        }
         Action wander = behaviour.getAction(this, map);
         if (wander != null)
             return wander;
@@ -77,8 +80,8 @@ public abstract class Dinosaur extends Actor {
          * See edu.monash.fit2099.engine.Actor#playTurn(Actions, Action, GameMap, Display)
          */
     }
-
-    private boolean isHungry() { return this.hungerLevel < 50; }
+    // TODO: Change hungry threshold to 30 (in design rationale) - was previously 50
+    private boolean isHungry() { return this.hungerLevel < 30; }
 
     // TODO: Caller needs to be able to handle this exception
     public void increaseHunger(int hunger) throws Exception {

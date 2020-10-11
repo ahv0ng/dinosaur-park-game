@@ -3,7 +3,7 @@ package game;
 
 // TODO: Complete implementation of methods and change to non-abstract
 public abstract class Allosaur extends Dinosaur {
-    public Allosaur() { super(); }
+    public Allosaur() { super("Allosaur", 'a'); }
 
     public AttackAction attack(Stegosaur stegosaur) {
         return new AttackAction(stegosaur);
