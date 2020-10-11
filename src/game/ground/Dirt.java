@@ -2,6 +2,7 @@ package game.ground;
 
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
+import game.portables.Hay;
 
 import java.util.Random;
 
@@ -51,8 +52,8 @@ public class Dirt extends Ground {
 /*	public Hay harvestGrass() {
 		this.grass = false;
 		this.displayChar = '.';
-		return new Hay();
-	}*/
+		return new Hay("someHay",'#'); // TODO: Need to change this
+	}
 
 	public void removeGrass() {
 		this.grass = false;
