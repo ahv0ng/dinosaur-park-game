@@ -1,6 +1,6 @@
 package game.portables;
 
-import game.actors.Dinosaur;
+import edu.monash.fit2099.engine.Location;
 
 public abstract class Egg extends PortableItem {
     private int timeAlive;
@@ -10,12 +10,12 @@ public abstract class Egg extends PortableItem {
         super(name, displayChar);
     }
 
-    public abstract Dinosaur hatch();
-
-    public void tick() {
+    public void tick(Location location) {
         this.timeAlive += 1;
         if (this.timeAlive == 10) {
-            this.hatch();
+            this.hatch(location);
         }
     }
+
+    public abstract void hatch(Location location);
 }

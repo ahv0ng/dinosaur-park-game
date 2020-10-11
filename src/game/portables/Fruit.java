@@ -39,7 +39,5 @@ public class Fruit extends Food {
         catch(Exception e) {
             System.out.println("Dinosaur is at its maximum food level already.");
         }
-
-
     }
 }

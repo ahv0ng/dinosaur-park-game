@@ -1,6 +1,6 @@
 package game.portables;
 
-import game.actors.Dinosaur;
+import edu.monash.fit2099.engine.Location;
 import game.actors.Stegosaur;
 
 public class StegosaurEgg extends Egg {
@@ -11,9 +11,11 @@ public class StegosaurEgg extends Egg {
         super(name, displayChar);
     }
 
+    public int getCost() { return COST; }
+
     @Override
-    public Dinosaur hatch() {
+    public void hatch(Location location) {
         // TODO: Add to eco points
-        return new Stegosaur();
+        location.addActor(new Stegosaur());
     }
 }

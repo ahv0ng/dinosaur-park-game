@@ -2,10 +2,10 @@ package game.portables;
 
 import game.actors.Dinosaur;
 
-public abstract class Food extends PortableItem {
-    private int FILL;
+public abstract class MealKit extends Food {
+    static final int FILL = 100;
 
-    public Food(String name, char displayChar) {
+    public MealKit(String name, char displayChar) {
         super(name, displayChar);
     }
 
