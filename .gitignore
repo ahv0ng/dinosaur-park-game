@@ -92,6 +92,7 @@ local.properties
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+project.iml
 
 # Generated files
 .idea/**/contentModel.xml
