@@ -3,8 +3,10 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.behaviours.Behaviour;
+import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Dinosaur extends Actor {
@@ -63,25 +65,29 @@ public abstract class Dinosaur extends Actor {
         }
         if (this.isHungry()) {
             Location location = map.locationOf(this);
-            System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is getting hungry!");
+            System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
         }
         if (this.hungerLevel == 0) {
-        return new DoNothingAction();
+            return new DoNothingAction();
+        }
+        // Still to implement
+        if (this.hungerLevel > 50) {
+            Location location = map.locationOf(this);
+            if (getMate(map, location) != null) {
+                Behaviour follow = new FollowBehaviour(getMate(map, location));
+                if (follow.getAction(this, map) != null) {
+                    return follow.getAction(this, map);
+                }
+                return new DoNothingAction();
+            }
         }
         Action wander = behaviour.getAction(this, map);
         if (wander != null)
             return wander;
         return new DoNothingAction();
 
-        /*
-         * FIXME: Stegosaur wanders around at random, or if no suitable MoveActions are available, it
-         * just stands there.  That's boring.
-         *
-         * See edu.monash.fit2099.engine.Actor#playTurn(Actions, Action, GameMap, Display)
-         */
     }
-    // TODO: Change hungry threshold to 30 (in design rationale) - was previously 50
-    private boolean isHungry() { return this.hungerLevel < 30; }
+    private boolean isHungry() { return this.hungerLevel <= 50; }
 
     // TODO: Caller needs to be able to handle this exception
     public void increaseHunger(int hunger) throws Exception {
@@ -113,6 +119,49 @@ public abstract class Dinosaur extends Actor {
             return false;
         }
         return true;
+    }*/
+
+    /**
+     * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
+     * Applies regardless of dinosaur types.
+     * @param location
+     * @return Actor
+     */
+    // TODO: Implement such that types and sexes of dinosaurs are considered
+    private Actor getMate(GameMap map, Location location) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
+        ArrayList<Location> locationArrayList2 = new ArrayList<>();
+        for (Location loc : locationArrayList ) {
+            for (Exit exit : loc.getExits()) {
+                if (!locationArrayList2.contains(exit.getDestination())) {
+                    locationArrayList2.add(exit.getDestination());
+                }
+            }
+        }
+        ArrayList<Location> locationArrayList3 = new ArrayList<>();
+        for (Location loc : locationArrayList2 ) {
+            for (Exit exit : loc.getExits()) {
+                if (!locationArrayList3.contains(exit.getDestination())) {
+                    locationArrayList3.add(exit.getDestination());
+                }
+            }
+        }
+        for (Location loc : locationArrayList3) {
+            if (map.getActorAt(loc) instanceof Dinosaur) {
+                return map.getActorAt(loc);
+            }
+        }
+        return null;
+    }
+
+/*    private Boolean nextToMate(GameMap map, Location location) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
     }*/
 
     public void die() {
