@@ -7,8 +7,8 @@ public class StegosaurEgg extends Egg {
     private int COST = 200;
     static final int POINTS_WHEN_HATCH = 100;
 
-    public StegosaurEgg(String name, char displayChar) {
-        super(name, displayChar);
+    public StegosaurEgg() {
+        super("stegoegg", 'o');
     }
 
     public int getCost() { return COST; }
