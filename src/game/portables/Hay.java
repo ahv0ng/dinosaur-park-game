@@ -8,8 +8,8 @@ public class Hay extends Food {
     static final int FILL = 20;
     static final int POINTS_WHEN_HAY_FED = 10;
 
-    public Hay(String name, char displayChar) {
-        super(name, displayChar);
+    public Hay() {
+        super("someHay", 'h');
     }
 
     public int getCost() { return COST; }

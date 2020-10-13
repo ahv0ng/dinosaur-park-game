@@ -6,8 +6,8 @@ import game.actors.Stegosaur;
 public class VegetarianMealKit extends MealKit {
     static final int COST = 100;
 
-    public VegetarianMealKit(String name, char displayChar) {
-        super(name, displayChar);
+    public VegetarianMealKit() {
+        super("veggiekit", 'v');
     }
 
     public int getCost() { return COST; }
