@@ -1,16 +1,20 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Display;
-import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.*;
 import game.actors.Dinosaur;
+import game.behaviours.FollowBehaviour;
+import game.behaviours.WanderBehaviour;
+import game.ground.Dirt;
+
+import java.util.ArrayList;
 
 /**
  * A herbivorous dinosaur.
  *
  */
 public class Stegosaur extends Dinosaur {
+    static final int HUNGER_POINTS_FOR_GRAZE_GRASS = 5;
+
     public Stegosaur(String sex) {
         super(sex, "Stegosaur", 's');
     }
@@ -18,28 +22,55 @@ public class Stegosaur extends Dinosaur {
     public Stegosaur() {
         super("Stegosaur", 's');
     }
-}
-/*
+
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        super.playTurn(actions, lastAction, map, display);
-*/
-/*        ground = map.locationOf(this).getGround();
-        this.graze(ground);*//*
+        if (this.getHungerLevel() == 0) {
+            return new DoNothingAction();
+        } else if (this.getHungerLevel() > 0) {
+            this.increaseHunger(-1);
+        }
+        if (this.isHungry()) {
+            Location location = map.locationOf(this);
+            System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
+        }
+        if (this.getHungerLevel() > 50) {
+            Location location = map.locationOf(this);
+            if (getMate(map, location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(getMate(map, location));
+                if (follow.getAction(this, map) != null) {
+                    return follow.getAction(this, map);
+                }
+            }
+        }
+        if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
+            Location location = map.locationOf(this);
+            graze(location);
+            if (getGrass(map, location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(getGrass(map, location));
+                if (follow.getFollowLocationAction(this, map) != null) {
+                    return follow.getFollowLocationAction(this, map);
+                }
+            }
+        }
+        Action wander = new WanderBehaviour().getAction(this, map);
+        if (wander != null)
+            return wander;
+        return new DoNothingAction();
 
     }
-}
-*/
 
-/*
-    public void graze(Ground ground) {
-        if (ground instanceof Dirt && ground.hasGrass()) {
-            ground.removeGrass();
-            this.increaseHunger(5); // TODO: Refactor this so that grass increase hunger has constant value
+    public void graze(Location location) {
+        if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
+            ((Dirt) location.getGround()).removeGrass();
+            this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
+            System.out.println("Stegosaur at (" + location.x() + "," + location.y() + ")" + " ate grass");
+            System.out.println(this.getHungerLevel());
         }
     }
+}
 
-    @Override
+/*    @Override
     public void mate(Stegosaur stegosaur) {
         if (this.canMate(stegosaur)) {
             // TODO: stop wandering, then somehow get the female to lay egg
@@ -50,5 +81,4 @@ public class Stegosaur extends Dinosaur {
     private Egg layEgg() {
         return new StegosaurEgg();
     }
-}
-*/
+}*/

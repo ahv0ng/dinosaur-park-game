@@ -5,6 +5,7 @@ import game.actions.AttackAction;
 import game.behaviours.Behaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
+import game.ground.Dirt;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -57,44 +58,9 @@ public abstract class Dinosaur extends Actor {
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         return new Actions(new AttackAction(this));
     }
+    protected boolean isHungry() { return this.hungerLevel <= 50; }
 
-    @Override
-    public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        if (this.hungerLevel > 0) {
-            this.hungerLevel -= 1;
-        }
-        if (this.isHungry()) {
-            Location location = map.locationOf(this);
-            System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
-        }
-        if (this.hungerLevel == 0) {
-            return new DoNothingAction();
-        }
-        // Still to implement
-        if (this.hungerLevel > 50) {
-            Location location = map.locationOf(this);
-            if (getMate(map, location) != null) {
-                Behaviour follow = new FollowBehaviour(getMate(map, location));
-                if (follow.getAction(this, map) != null) {
-                    return follow.getAction(this, map);
-                }
-                return new DoNothingAction();
-            }
-        }
-        Action wander = behaviour.getAction(this, map);
-        if (wander != null)
-            return wander;
-        return new DoNothingAction();
-
-    }
-    private boolean isHungry() { return this.hungerLevel <= 50; }
-
-    // TODO: Caller needs to be able to handle this exception
-    public void increaseHunger(int hunger) throws Exception {
-        if (this.hungerLevel >= MAX_HUNGER) {
-            throw new Exception("Hunger level is already maximum.");
-        }
-
+    public void increaseHunger(int hunger) {
         int totalHunger = this.hungerLevel + hunger;
         if (totalHunger >= MAX_HUNGER) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
@@ -105,6 +71,7 @@ public abstract class Dinosaur extends Actor {
             this.hungerLevel = totalHunger;
         }
     }
+    public int getHungerLevel() { return this.hungerLevel; }
 
     private void resetDeathDays() { this.daysUntilDeath = 0; }
 
@@ -121,14 +88,52 @@ public abstract class Dinosaur extends Actor {
         return true;
     }*/
 
+/*    private Boolean nextToMate(GameMap map, Location location) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
+    }*/
+
+    // TODO: Implement such that types - possibly override for different dinos.
+    // Possibly override for different types of Dinosaurs
     /**
      * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
      * Applies regardless of dinosaur types.
      * @param location
      * @return Actor
      */
-    // TODO: Implement such that types and sexes of dinosaurs are considered
-    private Actor getMate(GameMap map, Location location) {
+    public Dinosaur getMate(GameMap map, Location location) {
+        for (Location loc : getSurroundingLocations(map, location)) {
+            if ((map.getActorAt(loc) instanceof Dinosaur) && (!((Dinosaur) map.getActorAt(loc)).getSex().
+                    equals(this.sex))) {
+                return (Dinosaur) map.getActorAt(loc);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns a reference to a Dirt object with grass attribute set to True (if it exists).
+     * @param map
+     * @param location
+     * @return
+     */
+    public Location getGrass(GameMap map, Location location) {
+        for (Location loc : getSurroundingLocations(map, location)) {
+            if (loc.getGround() instanceof Dirt && ((Dirt) loc.getGround()).hasGrass()) {
+                return loc;
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns an ArrayList of all locations within three tiles of the given location.
+     * @param map
+     * @param location
+     * @return
+     */
+    private ArrayList<Location> getSurroundingLocations(GameMap map, Location location) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
             locationArrayList.add(exit.getDestination());
@@ -149,24 +154,12 @@ public abstract class Dinosaur extends Actor {
                 }
             }
         }
-        for (Location loc : locationArrayList3) {
-            if (map.getActorAt(loc) instanceof Dinosaur) {
-                return map.getActorAt(loc);
-            }
-        }
-        return null;
+        return locationArrayList3;
     }
-
-/*    private Boolean nextToMate(GameMap map, Location location) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : location.getExits()) {
-            locationArrayList.add(exit.getDestination());
-        }
-    }*/
 
     public void die() {
         this.hungerLevel = 0;
         this.behaviour = null;
-        // TODO: Need to remove dinosaur from map
+        // TODO: Need to remove dinosaur from map - see Attack Action for corpse
     }
 }
