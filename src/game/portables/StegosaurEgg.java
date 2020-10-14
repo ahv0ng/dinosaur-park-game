@@ -8,7 +8,7 @@ public class StegosaurEgg extends Egg {
     static final int POINTS_WHEN_HATCH = 100;
 
     public StegosaurEgg() {
-        super("stegoegg", 'o');
+        super("Stegosaur Egg", 'o');
     }
 
     public int getCost() { return COST; }
@@ -17,5 +17,6 @@ public class StegosaurEgg extends Egg {
     public void hatch(Location location) {
         // TODO: Add to eco points
         location.addActor(new Stegosaur());
+        location.removeItem(this);
     }
 }

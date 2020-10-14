@@ -16,6 +16,35 @@ public class ScanSurrounds {
         return groundArrayList;
     }
 
+    /**
+     * Returns an ArrayList of all locations within three tiles of the given location.
+     * @param map
+     * @param location
+     * @return
+     */
+    public static ArrayList<Location> getSurroundingLocations(GameMap map, Location location) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
+        ArrayList<Location> locationArrayList2 = new ArrayList<>();
+        for (Location loc : locationArrayList ) {
+            for (Exit exit : loc.getExits()) {
+                if (!locationArrayList2.contains(exit.getDestination())) {
+                    locationArrayList2.add(exit.getDestination());
+                }
+            }
+        }
+        ArrayList<Location> locationArrayList3 = new ArrayList<>();
+        for (Location loc : locationArrayList2 ) {
+            for (Exit exit : loc.getExits()) {
+                if (!locationArrayList3.contains(exit.getDestination())) {
+                    locationArrayList3.add(exit.getDestination());
+                }
+            }
+        }
+        return locationArrayList3;
+    }
     public static int adjacentTrees(Location location) {
         ArrayList<Ground> groundArrayList = querySurroundings(location);
         int numberOfTrees = 0;

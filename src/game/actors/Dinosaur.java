@@ -3,9 +3,10 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.behaviours.Behaviour;
-import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
+import game.ground.ScanSurrounds;
+import game.portables.Egg;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,8 @@ public abstract class Dinosaur extends Actor {
     private int hungerLevel;
     private int daysUnconscious;
     private int daysUntilDeath;
+    private int daysUntilLay;
+    private Boolean pregnant = false;
     private String sex;
     private Behaviour behaviour;
     private Random random = new Random();
@@ -52,7 +55,7 @@ public abstract class Dinosaur extends Actor {
         this.sex = sexTypes[random.nextInt(2)];
     }
 
-    public String getSex() { return this.sex; }
+    private String getSex() { return this.sex; }
 
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
@@ -95,24 +98,6 @@ public abstract class Dinosaur extends Actor {
         }
     }*/
 
-    // TODO: Implement such that types - possibly override for different dinos.
-    // Possibly override for different types of Dinosaurs
-    /**
-     * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
-     * Applies regardless of dinosaur types.
-     * @param location
-     * @return Actor
-     */
-    public Dinosaur getMate(GameMap map, Location location) {
-        for (Location loc : getSurroundingLocations(map, location)) {
-            if ((map.getActorAt(loc) instanceof Dinosaur) && (!((Dinosaur) map.getActorAt(loc)).getSex().
-                    equals(this.sex))) {
-                return (Dinosaur) map.getActorAt(loc);
-            }
-        }
-        return null;
-    }
-
     /**
      * Returns a reference to a Dirt object with grass attribute set to True (if it exists).
      * @param map
@@ -120,46 +105,49 @@ public abstract class Dinosaur extends Actor {
      * @return
      */
     public Location getGrass(GameMap map, Location location) {
-        for (Location loc : getSurroundingLocations(map, location)) {
+        for (Location loc : ScanSurrounds.getSurroundingLocations(map, location)) {
             if (loc.getGround() instanceof Dirt && ((Dirt) loc.getGround()).hasGrass()) {
                 return loc;
             }
         }
         return null;
     }
-    /**
-     * Returns an ArrayList of all locations within three tiles of the given location.
-     * @param map
-     * @param location
-     * @return
-     */
-    private ArrayList<Location> getSurroundingLocations(GameMap map, Location location) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : location.getExits()) {
-            locationArrayList.add(exit.getDestination());
-        }
-        ArrayList<Location> locationArrayList2 = new ArrayList<>();
-        for (Location loc : locationArrayList ) {
-            for (Exit exit : loc.getExits()) {
-                if (!locationArrayList2.contains(exit.getDestination())) {
-                    locationArrayList2.add(exit.getDestination());
-                }
-            }
-        }
-        ArrayList<Location> locationArrayList3 = new ArrayList<>();
-        for (Location loc : locationArrayList2 ) {
-            for (Exit exit : loc.getExits()) {
-                if (!locationArrayList3.contains(exit.getDestination())) {
-                    locationArrayList3.add(exit.getDestination());
-                }
-            }
-        }
-        return locationArrayList3;
-    }
 
     public void die() {
         this.hungerLevel = 0;
         this.behaviour = null;
         // TODO: Need to remove dinosaur from map - see Attack Action for corpse
+    }
+    // Everything to do with mating
+    abstract Egg layEgg();
+    protected Boolean isPregnant() { return this.pregnant; }
+    protected Boolean isFemale() { return this.getSex().equals("Female"); }
+    protected Boolean isOppositeSex(Dinosaur target) {
+        return !this.getSex().equals(target.getSex());
+    }
+    protected void mate() {
+        this.pregnant = true;
+        this.resetDaysUntilLay();
+    }
+    protected void noLongerPregnant() { this.pregnant = false; }
+    protected void resetDaysUntilLay() { this.daysUntilLay = 10; }
+    protected int getDaysUntilLay() { return this.daysUntilLay; }
+    protected void decrementDaysUntilLay() { this.daysUntilLay -= 1; }
+    protected Boolean adjacentMate(GameMap map, Dinosaur target) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : map.locationOf(this).getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
+        return locationArrayList.contains(map.locationOf(target));
+    }
+    // Everything to do with baby dinosaurs
+    protected Boolean isAdult() {
+        return this.age >= 30;
+    }
+    protected void incrementAge() {
+        this.age += 1;
+    }
+    protected int getAge() {
+        return this.age;
     }
 }
