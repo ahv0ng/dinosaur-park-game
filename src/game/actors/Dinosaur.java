@@ -105,7 +105,7 @@ public abstract class Dinosaur extends Actor {
      * @return
      */
     public Location getGrass(GameMap map, Location location) {
-        for (Location loc : ScanSurrounds.getSurroundingLocations(map, location)) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(map, location)) {
             if (loc.getGround() instanceof Dirt && ((Dirt) loc.getGround()).hasGrass()) {
                 return loc;
             }

@@ -8,25 +8,28 @@ import edu.monash.fit2099.engine.Location;
 import java.util.ArrayList;
 
 public class ScanSurrounds {
-    public static ArrayList<Ground> querySurroundings(Location location) {
+    public static ArrayList<Location> getSurroundingLocationsWithin1(Location location) {
+        ArrayList<Location> locationArrayList = new ArrayList<>();
+        for (Exit exit : location.getExits()) {
+            locationArrayList.add(exit.getDestination());
+        }
+        return locationArrayList;
+    }
+    public static ArrayList<Ground> getGroundsWithin1(Location location) {
         ArrayList<Ground> groundArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
             groundArrayList.add(exit.getDestination().getGround());
         }
         return groundArrayList;
     }
-
     /**
      * Returns an ArrayList of all locations within three tiles of the given location.
      * @param map
      * @param location
      * @return
      */
-    public static ArrayList<Location> getSurroundingLocations(GameMap map, Location location) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : location.getExits()) {
-            locationArrayList.add(exit.getDestination());
-        }
+    public static ArrayList<Location> getLocationsWithin3(GameMap map, Location location) {
+        ArrayList<Location> locationArrayList = getSurroundingLocationsWithin1(location);
         ArrayList<Location> locationArrayList2 = new ArrayList<>();
         for (Location loc : locationArrayList ) {
             for (Exit exit : loc.getExits()) {
@@ -46,7 +49,7 @@ public class ScanSurrounds {
         return locationArrayList3;
     }
     public static int adjacentTrees(Location location) {
-        ArrayList<Ground> groundArrayList = querySurroundings(location);
+        ArrayList<Ground> groundArrayList = getGroundsWithin1(location);
         int numberOfTrees = 0;
 
         for (Ground ground : groundArrayList) {
@@ -67,7 +70,7 @@ public class ScanSurrounds {
     }
 
     public static int adjacentGrass(Location location) {
-        ArrayList<Ground> groundArrayList = querySurroundings(location);
+        ArrayList<Ground> groundArrayList = getGroundsWithin1(location);
         int numberOfGrass = 0;
 
         for (Ground ground : groundArrayList) {

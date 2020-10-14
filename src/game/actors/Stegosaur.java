@@ -101,7 +101,7 @@ public class Stegosaur extends Dinosaur {
         if (this.isFemale() && this.isPregnant()) {
             return null;
         }
-        for (Location loc : ScanSurrounds.getSurroundingLocations(map, location)) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(map, location)) {
             if ((map.getActorAt(loc) instanceof Stegosaur) && this.isOppositeSex((Stegosaur) map.getActorAt(loc))
                     && !((Stegosaur) map.getActorAt(loc)).isPregnant()) {
                 return (Stegosaur) map.getActorAt(loc);

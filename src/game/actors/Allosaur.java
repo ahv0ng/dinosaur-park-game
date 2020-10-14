@@ -67,7 +67,7 @@ public class Allosaur extends Dinosaur {
         if (this.isFemale() && this.isPregnant()) {
             return null;
         }
-        for (Location loc : ScanSurrounds.getSurroundingLocations(map, location)) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(map, location)) {
             if ((map.getActorAt(loc) instanceof Allosaur) && this.isOppositeSex((Allosaur) map.getActorAt(loc))
                     && !((Allosaur) map.getActorAt(loc)).isPregnant()) {
                 return (Allosaur) map.getActorAt(loc);
