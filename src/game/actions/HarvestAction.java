@@ -8,20 +8,15 @@ import game.ground.Dirt;
 import game.portables.Hay;
 
 public class HarvestAction extends Action {
-    private Ground target;
+    private Dirt target;
 
-    public HarvestAction(Ground ground) { this.target = ground; }
-
+    public HarvestAction(Dirt dirt) { this.target = dirt; }
+    @Override
     public String execute(Actor player, GameMap map) {
-        if (this.target instanceof Dirt) {
-            Hay hay = ((Dirt) this.target).harvestGrass();
-            player.addItemToInventory(hay);
-            return menuDescription(player);
+        Hay hay = (target.harvestGrass());
+        player.addItemToInventory(hay);
+        return System.lineSeparator() + "Player harvested the grass";
         }
-        else {
-            return "Nothing happened.";
-        }
-    }
-
-    public String menuDescription(Actor player) { return "Player harvests the grass."; }
+    @Override
+    public String menuDescription(Actor player) { return "Player harvests the grass"; }
 }

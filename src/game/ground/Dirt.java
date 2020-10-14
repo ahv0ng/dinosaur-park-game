@@ -1,8 +1,13 @@
 package game.ground;
 
-import edu.monash.fit2099.engine.Ground;
-import edu.monash.fit2099.engine.Location;
+import edu.monash.fit2099.engine.*;
+import game.actions.AttackAction;
+import game.actions.FeedAction;
+import game.actions.HarvestAction;
+import game.portables.Food;
+import game.portables.Fruit;
 import game.portables.Hay;
+import game.portables.VegetarianMealKit;
 
 import java.util.Random;
 
@@ -22,7 +27,14 @@ public class Dirt extends Ground {
 		super('.');
 		this.grass = random.nextInt(100) < GROW_CHANCE_AT_START;
 	}
-
+	@Override
+	public Actions allowableActions(Actor actor, Location location, String direction){
+		Actions actions = new Actions();
+		if (this.hasGrass()) {
+			actions.add(new HarvestAction(this));
+		}
+		return actions;
+	}
 	public boolean hasGrass() { return this.grass; }
 
 	public void tick(Location location) {

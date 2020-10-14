@@ -26,6 +26,7 @@ public class Fruit extends Food {
             location.removeItem(this);
         }
     }
+    // TODO: Add 40% pick-up chance
     public void feed(Dinosaur dinosaur) {
         if (!(dinosaur instanceof Stegosaur)) {
             throw new IllegalArgumentException("Fruit can only be fed to a Stegosaur.");

@@ -17,7 +17,7 @@ public class FeedAction extends Action {
     @Override
     public String execute(Actor actor, GameMap map) {
         this.food.feed(target);
-        return System.lineSeparator() + target + "is fed " + food + ".";
+        return System.lineSeparator() + target + " is fed " + food + ".";
     }
     @Override
     public String menuDescription(Actor actor) {
