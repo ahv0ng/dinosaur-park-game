@@ -2,20 +2,28 @@ package game.ground;
 
 import edu.monash.fit2099.engine.*;
 import game.EcoPointsSystem;
-import game.actions.PurchasingAction;
+import game.actions.PurchaseAction;
 import game.portables.*;
 
 import java.util.Scanner;
 
 public class VendingMachine extends Ground {
-    private String[] items = {"Fruit", "Hay", "LaserGun", "StegosaurEgg", "VegetarianMealKit", "CarnivoreMealKit"};
+    private String[] items = {
+            "Fruit",
+            "Hay",
+            "LaserGun",
+            "StegosaurEgg",
+            "AllosaurEgg",
+            "VegetarianMealKit",
+            "CarnivoreMealKit"
+    };
 
     public VendingMachine() { super('Q'); }
 
     @Override
     public Actions allowableActions(Actor actor, Location location, String direction) {
         Actions actions = new Actions();
-        actions.add(new PurchasingAction(this));
+        actions.add(new PurchaseAction(this));
         return actions;
     }
     public Item purchase() throws Exception {
@@ -46,6 +54,10 @@ public class VendingMachine extends Ground {
             case "StegosaurEgg":
                 System.out.println("Purchasing Stegosaur Egg...");
                 purchasedItem = new StegosaurEgg();
+                break;
+            case "AllosaurEgg":
+                System.out.println("Purchasing Allosaur Egg...");
+                purchasedItem = new AllosaurEgg();
                 break;
             case "VegetarianMealKit":
                 System.out.println("Purchasing Vegetarian Meal Kit...");

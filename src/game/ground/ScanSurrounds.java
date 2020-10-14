@@ -15,6 +15,7 @@ public class ScanSurrounds {
         }
         return locationArrayList;
     }
+
     public static ArrayList<Ground> getGroundsWithin1(Location location) {
         ArrayList<Ground> groundArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
@@ -22,6 +23,7 @@ public class ScanSurrounds {
         }
         return groundArrayList;
     }
+
     /**
      * Returns an ArrayList of all locations within three tiles of the given location.
      * @param map
@@ -48,6 +50,7 @@ public class ScanSurrounds {
         }
         return locationArrayList3;
     }
+
     public static int adjacentTrees(Location location) {
         ArrayList<Ground> groundArrayList = getGroundsWithin1(location);
         int numberOfTrees = 0;

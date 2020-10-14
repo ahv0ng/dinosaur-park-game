@@ -11,7 +11,7 @@ public abstract class Egg extends PortableItem {
     }
 
     public void tick(Location location) {
-        this.timeAlive += 1;
+        this.timeAlive++;
         if (this.timeAlive == 10) {
             this.hatch(location);
         }

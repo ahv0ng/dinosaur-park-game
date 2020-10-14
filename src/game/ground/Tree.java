@@ -25,12 +25,14 @@ public class Tree extends Ground {
 		this.increaseAge();
 		this.dropFruit(location);
 	}
+
 	@Override
 	public Actions allowableActions(Actor actor, Location location, String direction){
 		Actions actions = new Actions();
 		actions.add(new HarvestAction(this));
 		return actions;
 	}
+
 	private void increaseAge() {
 		this.age++;
 		if (age == 10) {
@@ -42,17 +44,17 @@ public class Tree extends Ground {
 	}
 
 	private void dropFruit(Location location) {
-		int number = random.nextInt(100);
-		if (number < Tree.DROP_CHANCE) {
+		if (random.nextInt(100) < Tree.DROP_CHANCE) {
 			Fruit fruit = new Fruit();
 			location.addItem(fruit);
 		}
 	}
+
 	public Fruit harvestFruit() {
-		int number = random.nextInt(100);
-		if (number < Tree.HARVEST_CHANCE) {
+		if (random.nextInt(100) < Tree.HARVEST_CHANCE) {
 			return new Fruit();
 		}
+		System.out.println("You search the tree for fruit, but you can’t find any ripe ones.");
 		return null;
 	}
 }

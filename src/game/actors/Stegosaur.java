@@ -3,14 +3,11 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
-import game.actors.Dinosaur;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
 import game.ground.ScanSurrounds;
 import game.portables.*;
-
-import java.util.ArrayList;
 
 /**
  * A herbivorous dinosaur.
@@ -27,6 +24,7 @@ public class Stegosaur extends Dinosaur {
         super("Stegosaur", 's');
     }
 
+    // FIXME: Is there a way to make this method more readable by separating them into code blocks?
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         this.incrementAge();
@@ -79,17 +77,32 @@ public class Stegosaur extends Dinosaur {
             return wander;
         return new DoNothingAction();
     }
+
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         Actions actions = new Actions();
         actions.add(new AttackAction(this));
         for (Item item : otherActor.getInventory()) {
-            if (item instanceof Fruit || item instanceof Hay || item instanceof VegetarianMealKit) {
+            if (this.canEat(item)) {
                 actions.add(new FeedAction((Food) item, this));
             }
         }
         return actions;
     }
+
+    private boolean canEat(Item item) {
+        if (item instanceof Fruit) {
+            return true;
+        }
+        else if (item instanceof Hay) {
+            return true;
+        }
+        else if (item instanceof VegetarianMealKit) {
+            return true;
+        }
+        return false;
+    }
+
     public void graze(Location location) {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
             ((Dirt) location.getGround()).removeGrass();
@@ -98,6 +111,7 @@ public class Stegosaur extends Dinosaur {
             System.out.println(this.getHungerLevel());
         }
     }
+
     /**
      * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
      * A potential mate is defined as one that is of opposite sex, of the same species, not already pregnant, and
@@ -122,6 +136,7 @@ public class Stegosaur extends Dinosaur {
         // No potential mate in sight
         return null;
     }
+
     @Override
     protected Egg layEgg() {
         this.noLongerPregnant();

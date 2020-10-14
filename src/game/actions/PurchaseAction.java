@@ -1,14 +1,12 @@
 package game.actions;
 
 import edu.monash.fit2099.engine.*;
-import game.actors.Dinosaur;
 import game.ground.VendingMachine;
-import game.portables.Food;
 
-public class PurchasingAction extends Action {
+public class PurchaseAction extends Action {
     private VendingMachine vendingMachine;
 
-    public PurchasingAction(VendingMachine vendingMachine) {
+    public PurchaseAction(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
     }
 
