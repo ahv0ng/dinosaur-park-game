@@ -55,7 +55,7 @@ public class Application {
 		world.addGameMap(gameMap);
 		
 		Actor player = new Player("Player", '@', 100);
-		world.addPlayer(player, gameMap.at(29, 12)); // TODO: change back to (9, 4) when testing done
+		world.addPlayer(player, gameMap.at(9, 4));
 		
 		// Place a pair of stegosaurs (of opposite sex) in the middle of the map
 		gameMap.at(30, 12).addActor(new Stegosaur("Male"));

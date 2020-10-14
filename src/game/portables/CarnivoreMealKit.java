@@ -6,8 +6,8 @@ import game.actors.Allosaur;
 public class CarnivoreMealKit extends MealKit {
     static final int COST = 500;
 
-    public CarnivoreMealKit(String name, char displayChar) {
-        super(name, displayChar);
+    public CarnivoreMealKit() {
+        super("Carnivore Meal Kit", 'c');
     }
 
     public int getCost() { return COST; }

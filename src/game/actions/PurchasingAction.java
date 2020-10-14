@@ -1,30 +1,30 @@
 package game.actions;
 
 import edu.monash.fit2099.engine.*;
+import game.actors.Dinosaur;
 import game.ground.VendingMachine;
+import game.portables.Food;
 
 public class PurchasingAction extends Action {
+    private VendingMachine vendingMachine;
+
+    public PurchasingAction(VendingMachine vendingMachine) {
+        this.vendingMachine = vendingMachine;
+    }
+
     @Override
     public String execute(Actor actor, GameMap map) {
-        Location locationOfActor = map.locationOf(actor);
-
-        if (locationOfActor.getGround() instanceof VendingMachine) {
-            VendingMachine machine = (VendingMachine) locationOfActor.getGround();
-            try {
-                Item item = machine.purchase();
-                actor.addItemToInventory(item);
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            return menuDescription(actor);
+        try {
+            Item item = vendingMachine.purchase();
+            actor.addItemToInventory(item);
+        } catch (Exception e) {
+            return System.lineSeparator() + e.getMessage();
         }
-        else {
-            return "Player must be on top of a vending machine!";
-        }
+        return System.lineSeparator() + "Purchase was successful";
     }
+
     @Override
     public String menuDescription(Actor actor) {
-        return actor + "tries to buys an item";
+        return actor + " buys an item";
     }
 }

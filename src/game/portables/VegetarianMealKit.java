@@ -7,7 +7,7 @@ public class VegetarianMealKit extends MealKit {
     static final int COST = 100;
 
     public VegetarianMealKit() {
-        super("veggiekit", 'v');
+        super("Vegetarian Meal Kit", 'v');
     }
 
     public int getCost() { return COST; }
