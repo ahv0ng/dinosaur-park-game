@@ -14,11 +14,13 @@ public class FeedAction extends Action {
         this.food = food;
         this.target = dinosaur;
     }
+
     @Override
     public String execute(Actor actor, GameMap map) {
         this.food.feed(target);
         return System.lineSeparator() + target + " is fed " + food + ".";
     }
+
     @Override
     public String menuDescription(Actor actor) {
         return actor + " feeds " + target + " " + food;

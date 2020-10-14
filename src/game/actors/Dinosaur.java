@@ -1,6 +1,9 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.*;
+import edu.monash.fit2099.engine.Actor;
+import edu.monash.fit2099.engine.Exit;
+import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.Location;
 import game.behaviours.Behaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
@@ -54,6 +57,7 @@ public abstract class Dinosaur extends Actor {
         this.sex = sexTypes[random.nextInt(2)];
     }
 
+    public int getHungerLevel() { return this.hungerLevel; }
     private String getSex() { return this.sex; }
 
     protected boolean isHungry() { return this.hungerLevel <= 50; }
@@ -69,7 +73,6 @@ public abstract class Dinosaur extends Actor {
             this.hungerLevel = totalHunger;
         }
     }
-    public int getHungerLevel() { return this.hungerLevel; }
 
     private void resetDeathDays() { this.daysUntilDeath = 0; }
 

@@ -1,6 +1,7 @@
 package game.portables;
 
 import edu.monash.fit2099.engine.Location;
+import game.EcoPointsSystem;
 import game.actors.Allosaur;
 
 public class AllosaurEgg extends Egg {
@@ -14,8 +15,8 @@ public class AllosaurEgg extends Egg {
     public int getCost() { return COST; }
 
     public void hatch(Location location) {
-        // TODO: Add to eco points
         location.addActor(new Allosaur());
         location.removeItem(this);
+        EcoPointsSystem.earn(POINTS_WHEN_HATCH);
     }
 }

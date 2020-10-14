@@ -3,16 +3,18 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
-import game.actors.Dinosaur;
-import game.actors.Stegosaur;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.ScanSurrounds;
-import game.portables.*;
+import game.portables.AllosaurEgg;
+import game.portables.CarnivoreMealKit;
+import game.portables.Egg;
+import game.portables.Food;
 
 public class Allosaur extends Dinosaur {
     public Allosaur() { super("Allosaur", 'a'); }
 
+    // FIXME: Is there a way to make this method more readable by separating them into code blocks?
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         this.incrementAge();
@@ -54,20 +56,25 @@ public class Allosaur extends Dinosaur {
             return wander;
         return new DoNothingAction();
     }
+
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         Actions actions = new Actions();
         actions.add(new AttackAction(this));
         for (Item item : otherActor.getInventory()) {
-            if (item instanceof CarnivoreMealKit) {
+            if (this.canEat(item)) {
                 actions.add(new FeedAction((Food) item, this));
             }
         }
         return actions;
     }
+
+    private boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
+
     public AttackAction attack(Stegosaur stegosaur) {
         return new AttackAction(stegosaur);
     }
+
     @Override
     protected Dinosaur getMate(GameMap map, Location location) {
         if (!(this.isAdult())) {
@@ -85,6 +92,7 @@ public class Allosaur extends Dinosaur {
         // No potential mate in sight
         return null;
     }
+
     @Override
     protected Egg layEgg() {
         this.noLongerPregnant();
