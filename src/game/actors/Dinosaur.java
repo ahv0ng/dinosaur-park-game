@@ -119,7 +119,8 @@ public abstract class Dinosaur extends Actor {
         // TODO: Need to remove dinosaur from map - see Attack Action for corpse
     }
     // Everything to do with mating
-    abstract Egg layEgg();
+    protected abstract Egg layEgg();
+    protected abstract Dinosaur getMate(GameMap map, Location location);
     protected Boolean isPregnant() { return this.pregnant; }
     protected Boolean isFemale() { return this.getSex().equals("Female"); }
     protected Boolean isOppositeSex(Dinosaur target) {

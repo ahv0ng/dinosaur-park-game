@@ -72,12 +72,11 @@ public class Stegosaur extends Dinosaur {
                 }
             }
         }
-       // Stegosaur wanders around or does nothing if
+       // Stegosaur wanders around or does nothing
         Action wander = new WanderBehaviour().getAction(this, map);
         if (wander != null)
             return wander;
         return new DoNothingAction();
-
     }
     public void graze(Location location) {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
@@ -87,16 +86,15 @@ public class Stegosaur extends Dinosaur {
             System.out.println(this.getHungerLevel());
         }
     }
-    // TODO: Implement such that types - possibly override for different dinos.
-    // Possibly override for different types of Dinosaurs
     /**
      * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
-     * A potential mate is defined as one that is of opposite sex, of the same specifes, not already pregnant, and
+     * A potential mate is defined as one that is of opposite sex, of the same species, not already pregnant, and
      * is an adult.
      * @param location
      * @return Actor
      */
-    private Stegosaur getMate(GameMap map, Location location) {
+    @Override
+    protected Dinosaur getMate(GameMap map, Location location) {
         if (!(this.isAdult())) {
             return null;
         }
