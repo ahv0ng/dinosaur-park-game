@@ -4,7 +4,7 @@ import edu.monash.fit2099.engine.*;
 import game.ground.VendingMachine;
 
 public class PurchasingAction extends Action {
-
+    @Override
     public String execute(Actor actor, GameMap map) {
         Location locationOfActor = map.locationOf(actor);
 
@@ -23,7 +23,7 @@ public class PurchasingAction extends Action {
             return "Player must be on top of a vending machine!";
         }
     }
-
+    @Override
     public String menuDescription(Actor actor) {
         return actor + "tries to buys an item";
     }

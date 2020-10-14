@@ -1,7 +1,10 @@
 package game.ground;
 
+import edu.monash.fit2099.engine.Actions;
+import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
+import game.actions.HarvestAction;
 import game.portables.Fruit;
 
 import java.util.Random;
@@ -22,7 +25,12 @@ public class Tree extends Ground {
 		this.increaseAge();
 		this.dropFruit(location);
 	}
-
+	@Override
+	public Actions allowableActions(Actor actor, Location location, String direction){
+		Actions actions = new Actions();
+		actions.add(new HarvestAction(this));
+		return actions;
+	}
 	private void increaseAge() {
 		this.age++;
 		if (age == 10) {
@@ -40,14 +48,11 @@ public class Tree extends Ground {
 			location.addItem(fruit);
 		}
 	}
-
 	public Fruit harvestFruit() {
 		int number = random.nextInt(100);
 		if (number < Tree.HARVEST_CHANCE) {
 			return new Fruit();
 		}
-		System.out.println("You search the tree for fruit, but you can't find any ripe ones.");
-		// To account for case where nothing is returned
 		return null;
 	}
 }
