@@ -1,7 +1,6 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
-import game.actions.AttackAction;
 import game.behaviours.Behaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
@@ -57,10 +56,6 @@ public abstract class Dinosaur extends Actor {
 
     private String getSex() { return this.sex; }
 
-    @Override
-    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
-        return new Actions(new AttackAction(this));
-    }
     protected boolean isHungry() { return this.hungerLevel <= 50; }
 
     public void increaseHunger(int hunger) {

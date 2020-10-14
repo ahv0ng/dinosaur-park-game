@@ -1,13 +1,14 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
+import game.actions.AttackAction;
+import game.actions.FeedAction;
 import game.actors.Dinosaur;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
 import game.ground.ScanSurrounds;
-import game.portables.Egg;
-import game.portables.StegosaurEgg;
+import game.portables.*;
 
 import java.util.ArrayList;
 
@@ -77,6 +78,17 @@ public class Stegosaur extends Dinosaur {
         if (wander != null)
             return wander;
         return new DoNothingAction();
+    }
+    @Override
+    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
+        Actions actions = new Actions();
+        actions.add(new AttackAction(this));
+        for (Item item : otherActor.getInventory()) {
+            if (item instanceof Fruit || item instanceof Hay || item instanceof VegetarianMealKit) {
+                actions.add(new FeedAction((Food) item, this));
+            }
+        }
+        return actions;
     }
     public void graze(Location location) {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {

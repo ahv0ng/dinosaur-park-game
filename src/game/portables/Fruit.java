@@ -1,6 +1,6 @@
 package game.portables;
 
-import edu.monash.fit2099.engine.Location;
+import edu.monash.fit2099.engine.*;
 import game.actors.Dinosaur;
 import game.actors.Stegosaur;
 
@@ -13,13 +13,12 @@ public class Fruit extends Food {
     static final int POINTS_WHEN_FED = 15;
 
     public Fruit() {
-        super("aFruit", 'f');
+        super("Fruit", 'f');
         this.age = 0;
     }
 
     public int getAge() { return this.age; }
     public int getCost() { return COST; }
-
     public void tick(Location location) {
         // Evaluate age and rotting status
         this.age++;
@@ -27,7 +26,6 @@ public class Fruit extends Food {
             location.removeItem(this);
         }
     }
-
     public void feed(Dinosaur dinosaur) {
         if (!(dinosaur instanceof Stegosaur)) {
             throw new IllegalArgumentException("Fruit can only be fed to a Stegosaur.");

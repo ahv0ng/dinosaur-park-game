@@ -2,14 +2,13 @@ package game.actors;
 
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
+import game.actions.FeedAction;
 import game.actors.Dinosaur;
 import game.actors.Stegosaur;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.ScanSurrounds;
-import game.portables.AllosaurEgg;
-import game.portables.Egg;
-import game.portables.StegosaurEgg;
+import game.portables.*;
 
 public class Allosaur extends Dinosaur {
     public Allosaur() { super("Allosaur", 'a'); }
@@ -55,7 +54,17 @@ public class Allosaur extends Dinosaur {
             return wander;
         return new DoNothingAction();
     }
-
+    @Override
+    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
+        Actions actions = new Actions();
+        actions.add(new AttackAction(this));
+        for (Item item : otherActor.getInventory()) {
+            if (item instanceof CarnivoreMealKit) {
+                actions.add(new FeedAction((Food) item, this));
+            }
+        }
+        return actions;
+    }
     public AttackAction attack(Stegosaur stegosaur) {
         return new AttackAction(stegosaur);
     }
