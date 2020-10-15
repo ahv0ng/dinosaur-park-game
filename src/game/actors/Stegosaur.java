@@ -40,9 +40,15 @@ public class Stegosaur extends Dinosaur {
             }
         }
         // Stegosaur is either conscious/unconscious from hunger level
-        if (this.getHungerLevel() == 0) { return new DoNothingAction(); }
+        if (this.getHungerLevel() == 0) {
+            this.incrementDaysUnconscious();
+            if (this.getDaysUnconscious() == 5) {
+                this.die(map);
+            }
+            return new DoNothingAction(); }
         // Stegosaur looks for a mate
         else if (this.getHungerLevel() > 50) {
+            this.resetDaysUnconscious();
             this.increaseHunger(-1);
             Dinosaur potentialMate = getMate(map, location);
             if (potentialMate != null) {
@@ -62,6 +68,7 @@ public class Stegosaur extends Dinosaur {
         }
         // Stegosaur looks for grass
        else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
+           this.resetDaysUnconscious();
            this.increaseHunger(-1);
             graze(location);
             if (getGrass(map, location) != null) {

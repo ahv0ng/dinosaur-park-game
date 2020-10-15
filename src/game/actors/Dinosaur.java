@@ -1,14 +1,12 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Exit;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Location;
+import edu.monash.fit2099.engine.*;
 import game.behaviours.Behaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
 import game.ground.ScanSurrounds;
 import game.portables.Egg;
+import game.portables.PortableItem;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,7 +15,6 @@ public abstract class Dinosaur extends Actor {
     private int age;
     private int hungerLevel;
     private int daysUnconscious;
-    private int daysUntilDeath;
     private int daysUntilLay;
     private Boolean pregnant = false;
     private String sex;
@@ -36,15 +33,17 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 50;
+        this.hungerLevel = 1;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
     }
 
-    //**
-    // Constructor for when egg hatches
-    //*
+    /**
+     * Constructor for when egg hatches
+     * @param name
+     * @param displayChar
+     */
     public Dinosaur(String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 0;
@@ -74,28 +73,6 @@ public abstract class Dinosaur extends Actor {
         }
     }
 
-    private void resetDeathDays() { this.daysUntilDeath = 0; }
-
-/*    public abstract void mate();
-    public abstract Egg layEgg();
-
-    private void canMate(Dinosaur dinosaur) {
-        if (this.sex == dinosaur.getSex()) {
-            return false;
-        }
-        if (this.age < MATING_AGE || dinosaur.age < MATING_AGE) {
-            return false;
-        }
-        return true;
-    }*/
-
-/*    private Boolean nextToMate(GameMap map, Location location) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : location.getExits()) {
-            locationArrayList.add(exit.getDestination());
-        }
-    }*/
-
     /**
      * Returns a reference to a Dirt object with grass attribute set to True (if it exists).
      * @param map
@@ -110,11 +87,20 @@ public abstract class Dinosaur extends Actor {
         }
         return null;
     }
-
-    public void die() {
-        this.hungerLevel = 0;
-        this.behaviour = null;
-        // TODO: Need to remove dinosaur from map - see Attack Action for corpse
+    // Everything to do with dying stegosaurs
+    protected int getDaysUnconscious() {
+        return this.daysUnconscious;
+    }
+    protected void resetDaysUnconscious() {
+        this.daysUnconscious = 0;
+    }
+    protected void incrementDaysUnconscious() {
+        this.daysUnconscious += 1;
+    }
+    public void die(GameMap map) {
+        Item corpse = new PortableItem("dead " + this.toString(), '%');
+        map.locationOf(this).addItem(corpse);
+        map.removeActor(this);
     }
     // Everything to do with mating
     protected abstract Egg layEgg();
