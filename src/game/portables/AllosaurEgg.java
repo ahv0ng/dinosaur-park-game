@@ -9,7 +9,7 @@ public class AllosaurEgg extends Egg {
     static final int POINTS_WHEN_HATCH = 1000;
 
     public AllosaurEgg() {
-        super("Allosaur Egg", 'o');
+        super("Allosaur Egg", '0');
     }
 
     public int getCost() { return COST; }

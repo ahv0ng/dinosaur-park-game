@@ -39,37 +39,31 @@ public class Stegosaur extends Dinosaur {
                 System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") laid an egg!");
             }
         }
-        // Stegosaur is either conscious/unconscious from hunger level
-        if (this.getHungerLevel() == 0) {
-            this.incrementDaysUnconscious();
-            if (this.getDaysUnconscious() == 20) {
-                this.die(map);
-            }
-            return new DoNothingAction(); }
-        // Stegosaur looks for a mate
+        if (this.getHungerLevel() == 0) { unconsciousUntilFed(map); }
+            // Stegosaur looks for a mate
         else if (this.getHungerLevel() > 50) {
+                this.resetDaysUnconscious();
+                this.increaseHunger(-1);
+                Dinosaur potentialMate = getMate(map, location);
+                if (potentialMate != null) {
+                    FollowBehaviour follow = new FollowBehaviour(potentialMate);
+                    // If the stegosaur is female, not pregnant, and a male is close by, mate
+                    if (this.isFemale() && !(this.isPregnant()) &&
+                            adjacentMate(map, potentialMate)) {
+                        this.mate();
+                        System.out.println("Dinosaurs at (" + location.x() + ", " + location.y() + ") and (" +
+                                map.locationOf(potentialMate).x() + "," +
+                                map.locationOf(potentialMate).y() + ") mated!");
+                    }
+                    if (follow.getAction(this, map) != null) {
+                        return follow.getAction(this, map);
+                    }
+                }
+            }
+        // Stegosaur looks for grass
+        else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
-            Dinosaur potentialMate = getMate(map, location);
-            if (potentialMate != null) {
-                FollowBehaviour follow = new FollowBehaviour(potentialMate);
-                // If the stegosaur is female, not pregnant, and a male is close by, mate
-                if (this.isFemale() && !(this.isPregnant()) &&
-                        adjacentMate(map, potentialMate)) {
-                    this.mate();
-                    System.out.println("Dinosaurs at (" + location.x() + ", " + location.y() + ") and (" +
-                            map.locationOf(potentialMate).x() + "," +
-                                    map.locationOf(potentialMate).y() + ") mated!");
-                }
-                if (follow.getAction(this, map) != null) {
-                    return follow.getAction(this, map);
-                }
-            }
-        }
-        // Stegosaur looks for grass
-       else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
-           this.resetDaysUnconscious();
-           this.increaseHunger(-1);
             graze(location);
             if (getGrass(map, location) != null) {
                 FollowBehaviour follow = new FollowBehaviour(getGrass(map, location));
@@ -78,13 +72,19 @@ public class Stegosaur extends Dinosaur {
                 }
             }
         }
-       // Stegosaur wanders around or does nothing
+        // Stegosaur wanders around or does nothing
         Action wander = new WanderBehaviour().getAction(this, map);
         if (wander != null)
             return wander;
         return new DoNothingAction();
+        }
+    private Action unconsciousUntilFed(GameMap map) {
+        this.incrementDaysUnconscious();
+        if (this.getDaysUnconscious() == 20) {
+            this.die(map);
+        }
+        return new DoNothingAction();
     }
-
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         Actions actions = new Actions();
@@ -96,7 +96,6 @@ public class Stegosaur extends Dinosaur {
         }
         return actions;
     }
-
     private boolean canEat(Item item) {
         if (item instanceof Fruit) {
             return true;
@@ -109,8 +108,7 @@ public class Stegosaur extends Dinosaur {
         }
         return false;
     }
-
-    public void graze(Location location) {
+    private void graze(Location location) {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
             ((Dirt) location.getGround()).removeGrass();
             this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
@@ -118,7 +116,6 @@ public class Stegosaur extends Dinosaur {
             System.out.println(this.getHungerLevel());
         }
     }
-
     /**
      * Returns a reference to a potential mate within 3 tiles of the current actor (if they exist).
      * A potential mate is defined as one that is of opposite sex, of the same species, not already pregnant, and

@@ -32,7 +32,7 @@ public class FollowBehaviour implements Behaviour {
 	 * @param subject the Ground to follow
 	 */
 	public FollowBehaviour(Location subject) { this.targetLocation = subject;}
-
+	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		if(!map.contains(targetActor) || !map.contains(actor))
 			return null;
@@ -50,7 +50,6 @@ public class FollowBehaviour implements Behaviour {
 				}
 			}
 		}
-
 		return null;
 	}
 	public Action getFollowLocationAction(Actor actor, GameMap map) {
