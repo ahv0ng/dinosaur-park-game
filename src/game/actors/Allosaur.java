@@ -3,6 +3,7 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
+import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.ScanSurrounds;
@@ -29,28 +30,17 @@ public class Allosaur extends Dinosaur {
                 System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") laid an egg!");
             }
         }
-        // Allosaur is either conscious/unconscious from hunger level
-        if (this.getHungerLevel() == 0) { return new DoNothingAction(); }
-        // Allosaur looks for a mate
+        if (this.getHungerLevel() == 0) { this.unconsciousUntilFed(map); }
+        // Stegosaur looks for a mate
         else if (this.getHungerLevel() > 50) {
+            this.resetDaysUnconscious();
             this.increaseHunger(-1);
-            Dinosaur potentialMate = getMate(map, location);
-            if (potentialMate != null) {
-                FollowBehaviour follow = new FollowBehaviour(potentialMate);
-                // If the allosaur is female, not pregnant, and a male is close by, mate
-                if (this.isFemale() && !(this.isPregnant()) &&
-                        adjacentMate(map, potentialMate)) {
-                    this.mate();
-                    System.out.println("Dinosaurs at (" + location.x() + ", " + location.y() + ") and (" +
-                            map.locationOf(potentialMate).x() + "," +
-                            map.locationOf(potentialMate).y() + ") mated!");
-                }
-                if (follow.getAction(this, map) != null) {
-                    return follow.getAction(this, map);
-                }
+            Action breed = new BreedingBehaviour().getAction(this, map);
+            if (breed != null) {
+                return breed;
             }
         }
-        // Allosaur wanders around or does nothing
+        // Stegosaur wanders around or does nothing
         Action wander = new WanderBehaviour().getAction(this, map);
         if (wander != null)
             return wander;
@@ -70,31 +60,11 @@ public class Allosaur extends Dinosaur {
     }
 
     private boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
-
     public AttackAction attack(Stegosaur stegosaur) {
         return new AttackAction(stegosaur);
     }
-
     @Override
-    protected Dinosaur getMate(GameMap map, Location location) {
-        if (!(this.isAdult())) {
-            return null;
-        }
-        if (this.isFemale() && this.isPregnant()) {
-            return null;
-        }
-        for (Location loc : ScanSurrounds.getLocationsWithin3(map, location)) {
-            if ((map.getActorAt(loc) instanceof Allosaur) && this.isOppositeSex((Allosaur) map.getActorAt(loc))
-                    && !((Allosaur) map.getActorAt(loc)).isPregnant()) {
-                return (Allosaur) map.getActorAt(loc);
-            }
-        }
-        // No potential mate in sight
-        return null;
-    }
-
-    @Override
-    protected Egg layEgg() {
+    public Egg layEgg() {
         this.noLongerPregnant();
         this.resetDaysUntilLay();
         return new AllosaurEgg();

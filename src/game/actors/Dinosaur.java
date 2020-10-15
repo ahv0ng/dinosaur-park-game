@@ -34,7 +34,7 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 50;
+        this.hungerLevel = 60;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
@@ -58,7 +58,7 @@ public abstract class Dinosaur extends Actor {
     }
 
     public int getHungerLevel() { return this.hungerLevel; }
-    private String getSex() { return this.sex; }
+    public String getSex() { return this.sex; }
 
     protected boolean isHungry() { return this.hungerLevel <= 50; }
 
@@ -89,6 +89,13 @@ public abstract class Dinosaur extends Actor {
         }
         return null;
     }
+    Action unconsciousUntilFed(GameMap map) {
+        this.incrementDaysUnconscious();
+        if (this.getDaysUnconscious() == 20) {
+            this.die(map);
+        }
+        return new DoNothingAction();
+    }
     // Everything to do with dying stegosaurs
     protected int getDaysUnconscious() {
         return this.daysUnconscious;
@@ -105,14 +112,13 @@ public abstract class Dinosaur extends Actor {
         map.removeActor(this);
     }
     // Everything to do with mating
-    protected abstract Egg layEgg();
-    protected abstract Dinosaur getMate(GameMap map, Location location);
-    protected Boolean isPregnant() { return this.pregnant; }
-    protected Boolean isFemale() { return this.getSex().equals("Female"); }
-    protected Boolean isOppositeSex(Dinosaur target) {
+    public abstract Egg layEgg();
+    public Boolean isPregnant() { return this.pregnant; }
+    public Boolean isFemale() { return this.getSex().equals("Female"); }
+    public Boolean isOppositeSex(Dinosaur target) {
         return !this.getSex().equals(target.getSex());
     }
-    protected void mate() {
+    public void mate() {
         this.pregnant = true;
         this.resetDaysUntilLay();
     }
@@ -128,13 +134,10 @@ public abstract class Dinosaur extends Actor {
         return locationArrayList.contains(map.locationOf(target));
     }
     // Everything to do with baby dinosaurs
-    protected Boolean isAdult() {
+    public Boolean isAdult() {
         return this.age >= 30;
     }
     protected void incrementAge() {
         this.age += 1;
-    }
-    protected int getAge() {
-        return this.age;
     }
 }
