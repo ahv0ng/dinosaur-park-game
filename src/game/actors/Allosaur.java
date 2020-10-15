@@ -99,4 +99,13 @@ public class Allosaur extends Dinosaur {
         this.resetDaysUntilLay();
         return new AllosaurEgg();
     }
+    /**
+     * Creates and returns an intrinsic weapon for allosaurs (biting with teeth).
+     *
+     * @return a freshly-instantiated IntrinsicWeapon
+     */
+    @Override
+    protected IntrinsicWeapon getIntrinsicWeapon() {
+        return new IntrinsicWeapon(20, "bites");
+    }
 }

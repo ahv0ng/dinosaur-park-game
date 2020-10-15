@@ -1,6 +1,7 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
+import game.Corpse;
 import game.behaviours.Behaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
@@ -33,7 +34,7 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 1;
+        this.hungerLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
@@ -65,6 +66,7 @@ public abstract class Dinosaur extends Actor {
         int totalHunger = this.hungerLevel + hunger;
         if (totalHunger >= MAX_HUNGER) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
+            System.out.println(this.toString() + " is full now.");
             this.hungerLevel = MAX_HUNGER;
         }
         else {
@@ -98,7 +100,7 @@ public abstract class Dinosaur extends Actor {
         this.daysUnconscious += 1;
     }
     public void die(GameMap map) {
-        Item corpse = new PortableItem("dead " + this.toString(), '%');
+        Corpse corpse = new Corpse();
         map.locationOf(this).addItem(corpse);
         map.removeActor(this);
     }

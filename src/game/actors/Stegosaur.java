@@ -42,7 +42,7 @@ public class Stegosaur extends Dinosaur {
         // Stegosaur is either conscious/unconscious from hunger level
         if (this.getHungerLevel() == 0) {
             this.incrementDaysUnconscious();
-            if (this.getDaysUnconscious() == 5) {
+            if (this.getDaysUnconscious() == 20) {
                 this.die(map);
             }
             return new DoNothingAction(); }
@@ -114,7 +114,7 @@ public class Stegosaur extends Dinosaur {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
             ((Dirt) location.getGround()).removeGrass();
             this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
-            System.out.println("Stegosaur at (" + location.x() + "," + location.y() + ")" + " ate grass");
+            System.out.println("Stegosaur at (" + location.x() + "," + location.y() + ")" + " ate grass.");
             System.out.println(this.getHungerLevel());
         }
     }

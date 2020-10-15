@@ -8,6 +8,7 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Weapon;
+import game.Corpse;
 import game.portables.PortableItem;
 
 /**
@@ -47,7 +48,7 @@ public class AttackAction extends Action {
 
 		target.hurt(damage);
 		if (!target.isConscious()) {
-			Item corpse = new PortableItem("dead " + target, '%');
+			Corpse corpse = new Corpse();
 			map.locationOf(target).addItem(corpse);
 			
 			Actions dropActions = new Actions();
