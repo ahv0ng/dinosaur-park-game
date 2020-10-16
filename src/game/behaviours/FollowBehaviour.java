@@ -1,16 +1,12 @@
 package game.behaviours;
 
 import edu.monash.fit2099.engine.*;
-import game.actors.Dinosaur;
-import game.ground.Dirt;
-
-import java.util.ArrayList;
-
-// TODO: Adapt so used for mating and finding food
 
 /**
  * A class that figures out a MoveAction that will move the actor one step 
- * closer to a target Actor/Ground.
+ * closer to a target Actor/Location.
+ *
+ * @author Nicholas Chua & Alden Vong
  */
 public class FollowBehaviour implements Behaviour {
 
@@ -29,9 +25,18 @@ public class FollowBehaviour implements Behaviour {
 	/**
 	 * Constructor.
 	 *
-	 * @param subject the Ground to follow
+	 * @param subject the Location to move towards
 	 */
 	public FollowBehaviour(Location subject) { this.targetLocation = subject;}
+
+	/**
+	 * Returns a MoveAction to get closer to a target Actor.
+	 * If no movement is possible, returns null.
+	 *
+	 * @param actor the Actor acting
+	 * @param map the GameMap containing the Actor
+	 * @return an Action, or null if no MoveAction is possible
+	 */
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		if(!map.contains(targetActor) || !map.contains(actor))
@@ -52,6 +57,15 @@ public class FollowBehaviour implements Behaviour {
 		}
 		return null;
 	}
+
+	/**
+	 * Returns a MoveAction to get closer to a target Location.
+	 * If no movement is possible, returns null.
+	 *
+	 * @param actor the Actor acting
+	 * @param map the GameMap containing the Actor
+	 * @return an Action, or null if no MoveAction is possible
+	 */
 	public Action getFollowLocationAction(Actor actor, GameMap map) {
 		Location here = map.locationOf(actor);
 		Location there = this.targetLocation;
