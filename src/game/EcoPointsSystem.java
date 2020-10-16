@@ -33,9 +33,7 @@ public class EcoPointsSystem {
         if (points < 0) {
             throw new IllegalArgumentException("Points earned must be greater than zero.");
         }
-
         ecoPoints += points;
-        System.out.println("Total points: " + ecoPoints);
     }
 
     /**
@@ -59,6 +57,5 @@ public class EcoPointsSystem {
         }
 
         ecoPoints -= points;
-        System.out.println("Total points: " + ecoPoints);
     }
 }

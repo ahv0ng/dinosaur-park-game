@@ -1,6 +1,7 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
+import game.EcoPointsSystem;
 import game.actions.HarvestAction;
 import game.ground.Dirt;
 import game.ground.Tree;
@@ -25,6 +26,7 @@ public class Player extends Actor {
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		System.out.println("Total Eco-Points: " + EcoPointsSystem.getPoints());
 		Ground actorGround = map.locationOf(this).getGround();
 		// Handle multi-turn Actions
 		if (lastAction.getNextAction() != null)
