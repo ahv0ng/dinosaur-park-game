@@ -7,6 +7,9 @@ import game.portables.*;
 
 import java.util.Scanner;
 
+/**
+ * Extends Ground.
+ */
 public class VendingMachine extends Ground {
     private String[] items = {
             "Fruit",
@@ -18,6 +21,9 @@ public class VendingMachine extends Ground {
             "CarnivoreMealKit"
     };
 
+    /**
+     * Constructor for VendingMachine.
+     */
     public VendingMachine() { super('Q'); }
 
     @Override
@@ -26,6 +32,13 @@ public class VendingMachine extends Ground {
         actions.add(new PurchaseAction(this));
         return actions;
     }
+
+    /**
+     * Create a menu of items for user to select an Item to buy. Once selected, spend
+     * Eco-Points and add Item to Player's inventory.
+     * @return Item object of the selected item
+     * @throws Exception when item doesn't exist
+     */
     public Item purchase() throws Exception {
         // Create a menu and list all items. Then ask for user input and return Item
         System.out.println("Available items to purchase: ");

@@ -4,16 +4,25 @@ import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
 import game.actors.Stegosaur;
 
+/**
+ * Extends Egg.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class StegosaurEgg extends Egg {
     private int COST = 200;
     static final int POINTS_WHEN_HATCH = 100;
 
+    /**
+     * Constructor for StegosaurEgg.
+     */
     public StegosaurEgg() {
         super("Stegosaur Egg", 'o');
     }
 
-    public int getCost() { return COST; }
-
+    /**
+     * Hatch StegosaurEgg onto the location.
+     * @param location - Location of the item
+     */
     @Override
     public void hatch(Location location) {
         location.addActor(new Stegosaur());
