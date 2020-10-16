@@ -20,7 +20,7 @@ public class ScanSurrounds {
      * @param location the Location of interest
      * @return an ArrayList of Location objects
      */
-    public static ArrayList<Location> getLocationsWithin1(Location location) {
+    private static ArrayList<Location> getLocationsWithin1(Location location) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
             locationArrayList.add(exit.getDestination());
@@ -34,7 +34,7 @@ public class ScanSurrounds {
      * @param location the Location of interest
      * @return an ArrayList of Ground objects
      */
-    public static ArrayList<Ground> getGroundsWithin1(Location location) {
+    private static ArrayList<Ground> getGroundsWithin1(Location location) {
         ArrayList<Ground> groundArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
             groundArrayList.add(exit.getDestination().getGround());
@@ -199,7 +199,7 @@ public class ScanSurrounds {
      * @param location the Location of interest
      * @return reference to a Location with StegosaurEgg
      */
-    public static Location getGroundOfStegosaurEgg(Location location) {
+    public static Location getLocationOfStegosaurEgg(Location location) {
         for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
             for (Item item : loc.getItems()) {
                 if (item instanceof StegosaurEgg) {

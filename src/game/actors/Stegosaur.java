@@ -123,7 +123,7 @@ public class Stegosaur extends Dinosaur {
      * @return Egg to be laid on the Stegosaur's current location
      */
     @Override
-    public Egg layEgg() {
+    public StegosaurEgg layEgg() {
         this.noLongerPregnant();
         this.resetDaysUntilLay();
         return new StegosaurEgg();

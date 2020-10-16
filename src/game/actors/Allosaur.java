@@ -8,7 +8,6 @@ import game.behaviours.WanderBehaviour;
 import game.ground.ScanSurrounds;
 import game.portables.AllosaurEgg;
 import game.portables.CarnivoreMealKit;
-import game.portables.Egg;
 import game.portables.Food;
 
 /**
@@ -107,8 +106,8 @@ public class Allosaur extends Dinosaur {
             }
         }
         // If there is a stegosaur egg nearby, go towards it
-        else if (ScanSurrounds.getGroundOfStegosaurEgg(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGroundOfStegosaurEgg(location));
+        else if (ScanSurrounds.getLocationOfStegosaurEgg(location) != null) {
+            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getLocationOfStegosaurEgg(location));
             if (follow.getFollowLocationAction(this, map) != null) {
                 return follow.getFollowLocationAction(this, map);
             }
@@ -124,19 +123,8 @@ public class Allosaur extends Dinosaur {
         }
         return null;
     }
-
-    /**
-     * Attack adjacent Stegosaur.
-     *
-     * @param stegosaur - Stegosaur target
-     * @return AttackAction object to interact with Stegosaur
-     */
-    public AttackAction attack(Stegosaur stegosaur) {
-        return new AttackAction(stegosaur);
-    }
-
     @Override
-    public Egg layEgg() {
+    public AllosaurEgg layEgg() {
         this.noLongerPregnant();
         this.resetDaysUntilLay();
         return new AllosaurEgg();

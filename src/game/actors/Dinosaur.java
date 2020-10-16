@@ -6,9 +6,7 @@ import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Location;
 import game.Corpse;
-import game.behaviours.Behaviour;
 import game.behaviours.BreedingBehaviour;
-import game.behaviours.WanderBehaviour;
 import game.portables.Egg;
 
 import java.util.Random;
@@ -25,7 +23,6 @@ public abstract class Dinosaur extends Actor {
     private int daysUntilLay;
     private Boolean pregnant = false;
     private String sex;
-    private Behaviour behaviour;
     private Random random = new Random();
 
     static final int MATING_AGE = 30;
@@ -49,7 +46,6 @@ public abstract class Dinosaur extends Actor {
         this.hungerLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
-        this.behaviour = new WanderBehaviour();
     }
 
     /**
@@ -63,7 +59,6 @@ public abstract class Dinosaur extends Actor {
         this.age = 0;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
-        this.behaviour = new WanderBehaviour();
 
         // Randomise sex for this dinosaur
         String[] sexTypes = {"Male", "Female"};
@@ -75,7 +70,7 @@ public abstract class Dinosaur extends Actor {
      *
      * @return integer representing the hunger level
      */
-    public int getHungerLevel() { return this.hungerLevel; }
+    protected int getHungerLevel() { return this.hungerLevel; }
 
     /**
      * Return Dinosaur's sex.
@@ -134,7 +129,7 @@ public abstract class Dinosaur extends Actor {
      *
      * @param map - the game map
      */
-    public void die(GameMap map) {
+    private void die(GameMap map) {
         Corpse corpse = new Corpse();
         map.locationOf(this).addItem(corpse);
         System.out.println(this + " at (" + map.locationOf(this).x() + "," +
@@ -151,7 +146,7 @@ public abstract class Dinosaur extends Actor {
      *
      * @return boolean value if Dinosaur is pregnant
      */
-    public Boolean isPregnant() { return this.pregnant; }
+    public boolean isPregnant() { return this.pregnant; }
 
     /**
      * Evaluate whether target Dinosaur is of the opposite sex to the current Dinosaur.
@@ -159,7 +154,7 @@ public abstract class Dinosaur extends Actor {
      * @param target Dinosaur object planning to mate with
      * @return boolean value whether target is of the opposite sex
      */
-    public Boolean isOppositeSex(Dinosaur target) {
+    public boolean isOppositeSex(Dinosaur target) {
         return !this.getSex().equals(target.getSex());
     }
 
@@ -241,7 +236,7 @@ public abstract class Dinosaur extends Actor {
      * @param map - the game map
      * @param location - the location of Dinosaur
      */
-    protected void pregnantBehaviour(GameMap map, Location location) {
+    private void pregnantBehaviour(GameMap map, Location location) {
         this.decrementDaysUntilLay();
         if (this.getDaysUntilLay() == 0) {
             map.locationOf(this).addItem(this.layEgg());
