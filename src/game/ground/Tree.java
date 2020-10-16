@@ -11,6 +11,7 @@ import java.util.Random;
 
 /**
  * Extends Ground.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Tree extends Ground {
@@ -29,6 +30,7 @@ public class Tree extends Ground {
 
 	/**
 	 * Call for Tree to tick over the next day.
+	 *
 	 * @param location The location of the Ground
 	 */
 	@Override
@@ -59,6 +61,7 @@ public class Tree extends Ground {
 
 	/**
 	 * Drop Fruit after a given probability returns true.
+	 *
 	 * @param location - Location of the Tree
 	 */
 	private void dropFruit(Location location) {
@@ -71,6 +74,7 @@ public class Tree extends Ground {
 	/**
 	 * Harvest Fruit when Player attempts to harvest Fruit, only when given probability
 	 * returns true.
+	 *
 	 * @return Fruit object to the Player
 	 */
 	public Fruit harvestFruit() {

@@ -4,6 +4,7 @@ import game.actors.Dinosaur;
 
 /**
  * Abstract class. Extends PortableItem.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public abstract class Food extends PortableItem {
@@ -11,6 +12,7 @@ public abstract class Food extends PortableItem {
 
     /**
      * Constructor for Food
+     *
      * @param name - String name of the object
      * @param displayChar - Char of display character on the map
      */
@@ -20,6 +22,7 @@ public abstract class Food extends PortableItem {
 
     /**
      * Feed Item to Dinosaur.
+     *
      * @param dinosaur - Dinosaur to feed Item
      */
     public abstract void feed(Dinosaur dinosaur);

@@ -4,6 +4,7 @@ import game.actors.Dinosaur;
 
 /**
  * Extends MealKit.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class CarnivoreMealKit extends MealKit {
@@ -18,6 +19,7 @@ public class CarnivoreMealKit extends MealKit {
 
     /**
      * Feed CarnivoreMealKit to Allosaur.
+     *
      * @param dinosaur - Allosaur to feed CarnivoreMealKit
      */
     public void feed(Dinosaur dinosaur) {

@@ -11,6 +11,7 @@ import game.portables.*;
 
 /**
  * A herbivorous dinosaur.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Stegosaur extends Dinosaur {
@@ -18,6 +19,7 @@ public class Stegosaur extends Dinosaur {
 
     /**
      * Constructor for Stegosaur when game start.
+     *
      * @param sex - String of the Dinosaur's sex
      */
     public Stegosaur(String sex) { super(sex, "Stegosaur", 's'); }
@@ -74,6 +76,7 @@ public class Stegosaur extends Dinosaur {
 
     /**
      * Evaluate whether Stegosaur can eat given Item.
+     *
      * @param item - Item object for Stegosaur to eat
      * @return boolean value on whether the Stegosaur can eat the item
      */
@@ -92,6 +95,7 @@ public class Stegosaur extends Dinosaur {
 
     /**
      * If on top of Dirt with grass attribute, remove grass for Stegosaur to eat.
+     *
      * @param location - Location type of the current location of the Stegosaur
      */
     private void graze(Location location) {
@@ -115,6 +119,7 @@ public class Stegosaur extends Dinosaur {
 
     /**
      * Lay a StegosaurEgg.
+     *
      * @return Egg to be laid on the Stegosaur's current location
      */
     @Override

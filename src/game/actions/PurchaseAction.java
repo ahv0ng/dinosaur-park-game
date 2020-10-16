@@ -6,6 +6,7 @@ import game.ground.VendingMachine;
 /**
  * Special action for the Player to purchase an Item when VendingMachine is nearby.
  * Extends Action.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class PurchaseAction extends Action {
@@ -13,6 +14,7 @@ public class PurchaseAction extends Action {
 
     /**
      * Constructor for PurchaseAction. Select VendingMachine to purchase from.
+     *
      * @param vendingMachine Vending Machine to purchase Items from
      */
     public PurchaseAction(VendingMachine vendingMachine) {

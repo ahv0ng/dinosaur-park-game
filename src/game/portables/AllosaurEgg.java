@@ -6,6 +6,7 @@ import game.actors.Allosaur;
 
 /**
  * Extends Egg.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class AllosaurEgg extends Egg {
@@ -21,6 +22,7 @@ public class AllosaurEgg extends Egg {
 
     /**
      * Hatch Egg into an Allosaur. Earn 1000 points for hatching.
+     *
      * @param location - Location of the Egg
      */
     public void hatch(Location location) {

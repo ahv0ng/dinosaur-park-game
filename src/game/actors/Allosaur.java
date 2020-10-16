@@ -13,6 +13,7 @@ import game.portables.Food;
 
 /**
  * Extends Dinosaur.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Allosaur extends Dinosaur {
@@ -72,6 +73,7 @@ public class Allosaur extends Dinosaur {
 
     /**
      * Evaluate whether Allosaur can eat given Item.
+     *
      * @param item - Item object for Allosaur to eat
      * @return boolean value on whether the Allosaur can eat the item
      */
@@ -79,6 +81,7 @@ public class Allosaur extends Dinosaur {
 
     /**
      * Allows Allosaur to eat a Corpse or StegosaurEgg.
+     *
      * @param location - Location type of the current location of Allosaur
      */
     private void eat(Location location) {
@@ -124,6 +127,7 @@ public class Allosaur extends Dinosaur {
 
     /**
      * Attack adjacent Stegosaur.
+     *
      * @param stegosaur - Stegosaur target
      * @return AttackAction object to interact with Stegosaur
      */

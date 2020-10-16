@@ -10,6 +10,7 @@ public class PortableItem extends Item {
 
 	/**
 	 * Constructor for PortableItem.
+	 *
 	 * @param name - String representing the name of the Item
 	 * @param displayChar - Character display on the map
 	 */
@@ -19,6 +20,7 @@ public class PortableItem extends Item {
 
 	/**
 	 * Return the cost of purchasing an Item.
+	 *
 	 * @return integer representing the cost
 	 */
 	public int getCost() { return COST; }

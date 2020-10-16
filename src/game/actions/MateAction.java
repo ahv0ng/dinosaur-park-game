@@ -7,6 +7,7 @@ import game.actors.Dinosaur;
 
 /**
  * Special action for Dinosaurs to mate. Extends Action.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class MateAction extends Action {
@@ -14,6 +15,7 @@ public class MateAction extends Action {
 
     /**
      * Constructor for MateAction.
+     *
      * @param dinosaur - Chosen Dinosaur to mate with
      */
     public MateAction(Dinosaur dinosaur) {
@@ -30,6 +32,7 @@ public class MateAction extends Action {
 
     /**
      * Evaluate which of the two Dinosaurs mating are female.
+     *
      * @param dinosaur1 - Dinosaur object of any sex
      * @param dinosaur2 - Dinosaur object of any sex
      * @return reference to the Dinosaur that is female

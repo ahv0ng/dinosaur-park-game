@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.Location;
 
 /**
  * Abstract class. Extends PortableItem.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public abstract class Egg extends PortableItem {
@@ -13,6 +14,7 @@ public abstract class Egg extends PortableItem {
 
     /**
      * Constructor for Egg
+     *
      * @param name - String name of the object
      * @param displayChar - Char of display character on the map
      */
@@ -22,6 +24,7 @@ public abstract class Egg extends PortableItem {
 
     /**
      * Call for Item to tick over next day.
+     *
      * @param location - Location of the item
      */
     public void tick(Location location) {
@@ -39,6 +42,7 @@ public abstract class Egg extends PortableItem {
 
     /**
      * Hatch egg. Abstract method.
+     *
      * @param location - Location of the item
      */
     public abstract void hatch(Location location);

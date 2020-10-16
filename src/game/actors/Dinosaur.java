@@ -15,6 +15,7 @@ import java.util.Random;
 
 /**
  * Extends Actor.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public abstract class Dinosaur extends Actor {
@@ -37,6 +38,7 @@ public abstract class Dinosaur extends Actor {
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
      * the start.
+     *
      * @param sex - String type that represent the Dinosaur's sex
      * @param name - String name of the Dinosaur
      * @param displayChar - Char type for displaying Dinosaur on the map
@@ -44,7 +46,7 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 75;
+        this.hungerLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
@@ -52,6 +54,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Constructor for when an Egg hatches.
+     *
      * @param name - String name of the Dinosaur
      * @param displayChar - Char type for displaying Dinosaur on the map
      */
@@ -69,18 +72,21 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Return Dinosaur's hunger level.
+     *
      * @return integer representing the hunger level
      */
     public int getHungerLevel() { return this.hungerLevel; }
 
     /**
      * Return Dinosaur's sex.
+     *
      * @return String representing the sex
      */
     public String getSex() { return this.sex; }
 
     /**
      * Evaluate whether Dinosaur is hungry.
+     *
      * @return boolean value whether Dinosaur is hungry
      */
     protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THRESHOLD; }
@@ -88,6 +94,7 @@ public abstract class Dinosaur extends Actor {
     /**
      * Increases hunger level. Hunger level cannot exceed MAX_HUNGER, or be lower than MIN_HUNGER.
      * If argument is negative, then hunger level decreases.
+     *
      * @param hunger - integer increase for the hunger level.
      */
     public void increaseHunger(int hunger) {
@@ -107,6 +114,7 @@ public abstract class Dinosaur extends Actor {
     }
     /**
      * Return the number of daysUnconscious for Dinosaur.
+     *
      * @return integer value of the number of days unconscious
      */
     protected int getDaysUnconscious() { return this.daysUnconscious; }
@@ -123,6 +131,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Kill dinosaur and replace with Corpse object at Dinosaur's last location.
+     *
      * @param map - the game map
      */
     public void die(GameMap map) {
@@ -139,12 +148,14 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Return boolean value if Dinosaur is pregnant.
+     *
      * @return boolean value if Dinosaur is pregnant
      */
     public Boolean isPregnant() { return this.pregnant; }
 
     /**
      * Evaluate whether target Dinosaur is of the opposite sex to the current Dinosaur.
+     *
      * @param target Dinosaur object planning to mate with
      * @return boolean value whether target is of the opposite sex
      */
@@ -172,6 +183,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Return number of remaining days to lay Egg.
+     *
      * @return integer representing remaining days to lay an Egg
      */
     protected int getDaysUntilLay() { return this.daysUntilLay; }
@@ -183,6 +195,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate whether baby dinosaur becomes an adult.
+     *
      * @return boolean value if baby dinosaur becomes an adult
      */
     public Boolean isAdult() {
@@ -198,6 +211,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate the general behaviour of a common Dinosaur.
+     *
      * @param map - the game map
      * @param location - Location of the Dinosaur
      */
@@ -209,6 +223,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate the behaviour of an unconscious Dinosaur.
+     *
      * @param map - the game map
      * @return Action of the Dinosaur
      */
@@ -222,6 +237,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate the behaviour of a pregnant Dinosaur.
+     *
      * @param map - the game map
      * @param location - the location of Dinosaur
      */
@@ -235,6 +251,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate the behaviour of a mating Dinosaur.
+     *
      * @param map - the game map
      * @return BreedingBehaviour of a mating Dinosaur
      */
@@ -244,6 +261,7 @@ public abstract class Dinosaur extends Actor {
 
     /**
      * Evaluate the behaviour of a hungry Dinosaur.
+     *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Dinosaur

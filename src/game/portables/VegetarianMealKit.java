@@ -4,6 +4,7 @@ import game.actors.Dinosaur;
 
 /**
  * Extends MealKit.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class VegetarianMealKit extends MealKit {
@@ -18,6 +19,7 @@ public class VegetarianMealKit extends MealKit {
 
     /**
      * Feed VegetarianMealKit to Dinosaur.
+     *
      * @param dinosaur - Dinosaur to feed MealKit
      */
     public void feed(Dinosaur dinosaur) {

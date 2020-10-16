@@ -26,8 +26,9 @@ public class ScanSurrounds {
 
     /**
      * Returns an ArrayList of all locations within three tiles of the given location.
-     * @param location
-     * @return
+     *
+     * @param location the location for which surrounding locations within three tiles are enumerated
+     * @return ArrayList<Location>
      */
     public static ArrayList<Location> getLocationsWithin3(Location location) {
         ArrayList<Location> locationArrayList = getLocationsWithin1(location);

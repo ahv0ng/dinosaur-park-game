@@ -6,6 +6,7 @@ import game.actors.Stegosaur;
 
 /**
  * Extends Egg.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class StegosaurEgg extends Egg {
@@ -21,6 +22,7 @@ public class StegosaurEgg extends Egg {
 
     /**
      * Hatch StegosaurEgg onto the location.
+     *
      * @param location - Location of the item
      */
     @Override

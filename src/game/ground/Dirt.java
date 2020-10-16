@@ -12,6 +12,7 @@ import java.util.Random;
 
 /**
  * A class that represents bare dirt. Extends Ground.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Dirt extends Ground {
@@ -42,12 +43,14 @@ public class Dirt extends Ground {
 
 	/**
 	 * Return boolean value when Dirt has grass.
+	 *
 	 * @return boolean whether Dirt has grass
 	 */
 	public boolean hasGrass() { return this.grass; }
 
 	/**
 	 * Call for Dirt to tick over the next day.
+	 *
 	 * @param location - Location of the item
 	 */
 	public void tick(Location location) {
@@ -60,6 +63,7 @@ public class Dirt extends Ground {
 
 	/**
 	 * Evaluate whether grass will grow on the next day, if grass is false.
+	 *
 	 * @param location - Location of the Dirt object
 	 * @return boolean value on whether grass will grow
 	 */
@@ -84,6 +88,7 @@ public class Dirt extends Ground {
 
 	/**
 	 * Convert grass attribute to false. Earn points when harvested. Use only when Player harvests grass.
+	 *
 	 * @return Hay object given to the Player
 	 */
 	public Hay harvestGrass() {

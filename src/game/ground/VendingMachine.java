@@ -36,6 +36,7 @@ public class VendingMachine extends Ground {
     /**
      * Create a menu of items for user to select an Item to buy. Once selected, spend
      * Eco-Points and add Item to Player's inventory.
+     *
      * @return Item object of the selected item
      * @throws Exception when item doesn't exist
      */

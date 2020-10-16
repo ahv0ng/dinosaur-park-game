@@ -6,6 +6,7 @@ import game.actors.Dinosaur;
 
 /**
  * Extends Fruit.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Fruit extends Food {
@@ -26,12 +27,14 @@ public class Fruit extends Food {
 
     /**
      * Return age of the Fruit.
+     *
      * @return integer of the age
      */
     public int getAge() { return this.age; }
 
     /**
      * Call for Item to tick over next day.
+     *
      * @param location - Location of the item
      */
     public void tick(Location location) {
@@ -44,6 +47,7 @@ public class Fruit extends Food {
 
     /**
      * Feed Fruit to Stegosaur.
+     *
      * @param dinosaur - Dinosaur to feed Fruit
      */
     public void feed(Dinosaur dinosaur) {

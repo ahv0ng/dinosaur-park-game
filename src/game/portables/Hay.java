@@ -5,6 +5,7 @@ import game.actors.Dinosaur;
 
 /**
  * Extends Food.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class Hay extends Food {
@@ -21,6 +22,7 @@ public class Hay extends Food {
 
     /**
      * Feed Hay to Dinosaur.
+     *
      * @param dinosaur - Dinosaur to feed Hay
      */
     public void feed(Dinosaur dinosaur) {

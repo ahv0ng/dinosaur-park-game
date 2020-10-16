@@ -8,6 +8,7 @@ import game.portables.Food;
 
 /**
  * Special action to feed a dinosaur. Extends Action.
+ *
  * @author Nicholas Chua and Alden Vong
  */
 public class FeedAction extends Action {
@@ -16,6 +17,7 @@ public class FeedAction extends Action {
 
     /**
      * Constructor for FeedAction. Configure the Food object to feed to which Dinosaur.
+     *
      * @param food - Food item to use
      * @param dinosaur - Dinosaur to feed
      */
