@@ -27,6 +27,7 @@ public class FeedAction extends Action {
     @Override
     public String execute(Actor actor, GameMap map) {
         this.food.feed(target);
+        actor.removeItemFromInventory(food);
         return System.lineSeparator() + target + " is fed " + food + ".";
     }
 

@@ -57,27 +57,27 @@ public class Allosaur extends Dinosaur {
             this.increaseHunger(-1);
             this.eat(location);
             // If there is a corpse nearby, go towards it
-            if (getGroundOfCorpse(location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(getGroundOfCorpse(location));
+            if (ScanSurrounds.getGroundOfCorpse(location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGroundOfCorpse(location));
                 if (follow.getFollowLocationAction(this, map) != null) {
                     return follow.getFollowLocationAction(this, map);
                 }
             }
             // If there is a stegosaur egg nearby, go towards it
-            else if (getGroundOfStegosaurEgg(location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(getGroundOfStegosaurEgg(location));
+            else if (ScanSurrounds.getGroundOfStegosaurEgg(location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGroundOfStegosaurEgg(location));
                 if (follow.getFollowLocationAction(this, map) != null) {
                     return follow.getFollowLocationAction(this, map);
                 }
             }
             // If there is a stegosaur nearby, go towards it
-            else if (getStegosaur(location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(getStegosaur(location));
+            else if (ScanSurrounds.getStegosaur(location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getStegosaur(location));
                 if (follow.getAction(this, map) != null) {
                     return follow.getAction(this, map);
                 }
                 // If there is a stegosaur nearby and you cannot go closer, it must be adjacent
-                return new AttackAction(this.getStegosaur(location));
+                return new AttackAction(ScanSurrounds.getStegosaur(location));
                 }
             }
         // Allosaur wanders around or does nothing
@@ -98,31 +98,6 @@ public class Allosaur extends Dinosaur {
         }
         return actions;
     }
-
-    /**
-     *
-     * @param location
-     * @return reference to Stegosaur within 3 tiles of given location (if it exists)
-     */
-    private Stegosaur getStegosaur(Location location) {
-        ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin3(location);
-        for (Location loc : locationArrayList) {
-            if (loc.getActor() != null && loc.getActor() instanceof Stegosaur) {
-                return (Stegosaur) loc.getActor();
-            }
-        }
-        return null;
-    }
-    private Stegosaur adjacentStegosaur(Location location) {
-        ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin1(location);
-        for (Location loc : locationArrayList) {
-            if (loc.getActor() != null && loc.getActor() instanceof Stegosaur) {
-                return (Stegosaur) loc.getActor();
-            }
-        }
-        return null;
-    }
-
     private boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
 
     /**
@@ -130,14 +105,14 @@ public class Allosaur extends Dinosaur {
      * @param location
      */
     private void eat(Location location) {
-        if (this.getCorpse(location) != null) {
+        if (ScanSurrounds.getCorpse(location) != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
-            location.removeItem(this.getCorpse(location));
+            location.removeItem(ScanSurrounds.getCorpse(location));
             System.out.println("Allosaur at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
         }
-        else if (this.getStegosaurEgg(location) != null) {
+        else if (ScanSurrounds.getStegosaurEgg(location) != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_STEGOSAURUS_EGG);
-            location.removeItem(this.getStegosaurEgg(location));
+            location.removeItem(ScanSurrounds.getStegosaurEgg(location));
             System.out.println("Allosaur at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
         }
     }
@@ -157,6 +132,6 @@ public class Allosaur extends Dinosaur {
      */
     @Override
     protected IntrinsicWeapon getIntrinsicWeapon() {
-        return new IntrinsicWeapon(20, "bites");
+        return new IntrinsicWeapon(100, "bites");
     }
 }

@@ -1,9 +1,9 @@
 package game.ground;
 
-import edu.monash.fit2099.engine.Exit;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Ground;
-import edu.monash.fit2099.engine.Location;
+import edu.monash.fit2099.engine.*;
+import game.Corpse;
+import game.actors.Stegosaur;
+import game.portables.StegosaurEgg;
 
 import java.util.ArrayList;
 
@@ -94,5 +94,101 @@ public class ScanSurrounds {
             return dirt.hasGrass();
         }
         return false;
+    }
+    /**
+     *
+     * @param location
+     * @return reference to Stegosaur within 3 tiles of given location (if it exists)
+     */
+    public static Stegosaur getStegosaur(Location location) {
+        ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin3(location);
+        for (Location loc : locationArrayList) {
+            if (loc.getActor() != null && loc.getActor() instanceof Stegosaur) {
+                return (Stegosaur) loc.getActor();
+            }
+        }
+        return null;
+    }
+    private Stegosaur adjacentStegosaur(Location location) {
+        ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin1(location);
+        for (Location loc : locationArrayList) {
+            if (loc.getActor() != null && loc.getActor() instanceof Stegosaur) {
+                return (Stegosaur) loc.getActor();
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns a reference to a Dirt object with grass attribute set to True (if it exists within
+     * 3 tiles of a given location).
+     * @param location
+     * @return
+     */
+    public static Location getGrass(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
+            if (loc.getGround() instanceof Dirt && ((Dirt) loc.getGround()).hasGrass()) {
+                return loc;
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns a reference to a Ground object with a corpse (if it exists within 3 tiles
+     * of a given location).
+     * @param location
+     * @return
+     */
+    public static Location getGroundOfCorpse(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
+            for (Item item : loc.getItems()) {
+                if (item instanceof Corpse) {
+                    return loc;
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns a reference to a Corpse object at a given location (if it exists), null otherwise
+     * @param location
+     * @return
+     */
+    public static Item getCorpse(Location location) {
+        for (Item item : location.getItems()) {
+            if (item instanceof Corpse) {
+                return item;
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns a reference to a Ground object with a stegosaurus egg (if it exists within 3 tiles
+     * of a given location).
+     * @param location
+     * @return
+     */
+    public static Location getGroundOfStegosaurEgg(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
+            for (Item item : loc.getItems()) {
+                if (item instanceof StegosaurEgg) {
+                    return loc;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns a reference to a StegosaurEgg object at a given location (if it exists), null otherwise
+     * @param location
+     * @return
+     */
+    public static Item getStegosaurEgg(Location location) {
+        for (Item item : location.getItems()) {
+            if (item instanceof StegosaurEgg) {
+                return item;
+            }
+        }
+        return null;
     }
 }

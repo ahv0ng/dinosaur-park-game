@@ -61,8 +61,8 @@ public class Stegosaur extends Dinosaur {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             graze(location);
-            if (getGrass(location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(getGrass(location));
+            if (ScanSurrounds.getGrass(location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGrass(location));
                 if (follow.getFollowLocationAction(this, map) != null) {
                     return follow.getFollowLocationAction(this, map);
                 }
