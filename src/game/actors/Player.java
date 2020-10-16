@@ -1,11 +1,9 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Display;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Menu;
+import edu.monash.fit2099.engine.*;
+import game.actions.HarvestAction;
+import game.ground.Dirt;
+import game.ground.Tree;
 
 /**
  * Class representing the Player.
@@ -27,9 +25,13 @@ public class Player extends Actor {
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		Ground actorGround = map.locationOf(this).getGround();
 		// Handle multi-turn Actions
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();
+		if (actorGround instanceof Tree || actorGround instanceof Dirt && ((Dirt) actorGround).hasGrass()) {
+			actions.add(new HarvestAction(actorGround));
+		}
 		return menu.showMenu(this, actions, display);
 	}
 }

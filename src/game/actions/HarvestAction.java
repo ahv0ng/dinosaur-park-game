@@ -31,15 +31,15 @@ public class HarvestAction extends Action {
         if (target instanceof Dirt) {
             Hay hay = (((Dirt) target).harvestGrass());
             player.addItemToInventory(hay);
-            return System.lineSeparator() + "Player harvested the grass";
+            return System.lineSeparator() + "Player harvested the grass.";
         }
         else if (target instanceof Tree) {
             Fruit fruit = ((Tree) target).harvestFruit();
             if (fruit == null) {
-                return System.lineSeparator() + "You searched the tree for fruit, but you couldn't find any ripe ones";
+                return System.lineSeparator() + "You search the tree for fruit, but you can't find any ripe ones.";
             } else {
                 player.addItemToInventory(fruit);
-                return System.lineSeparator() + "Fruit was picked from the tree";
+                return System.lineSeparator() + "Fruit was picked from the tree.";
             }
 
         }

@@ -32,15 +32,6 @@ public class Dirt extends Ground {
 		this.grass = random.nextInt(100) < GROW_CHANCE_AT_START;
 	}
 
-	@Override
-	public Actions allowableActions(Actor actor, Location location, String direction){
-		Actions actions = new Actions();
-		if (this.hasGrass()) {
-			actions.add(new HarvestAction(this));
-		}
-		return actions;
-	}
-
 	/**
 	 * Return boolean value when Dirt has grass.
 	 *

@@ -39,13 +39,6 @@ public class Tree extends Ground {
 		this.dropFruit(location);
 	}
 
-	@Override
-	public Actions allowableActions(Actor actor, Location location, String direction){
-		Actions actions = new Actions();
-		actions.add(new HarvestAction(this));
-		return actions;
-	}
-
 	/**
 	 * Increase the age of the Tree.
 	 */
@@ -81,7 +74,6 @@ public class Tree extends Ground {
 		if (random.nextInt(100) < Tree.HARVEST_CHANCE) {
 			return new Fruit();
 		}
-		System.out.println("You search the tree for fruit, but you can’t find any ripe ones.");
 		return null;
 	}
 }
