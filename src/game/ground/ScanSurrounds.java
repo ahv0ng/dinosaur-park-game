@@ -167,7 +167,7 @@ public class ScanSurrounds {
      * @param location the Location of interest
      * @return reference to Location with a Corpse (null if doesn't exist)
      */
-    public static Location getGroundOfCorpse(Location location) {
+    public static Location getLocationOfCorpse(Location location) {
         for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
             for (Item item : loc.getItems()) {
                 if (item instanceof Corpse) {

@@ -100,8 +100,8 @@ public class Allosaur extends Dinosaur {
     @Override
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
         // If there is a corpse nearby, go towards it
-        if (ScanSurrounds.getGroundOfCorpse(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGroundOfCorpse(location));
+        if (ScanSurrounds.getLocationOfCorpse(location) != null) {
+            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getLocationOfCorpse(location));
             if (follow.getFollowLocationAction(this, map) != null) {
                 return follow.getFollowLocationAction(this, map);
             }
