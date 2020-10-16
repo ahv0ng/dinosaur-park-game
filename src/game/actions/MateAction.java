@@ -5,9 +5,17 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import game.actors.Dinosaur;
 
+/**
+ * Special action for Dinosaurs to mate. Extends Action.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class MateAction extends Action {
     Dinosaur mate;
 
+    /**
+     * Constructor for MateAction.
+     * @param dinosaur - Chosen Dinosaur to mate with
+     */
     public MateAction(Dinosaur dinosaur) {
         this.mate = dinosaur;
     }
@@ -21,9 +29,9 @@ public class MateAction extends Action {
     public String menuDescription(Actor actor) {return actor + " mates with " + mate; }
 
     /**
-     * Takes in two dinosaurs of opposite sex
-     * @param dinosaur1
-     * @param dinosaur2
+     * Evaluate which of the two Dinosaurs mating are female.
+     * @param dinosaur1 - Dinosaur object of any sex
+     * @param dinosaur2 - Dinosaur object of any sex
      * @return reference to the Dinosaur that is female
      */
     private Dinosaur returnFemale(Dinosaur dinosaur1, Dinosaur dinosaur2) {

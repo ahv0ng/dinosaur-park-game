@@ -1,15 +1,9 @@
 package game.actions;
 
-import java.util.Random;
-
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Item;
-import edu.monash.fit2099.engine.Weapon;
+import edu.monash.fit2099.engine.*;
 import game.Corpse;
-import game.portables.PortableItem;
+
+import java.util.Random;
 
 /**
  * Special Action for attacking other Actors.
@@ -54,9 +48,9 @@ public class AttackAction extends Action {
 			Actions dropActions = new Actions();
 			for (Item item : target.getInventory())
 				dropActions.add(item.getDropAction());
-			for (Action drop : dropActions)		
+			for (Action drop : dropActions)
 				drop.execute(target, map);
-			map.removeActor(target);	
+			map.removeActor(target);
 			
 			result += System.lineSeparator() + target + " is killed.";
 		}

@@ -3,7 +3,6 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
-import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.ground.ScanSurrounds;
@@ -12,10 +11,17 @@ import game.portables.CarnivoreMealKit;
 import game.portables.Egg;
 import game.portables.Food;
 
+/**
+ * Extends Dinosaur.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class Allosaur extends Dinosaur {
     static final int HUNGER_POINTS_FROM_CORPSE = 50;
     static final int HUNGER_POINTS_FROM_STEGOSAURUS_EGG = 10;
 
+    /**
+     * Constructor for Allosaur.
+     */
     public Allosaur() { super("Allosaur", 'a'); }
 
     @Override
@@ -62,11 +68,17 @@ public class Allosaur extends Dinosaur {
         }
         return actions;
     }
+
+    /**
+     * Evaluate whether Allosaur can eat given Item.
+     * @param item - Item object for Allosaur to eat
+     * @return boolean value on whether the Allosaur can eat the item
+     */
     private boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
 
     /**
      * Allows Allosaur to eat a Corpse or StegosaurEgg.
-     * @param location
+     * @param location - Location type of the current location of Allosaur
      */
     private void eat(Location location) {
         if (ScanSurrounds.getCorpse(location) != null) {
@@ -80,6 +92,7 @@ public class Allosaur extends Dinosaur {
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
         }
     }
+
     @Override
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
         // If there is a corpse nearby, go towards it
@@ -107,15 +120,23 @@ public class Allosaur extends Dinosaur {
         }
         return null;
     }
+
+    /**
+     * Attack adjacent Stegosaur.
+     * @param stegosaur - Stegosaur target
+     * @return AttackAction object to interact with Stegosaur
+     */
     public AttackAction attack(Stegosaur stegosaur) {
         return new AttackAction(stegosaur);
     }
+
     @Override
     public Egg layEgg() {
         this.noLongerPregnant();
         this.resetDaysUntilLay();
         return new AllosaurEgg();
     }
+
     /**
      * Creates and returns an intrinsic weapon for allosaurs (biting with teeth).
      *
