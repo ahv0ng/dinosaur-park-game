@@ -9,6 +9,7 @@ import edu.monash.fit2099.engine.Location;
 public abstract class Egg extends PortableItem {
     private int timeAlive;
     static int POINTS_WHEN_HATCH;
+    static final int TIME_TO_HATCH = 10;
 
     /**
      * Constructor for Egg
@@ -25,7 +26,7 @@ public abstract class Egg extends PortableItem {
      */
     public void tick(Location location) {
         this.timeAlive++;
-        if (this.timeAlive >= 10) {
+        if (this.timeAlive >= TIME_TO_HATCH) {
             try {
                 this.hatch(location);
             }

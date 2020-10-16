@@ -18,6 +18,7 @@ import game.portables.Food;
 public class Allosaur extends Dinosaur {
     static final int HUNGER_POINTS_FROM_CORPSE = 50;
     static final int HUNGER_POINTS_FROM_STEGOSAURUS_EGG = 10;
+    static final int BITE_DAMAGE = 20;
 
     /**
      * Constructor for Allosaur.
@@ -30,11 +31,11 @@ public class Allosaur extends Dinosaur {
         this.generalBehaviour(map, location);
 
         // Allosaur is unconscious until fed/dies
-        if (this.getHungerLevel() == 0) {
+        if (this.getHungerLevel() == MIN_HUNGER) {
             return this.unconsciousBehaviour(map);
         }
         // Allosaur looks for a mate
-        else if (this.getHungerLevel() > 50) {
+        else if (!(this.isHungry())) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             if (this.breedBehaviour(map) != null) {
@@ -42,7 +43,7 @@ public class Allosaur extends Dinosaur {
             }
         }
         // Allosaur looks for something to eat/attack
-        else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
+        else if (this.isHungry()) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             this.eat(location);
@@ -144,6 +145,6 @@ public class Allosaur extends Dinosaur {
      */
     @Override
     protected IntrinsicWeapon getIntrinsicWeapon() {
-        return new IntrinsicWeapon(20, "bites");
+        return new IntrinsicWeapon(BITE_DAMAGE, "bites");
     }
 }

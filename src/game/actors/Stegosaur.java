@@ -33,11 +33,11 @@ public class Stegosaur extends Dinosaur {
         this.generalBehaviour(map, location);
 
         // Stegosaur is unconscious until fed/dies
-        if (this.getHungerLevel() == 0) {
+        if (this.getHungerLevel() == MIN_HUNGER) {
             return this.unconsciousBehaviour(map);
         }
         // Stegosaur looks for a mate
-        else if (this.getHungerLevel() > 50) {
+        else if (!(this.isHungry())) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             if (this.breedBehaviour(map) != null) {
@@ -45,7 +45,7 @@ public class Stegosaur extends Dinosaur {
             }
         }
         // Stegosaur looks for grass to eat
-        else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
+        else if (this.isHungry()) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             graze(location);

@@ -28,10 +28,11 @@ public abstract class Dinosaur extends Actor {
     private Random random = new Random();
 
     static final int MATING_AGE = 30;
-    static final int LAY_AGE = 10;
+    static final int PREGNANCY_LENGTH = 10;
     static final int MIN_HUNGER = 0;
     static final int MAX_HUNGER = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
+    static final int HUNGRY_THRESHOLD = 50;
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -43,7 +44,7 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 50;
+        this.hungerLevel = 75;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
@@ -82,10 +83,11 @@ public abstract class Dinosaur extends Actor {
      * Evaluate whether Dinosaur is hungry.
      * @return boolean value whether Dinosaur is hungry
      */
-    protected boolean isHungry() { return this.hungerLevel <= 50; }
+    protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THRESHOLD; }
 
     /**
-     * Increase hunger to max. Do not exceed hunger level 100.
+     * Increases hunger level. Hunger level cannot exceed MAX_HUNGER, or be lower than MIN_HUNGER.
+     * If argument is negative, then hunger level decreases.
      * @param hunger - integer increase for the hunger level.
      */
     public void increaseHunger(int hunger) {
@@ -95,14 +97,14 @@ public abstract class Dinosaur extends Actor {
             System.out.println(this.toString() + " is full now.");
             this.hungerLevel = MAX_HUNGER;
         }
+        else if (totalHunger < MIN_HUNGER) {
+            this.hungerLevel = MIN_HUNGER;
+        }
         else {
             // Else increase hungerLevel normally
             this.hungerLevel = totalHunger;
         }
     }
-
-    // Everything to do with dying dinosaurs
-
     /**
      * Return the number of daysUnconscious for Dinosaur.
      * @return integer value of the number of days unconscious
@@ -130,8 +132,6 @@ public abstract class Dinosaur extends Actor {
                 map.locationOf(this).y() + ") died from hunger.");
         map.removeActor(this);
     }
-
-    // Everything to do with mating
     /**
      * Abstract method to lay Egg
      */
@@ -168,7 +168,7 @@ public abstract class Dinosaur extends Actor {
     /**
      * Reset number of days to lay Egg.
      */
-    protected void resetDaysUntilLay() { this.daysUntilLay = LAY_AGE; }
+    protected void resetDaysUntilLay() { this.daysUntilLay = PREGNANCY_LENGTH; }
 
     /**
      * Return number of remaining days to lay Egg.
@@ -180,8 +180,6 @@ public abstract class Dinosaur extends Actor {
      * Decrement remaining number of days to lay Egg.
      */
     protected void decrementDaysUntilLay() { this.daysUntilLay--; }
-
-    // Everything to do with baby dinosaurs
 
     /**
      * Evaluate whether baby dinosaur becomes an adult.
@@ -208,8 +206,6 @@ public abstract class Dinosaur extends Actor {
         if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
         if (this.isPregnant()) { this.pregnantBehaviour(map, location); }
     }
-
-    // Everything to do with dying dinosaurs
 
     /**
      * Evaluate the behaviour of an unconscious Dinosaur.
