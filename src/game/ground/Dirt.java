@@ -83,18 +83,17 @@ public class Dirt extends Ground {
 	}
 
 	/**
-	 * Convert grass attribute to false. Earn points when harvested.
+	 * Convert grass attribute to false. Earn points when harvested. Use only when Player harvests grass.
 	 * @return Hay object given to the Player
 	 */
 	public Hay harvestGrass() {
-		this.grass = false;
-		this.displayChar = '.';
+		this.removeGrass();
 		EcoPointsSystem.earn(POINTS_WHEN_HARVEST_OR_GROW_GRASS);
 		return new Hay();
 	}
 
 	/**
-	 * Convert grass attribute to false. Use when Stegosaur eat grass.
+	 * Convert grass attribute to false. Use only when Stegosaur eats grass.
 	 */
 	public void removeGrass() {
 		this.grass = false;
