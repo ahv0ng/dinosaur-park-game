@@ -25,38 +25,44 @@ public class Stegosaur extends Dinosaur {
         super("Stegosaur", 's');
     }
 
-    // FIXME: Is there a way to make this method more readable by separating them into code blocks?
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         this.incrementAge();
         Location location = map.locationOf(this);
         if (this.isHungry()) {
-            System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
+            System.out.println("Stegosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
         }
         if (this.isPregnant()) {
             this.decrementDaysUntilLay();
             if (this.getDaysUntilLay() == 0) {
                 map.locationOf(this).addItem(this.layEgg());
-                System.out.println("Dinosaur at (" + location.x() + ", " + location.y() + ") laid an egg!");
+                System.out.println("Stegosaur at (" + location.x() + ", " + location.y() + ") laid an egg!");
             }
         }
-        if (this.getHungerLevel() == 0) { unconsciousUntilFed(map); }
+        // Stegosaur is unconscious until fed/dies
+        if (this.getHungerLevel() == 0) {
+            this.incrementDaysUnconscious();
+            if (this.getDaysUnconscious() == 20) {
+                this.die(map);
+            }
+            return new DoNothingAction();
+        }
         // Stegosaur looks for a mate
         else if (this.getHungerLevel() > 50) {
-                this.resetDaysUnconscious();
-                this.increaseHunger(-1);
-                Action breed = new BreedingBehaviour().getAction(this, map);
-                if (breed != null) {
-                    return breed;
-                }
+            this.resetDaysUnconscious();
+            this.increaseHunger(-1);
+            Action breed = new BreedingBehaviour().getAction(this, map);
+            if (breed != null) {
+                return breed;
             }
+        }
         // Stegosaur looks for grass
         else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             graze(location);
-            if (getGrass(map, location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(getGrass(map, location));
+            if (getGrass(location) != null) {
+                FollowBehaviour follow = new FollowBehaviour(getGrass(location));
                 if (follow.getFollowLocationAction(this, map) != null) {
                     return follow.getFollowLocationAction(this, map);
                 }
@@ -67,7 +73,7 @@ public class Stegosaur extends Dinosaur {
         if (wander != null)
             return wander;
         return new DoNothingAction();
-        }
+    }
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
         Actions actions = new Actions();
@@ -96,7 +102,6 @@ public class Stegosaur extends Dinosaur {
             ((Dirt) location.getGround()).removeGrass();
             this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
             System.out.println("Stegosaur at (" + location.x() + "," + location.y() + ")" + " ate grass.");
-            System.out.println(this.getHungerLevel());
         }
     }
     @Override

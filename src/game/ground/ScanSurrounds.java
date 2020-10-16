@@ -8,7 +8,7 @@ import edu.monash.fit2099.engine.Location;
 import java.util.ArrayList;
 
 public class ScanSurrounds {
-    public static ArrayList<Location> getSurroundingLocationsWithin1(Location location) {
+    public static ArrayList<Location> getLocationsWithin1(Location location) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
             locationArrayList.add(exit.getDestination());
@@ -26,12 +26,11 @@ public class ScanSurrounds {
 
     /**
      * Returns an ArrayList of all locations within three tiles of the given location.
-     * @param map
      * @param location
      * @return
      */
-    public static ArrayList<Location> getLocationsWithin3(GameMap map, Location location) {
-        ArrayList<Location> locationArrayList = getSurroundingLocationsWithin1(location);
+    public static ArrayList<Location> getLocationsWithin3(Location location) {
+        ArrayList<Location> locationArrayList = getLocationsWithin1(location);
         ArrayList<Location> locationArrayList2 = new ArrayList<>();
         for (Location loc : locationArrayList ) {
             for (Exit exit : loc.getExits()) {

@@ -8,6 +8,7 @@ import game.ground.Dirt;
 import game.ground.ScanSurrounds;
 import game.portables.Egg;
 import game.portables.PortableItem;
+import game.portables.StegosaurEgg;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,7 +26,7 @@ public abstract class Dinosaur extends Actor {
     static final int MATING_AGE = 30;
     static final int MIN_HUNGER = 0;
     static final int MAX_HUNGER = 100;
-
+    // TODO: Put all searching methods inside ScanSurrounds
     /**
      * Constructor for when game starts, so that there are two opposite sex adult dinosaurs at
      * the start.
@@ -34,7 +35,7 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String sex, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 60;
+        this.hungerLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.behaviour = new WanderBehaviour();
@@ -76,25 +77,77 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Returns a reference to a Dirt object with grass attribute set to True (if it exists).
-     * @param map
+     * Returns a reference to a Dirt object with grass attribute set to True (if it exists within
+     * 3 tiles of a given location).
      * @param location
      * @return
      */
-    public Location getGrass(GameMap map, Location location) {
-        for (Location loc : ScanSurrounds.getLocationsWithin3(map, location)) {
+    public Location getGrass(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
             if (loc.getGround() instanceof Dirt && ((Dirt) loc.getGround()).hasGrass()) {
                 return loc;
             }
         }
         return null;
     }
-    Action unconsciousUntilFed(GameMap map) {
-        this.incrementDaysUnconscious();
-        if (this.getDaysUnconscious() == 20) {
-            this.die(map);
+    /**
+     * Returns a reference to a Ground object with a corpse (if it exists within 3 tiles
+     * of a given location).
+     * @param location
+     * @return
+     */
+    protected Location getGroundOfCorpse(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
+            for (Item item : loc.getItems()) {
+                if (item instanceof Corpse) {
+                    return loc;
+                }
+            }
         }
-        return new DoNothingAction();
+        return null;
+    }
+    /**
+     * Returns a reference to a Corpse object at a given location (if it exists), null otherwise
+     * @param location
+     * @return
+     */
+    protected Item getCorpse(Location location) {
+        for (Item item : location.getItems()) {
+            if (item instanceof Corpse) {
+                return item;
+            }
+        }
+        return null;
+    }
+    /**
+     * Returns a reference to a Ground object with a stegosaurus egg (if it exists within 3 tiles
+     * of a given location).
+     * @param location
+     * @return
+     */
+    protected Location getGroundOfStegosaurEgg(Location location) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
+            for (Item item : loc.getItems()) {
+                if (item instanceof StegosaurEgg) {
+                    return loc;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns a reference to a StegosaurEgg object at a given location (if it exists), null otherwise
+     * @param location
+     * @return
+     */
+    protected Item getStegosaurEgg(Location location) {
+        for (Item item : location.getItems()) {
+            if (item instanceof StegosaurEgg) {
+                return item;
+            }
+        }
+        return null;
     }
     // Everything to do with dying stegosaurs
     protected int getDaysUnconscious() {
@@ -109,12 +162,13 @@ public abstract class Dinosaur extends Actor {
     public void die(GameMap map) {
         Corpse corpse = new Corpse();
         map.locationOf(this).addItem(corpse);
+        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
+                map.locationOf(this).y() + ") died from hunger.");
         map.removeActor(this);
     }
     // Everything to do with mating
     public abstract Egg layEgg();
     public Boolean isPregnant() { return this.pregnant; }
-    public Boolean isFemale() { return this.getSex().equals("Female"); }
     public Boolean isOppositeSex(Dinosaur target) {
         return !this.getSex().equals(target.getSex());
     }
@@ -126,13 +180,6 @@ public abstract class Dinosaur extends Actor {
     protected void resetDaysUntilLay() { this.daysUntilLay = 10; }
     protected int getDaysUntilLay() { return this.daysUntilLay; }
     protected void decrementDaysUntilLay() { this.daysUntilLay -= 1; }
-    protected Boolean adjacentMate(GameMap map, Dinosaur target) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : map.locationOf(this).getExits()) {
-            locationArrayList.add(exit.getDestination());
-        }
-        return locationArrayList.contains(map.locationOf(target));
-    }
     // Everything to do with baby dinosaurs
     public Boolean isAdult() {
         return this.age >= 30;

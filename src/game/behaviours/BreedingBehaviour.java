@@ -26,7 +26,7 @@ public class BreedingBehaviour implements Behaviour {
         }
         // Check if there is a suitable mate in range. If next to one, mate. If not next to one but
         // one is in range, then move towards them.
-        for (Location loc : ScanSurrounds.getLocationsWithin3(map, map.locationOf(actor))) {
+        for (Location loc : ScanSurrounds.getLocationsWithin3(map.locationOf(actor))) {
             if (map.getActorAt(loc) != null && suitableMate((Dinosaur) actor, (Dinosaur) map.getActorAt(loc))) {
                 Dinosaur potentialMate = (Dinosaur) map.getActorAt(loc);
                 if (adjacentActor(map, map.locationOf(actor), potentialMate)) {

@@ -25,8 +25,14 @@ public abstract class Egg extends PortableItem {
      */
     public void tick(Location location) {
         this.timeAlive++;
-        if (this.timeAlive == 10) {
-            this.hatch(location);
+        if (this.timeAlive >= 10) {
+            try {
+                this.hatch(location);
+            }
+            // Account for egg hatching when an Actor is at the same location as the egg
+            catch(IllegalArgumentException e) {
+                System.out.println();
+            }
         }
     }
 
