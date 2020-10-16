@@ -1,11 +1,8 @@
 package game.ground;
 
-import edu.monash.fit2099.engine.Actions;
-import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
-import game.actions.HarvestAction;
 import game.portables.Hay;
 
 import java.util.Random;
@@ -32,7 +29,8 @@ public class Dirt extends Ground {
 		super('.');
 		this.grass = false;
 		if (random.nextInt(100) < GROW_CHANCE_AT_START) {
-			this.growGrass();
+			this.grass = true;
+			this.displayChar = '^';
 		}
 	}
 
