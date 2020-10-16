@@ -5,7 +5,7 @@ import edu.monash.fit2099.engine.Item;
 public class Corpse extends Item {
 
     /***
-     * Constructor.
+     * Constructor for Corpse.
      */
     public Corpse() {
         super("Corpse", '%', false);

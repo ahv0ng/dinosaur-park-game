@@ -24,48 +24,30 @@ public class Stegosaur extends Dinosaur {
     public Stegosaur() {
         super("Stegosaur", 's');
     }
-
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-        this.incrementAge();
         Location location = map.locationOf(this);
-        if (this.isHungry()) {
-            System.out.println("Stegosaur at (" + location.x() + ", " + location.y() + ") is hungry!");
-        }
-        if (this.isPregnant()) {
-            this.decrementDaysUntilLay();
-            if (this.getDaysUntilLay() == 0) {
-                map.locationOf(this).addItem(this.layEgg());
-                System.out.println("Stegosaur at (" + location.x() + ", " + location.y() + ") laid an egg!");
-            }
-        }
+        this.generalBehaviour(map, location);
+
         // Stegosaur is unconscious until fed/dies
         if (this.getHungerLevel() == 0) {
-            this.incrementDaysUnconscious();
-            if (this.getDaysUnconscious() == 20) {
-                this.die(map);
-            }
-            return new DoNothingAction();
+            return this.unconsciousBehaviour(map);
         }
         // Stegosaur looks for a mate
         else if (this.getHungerLevel() > 50) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
-            Action breed = new BreedingBehaviour().getAction(this, map);
-            if (breed != null) {
-                return breed;
+            if (this.breedBehaviour(map) != null) {
+                return this.breedBehaviour(map);
             }
         }
-        // Stegosaur looks for grass
+        // Stegosaur looks for grass to eat
         else if (this.getHungerLevel() > 0 && this.getHungerLevel() <= 50) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
             graze(location);
-            if (ScanSurrounds.getGrass(location) != null) {
-                FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGrass(location));
-                if (follow.getFollowLocationAction(this, map) != null) {
-                    return follow.getFollowLocationAction(this, map);
-                }
+            if (this.lookForFoodBehaviour(map, location) != null) {
+                return this.lookForFoodBehaviour(map, location);
             }
         }
         // Stegosaur wanders around or does nothing
@@ -101,8 +83,18 @@ public class Stegosaur extends Dinosaur {
         if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
             ((Dirt) location.getGround()).removeGrass();
             this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
-            System.out.println("Stegosaur at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
         }
+    }
+    @Override
+    protected Action lookForFoodBehaviour(GameMap map, Location location) {
+        if (ScanSurrounds.getGrass(location) != null) {
+            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGrass(location));
+            if (follow.getFollowLocationAction(this, map) != null) {
+                return follow.getFollowLocationAction(this, map);
+            }
+        }
+        return null;
     }
     @Override
     public Egg layEgg() {

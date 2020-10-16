@@ -3,14 +3,12 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.Corpse;
 import game.behaviours.Behaviour;
+import game.behaviours.BreedingBehaviour;
 import game.behaviours.WanderBehaviour;
-import game.ground.Dirt;
-import game.ground.ScanSurrounds;
 import game.portables.Egg;
-import game.portables.PortableItem;
-import game.portables.StegosaurEgg;
 
-import java.util.ArrayList;
+
+
 import java.util.Random;
 
 public abstract class Dinosaur extends Actor {
@@ -26,7 +24,6 @@ public abstract class Dinosaur extends Actor {
     static final int MATING_AGE = 30;
     static final int MIN_HUNGER = 0;
     static final int MAX_HUNGER = 100;
-    // TODO: Put all searching methods inside ScanSurrounds
     /**
      * Constructor for when game starts, so that there are two opposite sex adult dinosaurs at
      * the start.
@@ -75,8 +72,6 @@ public abstract class Dinosaur extends Actor {
             this.hungerLevel = totalHunger;
         }
     }
-
-    // Everything to do with dying stegosaurs
     protected int getDaysUnconscious() {
         return this.daysUnconscious;
     }
@@ -114,4 +109,30 @@ public abstract class Dinosaur extends Actor {
     protected void incrementAge() {
         this.age += 1;
     }
+
+    // Patterns of behaviour common to all dinosaurs, that are used in a dinosaur's playTurn method
+    protected void generalBehaviour(GameMap map, Location location) {
+        this.incrementAge();
+        if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
+        if (this.isPregnant()) { this.pregnantBehaviour(map, location); }
+    }
+    // Everything to do with dying stegosaurs
+    protected Action unconsciousBehaviour(GameMap map) {
+        this.incrementDaysUnconscious();
+        if (this.getDaysUnconscious() == 20) {
+            this.die(map);
+        }
+        return new DoNothingAction();
+    }
+    protected void pregnantBehaviour(GameMap map, Location location) {
+        this.decrementDaysUntilLay();
+        if (this.getDaysUntilLay() == 0) {
+            map.locationOf(this).addItem(this.layEgg());
+            System.out.println(this + " at (" + location.x() + ", " + location.y() + ") laid an egg!");
+        }
+    }
+    protected Action breedBehaviour(GameMap map) {
+        return new BreedingBehaviour().getAction(this, map);
+    }
+    protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
 }
