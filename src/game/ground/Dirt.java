@@ -25,11 +25,15 @@ public class Dirt extends Ground {
 	static final int GROW_CHANCE_FOR_TWO_GRASS = 10;
 
 	/**
-	 * Constructor for Dirt.
+	 * Constructor for Dirt. At start of game, each Dirt has 2% chance of
+	 * growing grass.
 	 */
 	public Dirt() {
 		super('.');
-		this.grass = random.nextInt(100) < GROW_CHANCE_AT_START;
+		this.grass = false;
+		if (random.nextInt(100) < GROW_CHANCE_AT_START) {
+			this.growGrass();
+		}
 	}
 
 	/**

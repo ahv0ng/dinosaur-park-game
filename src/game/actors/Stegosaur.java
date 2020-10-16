@@ -50,7 +50,7 @@ public class Stegosaur extends Dinosaur {
         else if (this.isHungry()) {
             this.resetDaysUnconscious();
             this.increaseHunger(-1);
-            graze(location);
+            this.graze(location);
             if (this.lookForFoodBehaviour(map, location) != null) {
                 return this.lookForFoodBehaviour(map, location);
             }
