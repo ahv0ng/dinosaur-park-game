@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 /**
  * Extends Ground.
+ *
+ * @author Nicholas Chua & Alden Vong
  */
 public class VendingMachine extends Ground {
     private String[] items = {

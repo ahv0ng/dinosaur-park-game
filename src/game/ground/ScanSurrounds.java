@@ -7,7 +7,19 @@ import game.portables.StegosaurEgg;
 
 import java.util.ArrayList;
 
+/**
+ * A class containing all the methods that involve querying the surroundings of a given object in the game.
+ *
+ * @author Nicholas Chua & Alden Vong
+ */
 public class ScanSurrounds {
+
+    /**
+     * Returns array list of all locations within one tile of a given Location.
+     *
+     * @param location the Location of interest
+     * @return an ArrayList of Location objects
+     */
     public static ArrayList<Location> getLocationsWithin1(Location location) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
@@ -16,6 +28,12 @@ public class ScanSurrounds {
         return locationArrayList;
     }
 
+    /**
+     * Returns array list of all Ground objects within one tile of a given Location.
+     *
+     * @param location the Location of interest
+     * @return an ArrayList of Ground objects
+     */
     public static ArrayList<Ground> getGroundsWithin1(Location location) {
         ArrayList<Ground> groundArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
@@ -25,10 +43,10 @@ public class ScanSurrounds {
     }
 
     /**
-     * Returns an ArrayList of all locations within three tiles of the given location.
+     * Returns array list of all locations within three tiles of a given Location.
      *
-     * @param location the location for which surrounding locations within three tiles are enumerated
-     * @return ArrayList<Location>
+     * @param location the Location of interest
+     * @return an ArrayList of Location objects
      */
     public static ArrayList<Location> getLocationsWithin3(Location location) {
         ArrayList<Location> locationArrayList = getLocationsWithin1(location);
@@ -51,6 +69,12 @@ public class ScanSurrounds {
         return locationArrayList3;
     }
 
+    /**
+     * Returns the number of Tree objects adjacent to a given Location.
+     *
+     * @param location the Location of interest
+     * @return int representing the number of Tree objects adjacent to location
+     */
     public static int adjacentTrees(Location location) {
         ArrayList<Ground> groundArrayList = getGroundsWithin1(location);
         int numberOfTrees = 0;
@@ -61,17 +85,24 @@ public class ScanSurrounds {
             }
         }
         return numberOfTrees;
-        /*
-        FIXME: Since grass will grow if there is one adjacent tree,
-        there must be a more efficient way to return this function
-        without needing to iterate the whole array.
-        */
     }
 
+    /**
+     * Returns true if Ground is a Tree, false otherwise.
+     *
+     * @param ground Ground object being queried
+     * @return Boolean for whether ground is a Tree
+     */
     private static boolean isTree(Ground ground) {
         return ground instanceof Tree;
     }
 
+    /**
+     * Returns the number of grass tiles adjacent to a given Location.
+     *
+     * @param location the Location of interest
+     * @return int representing the number of grass tiles adjacent to location
+     */
     public static int adjacentGrass(Location location) {
         ArrayList<Ground> groundArrayList = getGroundsWithin1(location);
         int numberOfGrass = 0;
@@ -82,13 +113,14 @@ public class ScanSurrounds {
             }
         }
         return numberOfGrass;
-        /*
-        FIXME: Since grass will grow if there are at least two grass blocks,
-        there must be a more efficient way to return this function
-        without needing to iterate the whole array.
-        */
     }
 
+    /**
+     * Returns true if Ground is a Dirt with grass, false otherwise
+     *
+     * @param ground Ground object being queried
+     * @return Boolean for whether ground is a Dirt with grass
+     */
     private static boolean isGrass(Ground ground) {
         if (ground instanceof Dirt) {
             Dirt dirt = (Dirt) ground; // Resolves issue where ground doesn't have hasGrass(), there must be a better way
@@ -96,10 +128,12 @@ public class ScanSurrounds {
         }
         return false;
     }
+
     /**
+     * If there is a Stegosaur within 3 tiles of a given Location, the Stegosaur is returned.
      *
-     * @param location
-     * @return reference to Stegosaur within 3 tiles of given location (if it exists)
+     * @param location the Location of interest
+     * @return reference to Stegosaur (null if doesn't exist)
      */
     public static Stegosaur getStegosaur(Location location) {
         ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin3(location);
@@ -110,20 +144,13 @@ public class ScanSurrounds {
         }
         return null;
     }
-    private Stegosaur adjacentStegosaur(Location location) {
-        ArrayList<Location> locationArrayList = ScanSurrounds.getLocationsWithin1(location);
-        for (Location loc : locationArrayList) {
-            if (loc.getActor() != null && loc.getActor() instanceof Stegosaur) {
-                return (Stegosaur) loc.getActor();
-            }
-        }
-        return null;
-    }
+
     /**
-     * Returns a reference to a Dirt object with grass attribute set to True (if it exists within
-     * 3 tiles of a given location).
-     * @param location
-     * @return
+     * If there is a Dirt with grass within 3 tiles of a given Location, the Location of
+     * the Dirt object is returned.
+     *
+     * @param location the Location of interest
+     * @return reference to Location of Dirt with grass (null if doesn't exist)
      */
     public static Location getGrass(Location location) {
         for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
@@ -133,11 +160,12 @@ public class ScanSurrounds {
         }
         return null;
     }
+
     /**
-     * Returns a reference to a Ground object with a corpse (if it exists within 3 tiles
-     * of a given location).
-     * @param location
-     * @return
+     * Returns a Location with a Corpse that is within 3 tiles of a given Location (if it exists).
+     *
+     * @param location the Location of interest
+     * @return reference to Location with a Corpse (null if doesn't exist)
      */
     public static Location getGroundOfCorpse(Location location) {
         for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
@@ -149,10 +177,12 @@ public class ScanSurrounds {
         }
         return null;
     }
+
     /**
-     * Returns a reference to a Corpse object at a given location (if it exists), null otherwise
-     * @param location
-     * @return
+     * If a given Location contains a Corpse, the Corpse object is returned.
+     *
+     * @param location the Location for which a Corpse is checked for
+     * @return reference to Corpse at location (null if it doesn't exist)
      */
     public static Item getCorpse(Location location) {
         for (Item item : location.getItems()) {
@@ -162,11 +192,12 @@ public class ScanSurrounds {
         }
         return null;
     }
+
     /**
-     * Returns a reference to a Ground object with a stegosaurus egg (if it exists within 3 tiles
-     * of a given location).
-     * @param location
-     * @return
+     * Returns a Location that is within 3 tiles of a given Location and contains a StegosaurEgg.
+     *
+     * @param location the Location of interest
+     * @return reference to a Location with StegosaurEgg
      */
     public static Location getGroundOfStegosaurEgg(Location location) {
         for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
@@ -180,9 +211,10 @@ public class ScanSurrounds {
     }
 
     /**
-     * Returns a reference to a StegosaurEgg object at a given location (if it exists), null otherwise
-     * @param location
-     * @return
+     * If a given Location contains a StegosaurEgg, the StegosaurEgg object is returned.
+     *
+     * @param location the Location for which a StegosaurEgg is checked for
+     * @return reference to StegosaurEgg at location (null if it doesn't exist)
      */
     public static Item getStegosaurEgg(Location location) {
         for (Item item : location.getItems()) {

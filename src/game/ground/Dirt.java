@@ -71,10 +71,10 @@ public class Dirt extends Ground {
 		int numberOfGrass = ScanSurrounds.adjacentGrass(location);
 		int numberOfTrees = ScanSurrounds.adjacentTrees(location);
 
-		if (numberOfGrass > 2 && random.nextInt(100) < GROW_CHANCE_FOR_TWO_GRASS) {
+		if (numberOfGrass >= 2 && random.nextInt(100) < GROW_CHANCE_FOR_TWO_GRASS) {
 			return true;
 		}
-		else return numberOfTrees > 1 && random.nextInt(100) < GROW_CHANCE_FOR_ADJACENT_TREE;
+		else return numberOfTrees >= 1 && random.nextInt(100) < GROW_CHANCE_FOR_ADJACENT_TREE;
 	}
 
 	/**
