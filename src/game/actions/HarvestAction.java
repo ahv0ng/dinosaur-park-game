@@ -9,9 +9,17 @@ import game.ground.Tree;
 import game.portables.Fruit;
 import game.portables.Hay;
 
+/**
+ * Special action for harvesting Dirt or Tree. Extends Action.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class HarvestAction extends Action {
     private Ground target;
 
+    /**
+     * Constructor for HarvestAction. Select ground to harvest.
+     * @param ground
+     */
     public HarvestAction(Ground ground) {
         this.target = ground;
     }

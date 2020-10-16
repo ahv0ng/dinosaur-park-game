@@ -1,28 +1,26 @@
 package game.portables;
 
 import game.actors.Dinosaur;
-import game.actors.Allosaur;
 
+/**
+ * Extends MealKit.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class CarnivoreMealKit extends MealKit {
     static final int COST = 500;
 
+    /**
+     * Constructor for CarnivoreMealKit.
+     */
     public CarnivoreMealKit() {
         super("Carnivore Meal Kit", 'c');
     }
 
-    public int getCost() { return COST; }
-
+    /**
+     * Feed CarnivoreMealKit to Allosaur.
+     * @param dinosaur - Allosaur to feed CarnivoreMealKit
+     */
     public void feed(Dinosaur dinosaur) {
-        if (dinosaur instanceof Allosaur) {
-            try {
-                dinosaur.increaseHunger(FILL);
-            }
-            catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Only Allosaur can eat this.");
-        }
+        dinosaur.increaseHunger(FILL);
     }
 }

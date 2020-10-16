@@ -6,10 +6,19 @@ import edu.monash.fit2099.engine.GameMap;
 import game.actors.Dinosaur;
 import game.portables.Food;
 
+/**
+ * Special action to feed a dinosaur. Extends Action.
+ * @author Nicholas Chua and Alden Vong
+ */
 public class FeedAction extends Action {
     private Food food;
     private Dinosaur target;
 
+    /**
+     * Constructor for FeedAction. Configure the Food object to feed to which Dinosaur.
+     * @param food - Food item to use
+     * @param dinosaur - Dinosaur to feed
+     */
     public FeedAction(Food food, Dinosaur dinosaur) {
         this.food = food;
         this.target = dinosaur;
