@@ -11,6 +11,10 @@ Referencing the subheadings of the *Assignment 3: Life finds a way* document, th
   - *Agilisaurus*
   - *More sophisticated game driver*
 
+- Both team members are responsible for:
+  - Writing the document described in *Recommendations for extensions to the game engine*
+  - Updating the design documents (i.e. design rationale, UML class diagram, UML communication diagrams) for the changes each person implements
+
 ## Deadlines & Team meeting schedule
 - Saturday 24th October
   - To have a **proposed design for the new functionality**, which should be approved and/or refined by the other team member
