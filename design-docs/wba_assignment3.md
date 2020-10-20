@@ -36,4 +36,4 @@ cupOfJava will aim to complete Assignment 3 by the end of the last team meeting 
 
 Alden:
 
-Nick: I accept this WBA.
+Nick:
