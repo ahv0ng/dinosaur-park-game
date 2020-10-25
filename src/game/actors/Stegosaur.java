@@ -14,8 +14,7 @@ import game.portables.*;
  *
  * @author Nicholas Chua and Alden Vong
  */
-public class Stegosaur extends Dinosaur {
-    static final int HUNGER_POINTS_FOR_GRAZE_GRASS = 5;
+public class Stegosaur extends Herbivore {
 
     /**
      * Constructor for Stegosaur when game start.
@@ -61,62 +60,6 @@ public class Stegosaur extends Dinosaur {
             return wander;
         return new DoNothingAction();
     }
-
-    @Override
-    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
-        Actions actions = new Actions();
-        actions.add(new AttackAction(this));
-        for (Item item : otherActor.getInventory()) {
-            if (this.canEat(item)) {
-                actions.add(new FeedAction((Food) item, this));
-            }
-        }
-        return actions;
-    }
-
-    /**
-     * Evaluate whether Stegosaur can eat given Item.
-     *
-     * @param item - Item object for Stegosaur to eat
-     * @return boolean value on whether the Stegosaur can eat the item
-     */
-    private boolean canEat(Item item) {
-        if (item instanceof Fruit) {
-            return true;
-        }
-        else if (item instanceof Hay) {
-            return true;
-        }
-        else if (item instanceof VegetarianMealKit) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * If on top of Dirt with grass attribute, remove grass for Stegosaur to eat.
-     *
-     * @param location - Location type of the current location of the Stegosaur
-     */
-    private void graze(Location location) {
-        if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
-            ((Dirt) location.getGround()).removeGrass();
-            this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
-        }
-    }
-
-    @Override
-    protected Action lookForFoodBehaviour(GameMap map, Location location) {
-        if (ScanSurrounds.getGrass(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGrass(location));
-            if (follow.getFollowLocationAction(this, map) != null) {
-                return follow.getFollowLocationAction(this, map);
-            }
-        }
-        return null;
-    }
-
     /**
      * Lay a StegosaurEgg.
      *
