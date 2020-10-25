@@ -1,5 +1,7 @@
 # Work Breakdown Agreement for Assignment 3
 
+Note: Updated on 25/10/2020 to reflect the changed deadline.
+
 Referencing the subheadings of the *Assignment 3: Life finds a way* document, the work for Assignment 3 will be divided as follows:
 
 - Alden is responsible for implementing all the functionality described in:
@@ -23,21 +25,19 @@ Referencing the subheadings of the *Assignment 3: Life finds a way* document, th
   - During the scheduled class
   - **Coded at least one section** of the assignment
 - Friday 30th October
-  - Continue with coding our own respective sections
+  - To have **completed all (if not most) of the coding** for the assignment
 - Tuesday 3rd November
   - During scheduled class
-  - **Complete all coding** for the assignment
-- Saturday 7th November
   - **Write up recommendations for the game engine**
   - **Ensure all UML diagrams are up to date**
-- Tuesday 10th November
+- Thursday 5th November
   - Final check
   - **Submission**
 
-cupOfJava will aim to complete Assignment 3 by the end of the last team meeting on Tuesday 10th November.
+cupOfJava will aim to complete Assignment 3 by the end of the last team meeting on Thursday 5th November.
 
 ## Signed Agreement
 
-Alden: I accept this WBA.
+Alden:
 
-Nick: I accept this WBA.
+Nick:
