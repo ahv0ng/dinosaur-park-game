@@ -10,7 +10,7 @@ import game.actors.Stegosaur;
  * @author Nicholas Chua and Alden Vong
  */
 public class StegosaurEgg extends Egg {
-    private int COST = 200;
+    static final int COST = 200;
     static final int POINTS_WHEN_HATCH = 100;
 
     /**

@@ -11,7 +11,7 @@ import game.ground.Tree;
  */
 public class Player extends Actor {
 
-	private Menu menu = new Menu();
+	private final Menu menu = new Menu();
 
 	/**
 	 * Constructor.

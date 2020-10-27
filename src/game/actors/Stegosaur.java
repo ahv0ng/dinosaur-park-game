@@ -27,9 +27,5 @@ public class Stegosaur extends Herbivore {
      * @return Egg to be laid on the Stegosaur's current location
      */
     @Override
-    public StegosaurEgg layEgg() {
-        this.noLongerPregnant();
-        this.resetDaysUntilLay();
-        return new StegosaurEgg();
-    }
+    protected StegosaurEgg layEgg() { return new StegosaurEgg(); }
 }

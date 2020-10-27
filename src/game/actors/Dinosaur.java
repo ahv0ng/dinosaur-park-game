@@ -5,6 +5,7 @@ import game.Corpse;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
+import game.behaviours.WanderBehaviour;
 import game.portables.Egg;
 import game.portables.Food;
 
@@ -23,10 +24,10 @@ public abstract class Dinosaur extends Actor {
     private int thirstLevel;
     private int daysUnconscious;
     private int daysUntilLay;
-    private Boolean pregnant = false;
-    private Boolean canFly = false;
-    private String sex;
-    private Random random = new Random();
+    private Boolean pregnant;
+    protected Boolean canFly; // Assign true to flying dinosaurs like Archaeopteryx, otherwise all Dinosaurs are false
+    private final String sex;
+    private final Random random = new Random();
 
     static final int MATING_AGE = 30;
     static final int PREGNANCY_LENGTH = 10;
@@ -49,6 +50,8 @@ public abstract class Dinosaur extends Actor {
         this.hungerLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
+        this.pregnant = false;
+        this.canFly = false;
     }
 
     /**
@@ -62,11 +65,89 @@ public abstract class Dinosaur extends Actor {
         this.age = 0;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
+        this.pregnant = false;
+        this.canFly = false;
 
         // Randomise sex for this dinosaur
         String[] sexTypes = {"Male", "Female"};
         this.sex = sexTypes[random.nextInt(2)];
     }
+
+    /**
+     * Return Dinosaur's sex.
+     *
+     * @return String representing the sex
+     */
+    public String getSex() { return this.sex; }
+
+    public boolean isPregnant() { return this.pregnant; }
+
+    /**
+     * Return whether Dinosaur can fly.
+     *
+     * @return boolean value determining whether Dinosaur can fly
+     */
+    public boolean canFly() { return this.canFly; }
+
+    @Override
+    public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+        Location location = map.locationOf(this);
+        this.generalBehaviour(map, location);
+
+        if (this.hungerLevel == MIN_HUNGRY_THIRSTY) {
+            // Continue being unconscious until fed/dies
+            return this.unconsciousBehaviour(map);
+        }
+
+        this.daysUnconscious = 0; // Reset daysUnconscious every turn it is not unconscious
+        this.hungerLevel--;
+
+        if (!(this.isHungry())) {
+            // Look for a mate
+            if (this.breedBehaviour(map) != null) {
+                return this.breedBehaviour(map);
+            }
+        }
+        else if (this.isHungry()) { // TODO: Figure out why IntelliJ insists on this warning and fix if possible
+            // Look for food
+            this.eatAtLocation(location);
+            if (this.lookForFoodBehaviour(map, location) != null) {
+                return this.lookForFoodBehaviour(map, location);
+            }
+        }
+
+        // Wander around or do nothing
+        Action wander = new WanderBehaviour().getAction(this, map);
+        if (wander != null)
+            return wander;
+        return new DoNothingAction();
+    }
+
+    /**
+     * Evaluate the general behaviour of all Dinosaurs.
+     *
+     * @param map - the game map
+     * @param location - Location of the Dinosaur
+     */
+    private void generalBehaviour(GameMap map, Location location) {
+        this.age++;
+        if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
+        if (this.pregnant) { this.pregnantBehaviour(map, location); }
+    }
+
+    /**
+     * Helper method to evaluate whether Dinosaur is hungry.
+     *
+     * @return boolean value whether Dinosaur is hungry
+     */
+    private boolean isHungry() { return this.hungerLevel <= HUNGRY_THIRSTY_THRESHOLD; }
+
+    /**
+     * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
+     *
+     * @param location - Location type of the current Location of Dinosaur
+     */
+    protected abstract void eatAtLocation(Location location);
 
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
@@ -81,32 +162,12 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Evaluate whether Dinosaur can eat this item.
+     * Helper method to evaluate whether Dinosaur can eat this item.
+     *
      * @param item - Item object for Dinosaur to eat
      * @return boolean value on whether Dinosaur can eat the item
      */
     protected abstract boolean canEat(Item item);
-
-    /**
-     * Return Dinosaur's hunger level.
-     *
-     * @return integer representing the hunger level
-     */
-    protected int getHungerLevel() { return this.hungerLevel; }
-
-    /**
-     * Return Dinosaur's sex.
-     *
-     * @return String representing the sex
-     */
-    public String getSex() { return this.sex; }
-
-    /**
-     * Evaluate whether Dinosaur is hungry.
-     *
-     * @return boolean value whether Dinosaur is hungry
-     */
-    protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THIRSTY_THRESHOLD; }
 
     /**
      * Increase hunger level. Hunger level cannot exceed MAX_HUNGER.
@@ -131,41 +192,18 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Decrease hunger level. Should not be used externally, only when a situation occurs
-     * for a Dinosaur to lose hunger level.
+     * Evaluate the behaviour of an unconscious Dinosaur.
      *
-     * @param hunger - integer decrease for the hunger level
+     * @param map - the game map
+     * @return Action of the Dinosaur
      */
-    protected void decreaseHunger(int hunger) {
-        if (hunger < 0) {
-            throw new IllegalArgumentException();
+    protected Action unconsciousBehaviour(GameMap map) {
+        this.daysUnconscious++;
+        if (this.daysUnconscious == MAX_DAYS_UNCONSCIOUS) {
+            this.die(map);
         }
-
-        int totalHunger = this.hungerLevel - hunger;
-        if (totalHunger < 0) {
-            this.hungerLevel = MIN_HUNGRY_THIRSTY;
-        }
-        else {
-            this.hungerLevel = totalHunger;
-        }
+        return new DoNothingAction();
     }
-
-    /**
-     * Return the number of daysUnconscious for Dinosaur.
-     *
-     * @return integer value of the number of days unconscious
-     */
-    protected int getDaysUnconscious() { return this.daysUnconscious; }
-
-    /**
-     * Reset the number of daysUnconscious back to zero.
-     */
-    protected void resetDaysUnconscious() { this.daysUnconscious = 0; }
-
-    /**
-     * Increase the number of daysUnconscious by one.
-     */
-    protected void incrementDaysUnconscious() { this.daysUnconscious++; }
 
     /**
      * Kill dinosaur and replace with Corpse object at Dinosaur's last location.
@@ -181,56 +219,22 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Abstract method to lay Egg
-     */
-    public abstract Egg layEgg();
-
-    /**
-     * Return boolean value if Dinosaur is pregnant.
+     * Evaluate the behaviour of a mating Dinosaur.
      *
-     * @return boolean value if Dinosaur is pregnant
+     * @param map - the game map
+     * @return BreedingBehaviour of a mating Dinosaur
      */
-    public boolean isPregnant() { return this.pregnant; }
-
-    /**
-     * Evaluate whether target Dinosaur is of the opposite sex to the current Dinosaur.
-     *
-     * @param target Dinosaur object planning to mate with
-     * @return boolean value whether target is of the opposite sex
-     */
-    public boolean isOppositeSex(Dinosaur target) {
-        return !this.getSex().equals(target.getSex());
+    protected Action breedBehaviour(GameMap map) {
+        return new BreedingBehaviour().getAction(this, map);
     }
 
     /**
-     * Set Dinosaur to mate and become pregnant.
+     * Mate with Dinosaur of same species, become pregnant and start countdown for daysUntilLay.
      */
     public void mate() {
         this.pregnant = true;
-        this.resetDaysUntilLay();
+        this.daysUntilLay = PREGNANCY_LENGTH;
     }
-
-    /**
-     * Set pregnant to false.
-     */
-    protected void noLongerPregnant() { this.pregnant = false; }
-
-    /**
-     * Reset number of days to lay Egg.
-     */
-    protected void resetDaysUntilLay() { this.daysUntilLay = PREGNANCY_LENGTH; }
-
-    /**
-     * Return number of remaining days to lay Egg.
-     *
-     * @return integer representing remaining days to lay an Egg
-     */
-    protected int getDaysUntilLay() { return this.daysUntilLay; }
-
-    /**
-     * Decrement remaining number of days to lay Egg.
-     */
-    protected void decrementDaysUntilLay() { this.daysUntilLay--; }
 
     /**
      * Evaluate whether baby dinosaur becomes an adult.
@@ -242,37 +246,12 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Increment age of Dinosaur.
-     */
-    protected void incrementAge() {
-        this.age++;
-    }
-
-    /**
-     * Evaluate the general behaviour of a common Dinosaur.
+     * Evaluate whether target Dinosaur is of the opposite sex to the current Dinosaur.
      *
-     * @param map - the game map
-     * @param location - Location of the Dinosaur
+     * @param target Dinosaur object planning to mate with
+     * @return boolean value whether target is of the opposite sex
      */
-    protected void generalBehaviour(GameMap map, Location location) {
-        this.incrementAge();
-        if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
-        if (this.isPregnant()) { this.pregnantBehaviour(map, location); }
-    }
-
-    /**
-     * Evaluate the behaviour of an unconscious Dinosaur.
-     *
-     * @param map - the game map
-     * @return Action of the Dinosaur
-     */
-    protected Action unconsciousBehaviour(GameMap map) {
-        this.incrementDaysUnconscious();
-        if (this.getDaysUnconscious() == MAX_DAYS_UNCONSCIOUS) {
-            this.die(map);
-        }
-        return new DoNothingAction();
-    }
+    public boolean isOppositeSex(Dinosaur target) { return !this.sex.equals(target.getSex()); }
 
     /**
      * Evaluate the behaviour of a pregnant Dinosaur.
@@ -281,33 +260,26 @@ public abstract class Dinosaur extends Actor {
      * @param location - the location of Dinosaur
      */
     private void pregnantBehaviour(GameMap map, Location location) {
-        this.decrementDaysUntilLay();
-        if (this.getDaysUntilLay() == 0) {
+        this.daysUntilLay--;
+        if (this.daysUntilLay == 0) {
+            this.pregnant = false;
             map.locationOf(this).addItem(this.layEgg());
             System.out.println(this + " at (" + location.x() + ", " + location.y() + ") laid an egg!");
         }
     }
 
     /**
-     * Evaluate the behaviour of a mating Dinosaur.
-     *
-     * @param map - the game map
-     * @return BreedingBehaviour of a mating Dinosaur
+     * Abstract method to lay Egg
      */
-    protected Action breedBehaviour(GameMap map) {
-        return new BreedingBehaviour().getAction(this, map);
-    }
+    protected abstract Egg layEgg();
 
     /**
-     * Evaluate the behaviour of a hungry Dinosaur.
+     * Evaluate the behaviour of a hungry Dinosaur. Abstract method that differs between different types
+     * of Dinosaurs.
      *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Dinosaur
      */
     protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
-    public boolean canFly() {
-        return this.canFly;
-    }
-    protected void changeFly() {this.canFly = true;}
 }
