@@ -164,16 +164,16 @@ public class ScanSurrounds {
     }
 
     /**
-     * Returns a Location with a Corpse that is within 3 tiles of a given Location (if it exists).
+     * Returns a Location with a Corpse that is within 3 tiles of the Actor's Location (if it exists).
      *
-     * @param location the Location of interest
+     * @param location the Location of the Actor calling this method
      * @return reference to Location with a Corpse (null if doesn't exist)
      */
-    public static Location getLocationOfCorpse(Location location) {
-        for (Location loc : ScanSurrounds.getLocationsWithin3(location)) {
-            for (Item item : loc.getItems()) {
+    public static Location getLocationOfCorpse(Location actorLocation) {
+        for (Location location : ScanSurrounds.getLocationsWithin3(actorLocation)) {
+            for (Item item : location.getItems()) {
                 if (item instanceof Corpse) {
-                    return loc;
+                    return location;
                 }
             }
         }
@@ -186,10 +186,10 @@ public class ScanSurrounds {
      * @param location the Location for which a Corpse is checked for
      * @return reference to Corpse at location (null if it doesn't exist)
      */
-    public static Item getCorpse(Location location) {
+    public static Corpse getCorpse(Location location) {
         for (Item item : location.getItems()) {
             if (item instanceof Corpse) {
-                return item;
+                return (Corpse) item;
             }
         }
         return null;
@@ -218,10 +218,10 @@ public class ScanSurrounds {
      * @param location the Location for which a StegosaurEgg is checked for
      * @return reference to StegosaurEgg at location (null if it doesn't exist)
      */
-    public static Item getStegosaurEgg(Location location) {
+    public static StegosaurEgg getStegosaurEgg(Location location) {
         for (Item item : location.getItems()) {
             if (item instanceof StegosaurEgg) {
-                return item;
+                return (StegosaurEgg) item;
             }
         }
         return null;
