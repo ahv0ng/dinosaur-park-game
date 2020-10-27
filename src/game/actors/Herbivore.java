@@ -1,12 +1,10 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
-import game.actions.AttackAction;
-import game.actions.FeedAction;
 import game.behaviours.FollowBehaviour;
+import game.behaviours.WanderBehaviour;
 import game.ground.Dirt;
 import game.ground.ScanSurrounds;
-import game.portables.Food;
 import game.portables.Fruit;
 import game.portables.Hay;
 import game.portables.VegetarianMealKit;
@@ -15,6 +13,7 @@ public abstract class Herbivore extends Dinosaur {
     static final int HUNGER_POINTS_FOR_GRAZE_GRASS = 5;
 
     public Herbivore(String sex, String name, Character displayChar) {
+        // Only to be used for the start of the game, @see Dinosaur constructor
         super(sex, name, displayChar);
     }
     public Herbivore(String name, Character displayChar) {
@@ -22,24 +21,46 @@ public abstract class Herbivore extends Dinosaur {
     }
 
     @Override
-    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
-        Actions actions = new Actions();
-        actions.add(new AttackAction(this));
-        for (Item item : otherActor.getInventory()) {
-            if (this.canEat(item)) {
-                actions.add(new FeedAction((Food) item, this));
+    public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+        Location location = map.locationOf(this);
+        this.generalBehaviour(map, location);
+
+        // Herbivore is unconscious until fed/dies
+        if (this.getHungerLevel() == MIN_HUNGER) {
+            return this.unconsciousBehaviour(map);
+        }
+
+        this.resetDaysUnconscious();
+        this.decreaseHunger(1);
+
+        // Herbivore looks for a mate
+        if (!(this.isHungry())) {
+            if (this.breedBehaviour(map) != null) {
+                return this.breedBehaviour(map);
             }
         }
-        return actions;
+        // Herbivore looks for grass to eat
+        else if (this.isHungry()) {
+            this.graze(location); // TODO: Change this to a general eat method?
+            if (this.lookForFoodBehaviour(map, location) != null) {
+                return this.lookForFoodBehaviour(map, location);
+            }
+        }
+
+        // Herbivore wanders around or does nothing
+        Action wander = new WanderBehaviour().getAction(this, map);
+        if (wander != null)
+            return wander;
+        return new DoNothingAction();
     }
 
     /**
-     * Evaluate whether Herbivore can eat given Item.
-     *
+     * Evaluate whether Herbivore can eat given Item. Herbivores can eat Fruit, Hay, and
+     * VegetarianMealKit.
      * @param item - Item object for Herbivore to eat
      * @return boolean value on whether the Herbivore can eat the item
      */
-    private boolean canEat(Item item) {
+    protected boolean canEat(Item item) {
         if (item instanceof Fruit) {
             return true;
         }
@@ -58,14 +79,21 @@ public abstract class Herbivore extends Dinosaur {
      * @param location - Location type of the current location of the Herbivore
      */
     void graze(Location location) {
-        if (location.getGround() instanceof Dirt && ((Dirt) location.getGround()).hasGrass()) {
-            ((Dirt) location.getGround()).removeGrass();
-            this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+        if (location.getGround() instanceof Dirt) {
+            Dirt dirt = (Dirt) location.getGround();
+            if (dirt.hasGrass()) {
+                this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
+                System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+            }
         }
     }
 
-    @Override
+    /**
+     * Look for Food Behaviour specific to Herbivores. Herbivores will look for grass.
+     * @param map - the game map
+     * @param location - the current location of the Dinosaur
+     * @return Action of the hungry Herbivore
+     */
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
         if (ScanSurrounds.getGrass(location) != null) {
             FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getGrass(location));

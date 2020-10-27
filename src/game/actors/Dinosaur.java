@@ -1,13 +1,12 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.DoNothingAction;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Location;
+import edu.monash.fit2099.engine.*;
 import game.Corpse;
+import game.actions.AttackAction;
+import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
 import game.portables.Egg;
+import game.portables.Food;
 
 import java.util.Random;
 
@@ -65,6 +64,25 @@ public abstract class Dinosaur extends Actor {
         this.sex = sexTypes[random.nextInt(2)];
     }
 
+    @Override
+    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
+        Actions actions = new Actions();
+        actions.add(new AttackAction(this));
+        for (Item item : otherActor.getInventory()) {
+            if (this.canEat(item)) {
+                actions.add(new FeedAction((Food) item, this));
+            }
+        }
+        return actions;
+    }
+
+    /**
+     * Evaluate whether Dinosaur can eat this item.
+     * @param item - Item object for Dinosaur to eat
+     * @return boolean value on whether Dinosaur can eat the item
+     */
+    protected abstract boolean canEat(Item item);
+
     /**
      * Return Dinosaur's hunger level.
      *
@@ -87,26 +105,47 @@ public abstract class Dinosaur extends Actor {
     protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THRESHOLD; }
 
     /**
-     * Increases hunger level. Hunger level cannot exceed MAX_HUNGER, or be lower than MIN_HUNGER.
-     * If argument is negative, then hunger level decreases.
+     * Increase hunger level. Hunger level cannot exceed MAX_HUNGER.
      *
      * @param hunger - integer increase for the hunger level.
      */
     public void increaseHunger(int hunger) {
+        if (hunger < 0) {
+            throw new IllegalArgumentException();
+        }
+
         int totalHunger = this.hungerLevel + hunger;
         if (totalHunger >= MAX_HUNGER) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
             System.out.println(this.toString() + " is full now.");
             this.hungerLevel = MAX_HUNGER;
         }
-        else if (totalHunger < MIN_HUNGER) {
-            this.hungerLevel = MIN_HUNGER;
-        }
         else {
             // Else increase hungerLevel normally
             this.hungerLevel = totalHunger;
         }
     }
+
+    /**
+     * Decrease hunger level. Should not be used externally, only when a situation occurs
+     * for a Dinosaur to lose hunger level.
+     *
+     * @param hunger - integer decrease for the hunger level
+     */
+    protected void decreaseHunger(int hunger) {
+        if (hunger < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        int totalHunger = this.hungerLevel - hunger;
+        if (totalHunger < 0) {
+            this.hungerLevel = MIN_HUNGER;
+        }
+        else {
+            this.hungerLevel = totalHunger;
+        }
+    }
+
     /**
      * Return the number of daysUnconscious for Dinosaur.
      *
@@ -136,6 +175,7 @@ public abstract class Dinosaur extends Actor {
                 map.locationOf(this).y() + ") died from hunger.");
         map.removeActor(this);
     }
+
     /**
      * Abstract method to lay Egg
      */
