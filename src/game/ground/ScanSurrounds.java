@@ -12,6 +12,8 @@ import java.util.ArrayList;
  *
  * @author Nicholas Chua & Alden Vong
  */
+
+// TODO: Extract classes (using encapsulation)
 public class ScanSurrounds {
 
     /**

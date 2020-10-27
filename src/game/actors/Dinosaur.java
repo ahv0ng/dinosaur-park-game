@@ -15,21 +15,25 @@ import java.util.Random;
  *
  * @author Nicholas Chua and Alden Vong
  */
+
+// TODO: Increase from eating specific food to be put into food classes themselves
 public abstract class Dinosaur extends Actor {
     private int age;
     private int hungerLevel;
+    private int thirstLevel;
     private int daysUnconscious;
     private int daysUntilLay;
     private Boolean pregnant = false;
+    private Boolean canFly = false;
     private String sex;
     private Random random = new Random();
 
     static final int MATING_AGE = 30;
     static final int PREGNANCY_LENGTH = 10;
-    static final int MIN_HUNGER = 0;
-    static final int MAX_HUNGER = 100;
+    static final int MIN_HUNGRY_THIRSTY = 0;
+    static final int MAX_HUNGER_THIRSTY = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
-    static final int HUNGRY_THRESHOLD = 50;
+    static final int HUNGRY_THIRSTY_THRESHOLD = 50;
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -102,7 +106,7 @@ public abstract class Dinosaur extends Actor {
      *
      * @return boolean value whether Dinosaur is hungry
      */
-    protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THRESHOLD; }
+    protected boolean isHungry() { return this.hungerLevel <= HUNGRY_THIRSTY_THRESHOLD; }
 
     /**
      * Increase hunger level. Hunger level cannot exceed MAX_HUNGER.
@@ -115,10 +119,10 @@ public abstract class Dinosaur extends Actor {
         }
 
         int totalHunger = this.hungerLevel + hunger;
-        if (totalHunger >= MAX_HUNGER) {
+        if (totalHunger >= MAX_HUNGER_THIRSTY) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
             System.out.println(this.toString() + " is full now.");
-            this.hungerLevel = MAX_HUNGER;
+            this.hungerLevel = MAX_HUNGER_THIRSTY;
         }
         else {
             // Else increase hungerLevel normally
@@ -139,7 +143,7 @@ public abstract class Dinosaur extends Actor {
 
         int totalHunger = this.hungerLevel - hunger;
         if (totalHunger < 0) {
-            this.hungerLevel = MIN_HUNGER;
+            this.hungerLevel = MIN_HUNGRY_THIRSTY;
         }
         else {
             this.hungerLevel = totalHunger;
@@ -302,4 +306,8 @@ public abstract class Dinosaur extends Actor {
      * @return Action of the hungry Dinosaur
      */
     protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
+    public boolean canFly() {
+        return this.canFly;
+    }
+    protected void changeFly() {this.canFly = true;}
 }

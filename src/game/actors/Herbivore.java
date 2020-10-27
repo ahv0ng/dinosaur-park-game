@@ -26,7 +26,7 @@ public abstract class Herbivore extends Dinosaur {
         this.generalBehaviour(map, location);
 
         // Herbivore is unconscious until fed/dies
-        if (this.getHungerLevel() == MIN_HUNGER) {
+        if (this.getHungerLevel() == MIN_HUNGRY_THIRSTY) {
             return this.unconsciousBehaviour(map);
         }
 
