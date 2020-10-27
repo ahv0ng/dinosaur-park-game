@@ -1,12 +1,13 @@
 package game.actors;
 
-import edu.monash.fit2099.engine.*;
+import edu.monash.fit2099.engine.Action;
+import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.Item;
+import edu.monash.fit2099.engine.Location;
 import game.actions.AttackAction;
-import game.actions.FeedAction;
 import game.behaviours.FollowBehaviour;
 import game.ground.ScanSurrounds;
 import game.portables.CarnivoreMealKit;
-import game.portables.Food;
 
 public abstract class Carnivore extends Dinosaur {
     static final int HUNGER_POINTS_FROM_CORPSE = 50;
@@ -16,25 +17,12 @@ public abstract class Carnivore extends Dinosaur {
         super(name, displayChar);
     }
 
-    @Override
-    public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
-        Actions actions = new Actions();
-        actions.add(new AttackAction(this));
-        for (Item item : otherActor.getInventory()) {
-            if (this.canEat(item)) {
-                actions.add(new FeedAction((Food) item, this));
-            }
-        }
-        return actions;
-    }
-
     /**
-     * Evaluate whether Carnivore can eat given Item.
-     *
+     * Evaluate whether Carnivore can eat given Item. Carnivores can eat CarnivoreMealKit.
      * @param item - Item object for Carnivore to eat
      * @return boolean value on whether the Carnivore can eat the item
      */
-    private boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
+    protected boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
 
     /**
      * Allows Carnivore to eat a Corpse or StegosaurEgg.
@@ -56,29 +44,33 @@ public abstract class Carnivore extends Dinosaur {
 
     @Override
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
-        // If there is a corpse nearby, go towards it
+        FollowBehaviour follow = null;
+
+        // Find portable Food item
         if (ScanSurrounds.getLocationOfCorpse(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getLocationOfCorpse(location));
-            if (follow.getFollowLocationAction(this, map) != null) {
-                return follow.getFollowLocationAction(this, map);
-            }
+            // If there is a corpse nearby, go towards it
+            follow = new FollowBehaviour(ScanSurrounds.getLocationOfCorpse(location));
         }
-        // If there is a stegosaur egg nearby, go towards it
         else if (ScanSurrounds.getLocationOfStegosaurEgg(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getLocationOfStegosaurEgg(location));
-            if (follow.getFollowLocationAction(this, map) != null) {
-                return follow.getFollowLocationAction(this, map);
-            }
+            // If there is a Herbivore egg nearby, go towards it
+            follow = new FollowBehaviour(ScanSurrounds.getLocationOfStegosaurEgg(location));
         }
-        // If there is a stegosaur nearby, go towards it
-        else if (ScanSurrounds.getStegosaur(location) != null) {
-            FollowBehaviour follow = new FollowBehaviour(ScanSurrounds.getStegosaur(location));
+
+        if (follow.getFollowLocationAction(this, map) != null) {
+            return follow.getFollowLocationAction(this, map);
+        }
+
+        // Find Actor to attack
+        if (ScanSurrounds.getStegosaur(location) != null) {
+            // If there is a Stegosaur nearby, go towards it
+            follow = new FollowBehaviour(ScanSurrounds.getStegosaur(location));
             if (follow.getAction(this, map) != null) {
                 return follow.getAction(this, map);
             }
-            // If there is a stegosaur nearby and you cannot go closer, it must be adjacent
+            // Else if there is a Stegosaur nearby and you cannot go closer, it must be adjacent
             return new AttackAction(ScanSurrounds.getStegosaur(location));
         }
+
         return null;
     }
 }

@@ -17,6 +17,10 @@ public class Allosaur extends Carnivore {
      */
     public Allosaur() { super("Allosaur", 'a'); }
 
+    // TODO: Move playTurn method into Carnivore, if flying dinosaur has the same logic
+    // TODO: Move playTurn method into Dinosaur, if Herbivore, Carnivore and Omnivore
+    // has the same logic
+
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         Location location = map.locationOf(this);
@@ -26,23 +30,23 @@ public class Allosaur extends Carnivore {
         if (this.getHungerLevel() == MIN_HUNGER) {
             return this.unconsciousBehaviour(map);
         }
+
+        this.resetDaysUnconscious();
+        this.decreaseHunger(1);
+
         // Allosaur looks for a mate
-        else if (!(this.isHungry())) {
-            this.resetDaysUnconscious();
-            this.increaseHunger(-1);
+        if (!(this.isHungry())) {
             if (this.breedBehaviour(map) != null) {
                 return this.breedBehaviour(map);
             }
         }
         // Allosaur looks for something to eat/attack
         else if (this.isHungry()) {
-            this.resetDaysUnconscious();
-            this.increaseHunger(-1);
-            this.eat(location);
+            this.eat(location); // TODO: Change this to a general eat method?
             if (this.lookForFoodBehaviour(map, location) != null) {
                 return this.lookForFoodBehaviour(map, location);
             }
-            }
+        }
         // Allosaur wanders around or does nothing
         Action wander = new WanderBehaviour().getAction(this, map);
         if (wander != null)
