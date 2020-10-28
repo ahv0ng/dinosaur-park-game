@@ -80,6 +80,11 @@ public abstract class Dinosaur extends Actor {
      */
     public String getSex() { return this.sex; }
 
+    /**
+     * Return pregnant status.
+     *
+     * @return boolean value representing Dinosaur's sex
+     */
     public boolean isPregnant() { return this.pregnant; }
 
     /**
