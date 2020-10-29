@@ -3,7 +3,7 @@ package game.behaviours;
 import edu.monash.fit2099.engine.*;
 import game.actions.MateAction;
 import game.actors.Dinosaur;
-import game.ground.ScanSurrounds;
+import game.scanning.ScanLocations;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class BreedingBehaviour implements Behaviour {
         }
         // Check if there is a suitable mate in range. If next to one, mate. If not next to one but
         // one is in range, then move towards them.
-        for (Location loc : ScanSurrounds.getLocationsWithin3(map.locationOf(actor))) {
+        for (Location loc : ScanLocations.adjacentLocationsIn3(map.locationOf(actor))) {
             if (map.getActorAt(loc) != null && suitableMate((Dinosaur) actor, (Dinosaur) map.getActorAt(loc))) {
                 Dinosaur potentialMate = (Dinosaur) map.getActorAt(loc);
                 if (adjacentActor(map, map.locationOf(actor), potentialMate)) {

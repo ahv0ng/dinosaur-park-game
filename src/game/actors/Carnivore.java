@@ -4,7 +4,7 @@ import edu.monash.fit2099.engine.*;
 import game.Corpse;
 import game.actions.AttackAction;
 import game.behaviours.FollowBehaviour;
-import game.ground.ScanSurrounds;
+import game.scanning.Scan;
 import game.portables.CarnivoreMealKit;
 import game.portables.StegosaurEgg;
 
@@ -45,8 +45,8 @@ public abstract class Carnivore extends Dinosaur {
      */
     @Override
     protected void eatAtLocation(Location location) {
-        Corpse corpse = ScanSurrounds.getCorpse(location);
-        StegosaurEgg stegosaurEgg = ScanSurrounds.getStegosaurEgg(location);
+        Corpse corpse = Scan.getCorpse(location);
+        StegosaurEgg stegosaurEgg = Scan.getStegosaurEgg(location);
 
         if (corpse != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
@@ -75,9 +75,9 @@ public abstract class Carnivore extends Dinosaur {
         Action action = null;
 
         // Search location of potential foods
-        Location corpseLocation = ScanSurrounds.getLocationOfCorpse(location);
-        Location stegosaurEggLocation = ScanSurrounds.getLocationOfStegosaurEgg(location);
-        Stegosaur stegosaur = ScanSurrounds.getStegosaur(location);
+        Location corpseLocation = Scan.getLocationOfCorpse(location);
+        Location stegosaurEggLocation = Scan.getLocationOfStegosaurEgg(location);
+        Stegosaur stegosaur = Scan.getStegosaur(location);
 
         if (corpseLocation != null) {
             // Follow the corpse
@@ -99,7 +99,7 @@ public abstract class Carnivore extends Dinosaur {
             }
             else {
                 // Else if there is a Stegosaur nearby and you cannot go closer, it must be adjacent
-                action = new AttackAction(ScanSurrounds.getStegosaur(location));
+                action = new AttackAction(stegosaur);
             }
         }
 

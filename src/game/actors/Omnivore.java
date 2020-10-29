@@ -6,7 +6,7 @@ import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
 import game.Corpse;
 import game.behaviours.FollowBehaviour;
-import game.ground.ScanSurrounds;
+import game.scanning.Scan;
 import game.portables.Food;
 
 /**
@@ -43,7 +43,7 @@ public abstract class Omnivore extends Dinosaur {
      */
     @Override
     protected void eatAtLocation(Location location) {
-        Corpse corpse = ScanSurrounds.getCorpse(location);
+        Corpse corpse = Scan.getCorpse(location);
 
         if (corpse != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
@@ -66,8 +66,8 @@ public abstract class Omnivore extends Dinosaur {
         Action action = null;
 
         // Search for potential foods
-        Location corpseLocation = ScanSurrounds.getLocationOfCorpse(location);
-        Location grassLocation = ScanSurrounds.getGrass(location);
+        Location corpseLocation = Scan.getLocationOfCorpse(location);
+        Location grassLocation = Scan.getLocationOfGrass(location);
 
         if (corpseLocation != null) {
             // Follow the corpse
