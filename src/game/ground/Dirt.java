@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
 import game.portables.Hay;
+import game.scanning.Scan;
 
 import java.util.Random;
 
@@ -61,8 +62,8 @@ public class Dirt extends Ground {
 	 * @return boolean value on whether grass will grow
 	 */
 	public boolean chanceOfGrass(Location location) {
-		int numberOfGrass = ScanSurrounds.adjacentGrass(location);
-		int numberOfTrees = ScanSurrounds.adjacentTrees(location);
+		int numberOfGrass = Scan.getGrass(location);
+		int numberOfTrees = Scan.getTrees(location);
 
 		if (numberOfGrass >= 2 && random.nextInt(100) < GROW_CHANCE_FOR_TWO_GRASS) {
 			return true;

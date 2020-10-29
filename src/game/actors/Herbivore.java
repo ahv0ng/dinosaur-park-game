@@ -6,7 +6,7 @@ import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
 import game.behaviours.FollowBehaviour;
 import game.ground.Dirt;
-import game.ground.ScanSurrounds;
+import game.scanning.Scan;
 import game.portables.Fruit;
 import game.portables.Hay;
 import game.portables.VegetarianMealKit;
@@ -88,11 +88,11 @@ public abstract class Herbivore extends Dinosaur {
         Action action = null;
 
         // Search for potential foods
-        Location grassLocation = ScanSurrounds.getGrass(location);
+        Location grassLocation = Scan.getLocationOfGrass(location);
 
         if (grassLocation != null) {
             // Follow the grass
-            behaviour = new FollowBehaviour(ScanSurrounds.getGrass(location));
+            behaviour = new FollowBehaviour(Scan.getLocationOfGrass(location));
             action = behaviour.getFollowLocationAction(this, map);
         }
 
