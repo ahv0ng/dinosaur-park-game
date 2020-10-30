@@ -27,7 +27,7 @@ class ScanGrounds extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return int representing the number of Tree objects adjacent to location
      */
-    public static int getTrees(Location currentLocation) {
+    protected static int getTrees(Location currentLocation) {
         int numberOfTrees = 0;
         for (Ground ground : getGrounds(currentLocation)) {
             if (ground instanceof Tree) { // Extracting condition into a helper method will be unnecessary
@@ -43,7 +43,7 @@ class ScanGrounds extends ScanComponent {
      * @param location the current Location of the caller
      * @return integer representing the number of grass tiles adjacent to location
      */
-    public static int getGrass(Location currentLocation) {
+    protected static int getGrass(Location currentLocation) {
         int numberOfGrass = 0;
         for (Ground ground : getGrounds(currentLocation)) {
             if (isGrass(ground)) {

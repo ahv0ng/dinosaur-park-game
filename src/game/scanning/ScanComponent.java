@@ -56,7 +56,7 @@ abstract class ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return an ArrayList of Location objects
      */
-    public static ArrayList<Location> adjacentLocationsIn3(Location currentLocation) {
+    protected static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
         ArrayList<Location> locationArrayList = adjacentLocations(currentLocation);
         ArrayList<Location> locationArrayList2 = adjacentLocationsFromList(locationArrayList);
         return adjacentLocationsFromList(locationArrayList2);

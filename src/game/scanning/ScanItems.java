@@ -19,7 +19,7 @@ class ScanItems extends ScanComponent {
      * @param currentLocation the Location for which a Corpse is checked for
      * @return reference to Corpse at location (null if it doesn't exist)
      */
-    public static Corpse getCorpse(Location currentLocation) {
+    protected static Corpse getCorpse(Location currentLocation) {
         for (Item item : currentLocation.getItems()) {
             if (item instanceof Corpse) {
                 return (Corpse) item;
@@ -34,7 +34,7 @@ class ScanItems extends ScanComponent {
      * @param currentLocation the Location for which a StegosaurEgg is checked for
      * @return reference to StegosaurEgg at location (null if it doesn't exist)
      */
-    public static StegosaurEgg getStegosaurEgg(Location currentLocation) {
+    protected static StegosaurEgg getStegosaurEgg(Location currentLocation) {
         for (Item item : currentLocation.getItems()) {
             if (item instanceof StegosaurEgg) {
                 return (StegosaurEgg) item;

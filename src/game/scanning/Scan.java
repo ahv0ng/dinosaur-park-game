@@ -5,6 +5,8 @@ import game.Corpse;
 import game.actors.Stegosaur;
 import game.portables.StegosaurEgg;
 
+import java.util.ArrayList;
+
 /**
  * Singleton class that contains all methods for scanning Locations, Grounds,
  * Actors and Items. This class acts as the external class that interacts with
@@ -17,6 +19,17 @@ import game.portables.StegosaurEgg;
  */
 
 public class Scan {
+
+    /**
+     * Using the base class ScanComponent, return the adjacent Locations within
+     * three spaces of the currentLocation.
+     *
+     * @param currentLocation - current Location of the caller
+     * @return ArrayList of the adjacent Locations within three spaces
+     */
+    public static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
+        return ScanComponent.adjacentLocationsIn3Spaces(currentLocation);
+    }
 
     /**
      * Using ScanLocations, return the Location of the nearest Dirt object with

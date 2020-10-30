@@ -18,8 +18,8 @@ class ScanActors extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return reference to Stegosaur (null if doesn't exist)
      */
-    public static Stegosaur getStegosaur(Location currentLocation) {
-        for (Location location : adjacentLocationsIn3(currentLocation)) {
+    protected static Stegosaur getStegosaur(Location currentLocation) {
+        for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             Actor actor = location.getActor();
             if (actor instanceof Stegosaur) {
                 return (Stegosaur) actor;

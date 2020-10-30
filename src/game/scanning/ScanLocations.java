@@ -11,7 +11,7 @@ import game.portables.StegosaurEgg;
  *
  * @author Nicholas Chua and Alden Vong
  */
-public class ScanLocations extends ScanComponent {
+class ScanLocations extends ScanComponent {
 
     /**
      * If there is a Dirt with grass within 3 tiles of the current Location,
@@ -20,8 +20,8 @@ public class ScanLocations extends ScanComponent {
      * @param currentLocation - current Location of the caller
      * @return Location of the nearest Dirt with grass
      */
-    public static Location getLocationOfGrass(Location currentLocation) {
-        for (Location location : adjacentLocationsIn3(currentLocation)) {
+    protected static Location getLocationOfGrass(Location currentLocation) {
+        for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             if (isGrass(location.getGround())) {
                 return location;
             }
@@ -36,8 +36,8 @@ public class ScanLocations extends ScanComponent {
      * @param currentLocation - current Location of the caller
      * @return Location of the nearest Corpse
      */
-    public static Location getLocationOfCorpse(Location currentLocation) {
-        for (Location location : adjacentLocationsIn3(currentLocation)) {
+    protected static Location getLocationOfCorpse(Location currentLocation) {
+        for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             for (Item item : location.getItems()) {
                 if (item instanceof Corpse) {
                     return location;
@@ -54,8 +54,8 @@ public class ScanLocations extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return reference to a Location with StegosaurEgg
      */
-    public static Location getLocationOfStegosaurEgg(Location currentLocation) {
-        for (Location location : adjacentLocationsIn3(currentLocation)) {
+    protected static Location getLocationOfStegosaurEgg(Location currentLocation) {
+        for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             for (Item item : location.getItems()) {
                 if (item instanceof StegosaurEgg) {
                     return location;
