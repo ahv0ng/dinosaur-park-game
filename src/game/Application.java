@@ -124,8 +124,33 @@ public class Application {
 		world.addGameMap(gameMap1);
 		world.addGameMap(gameMap2);
 
+		// Iterate over top of gameMap1 and add exits
+		for (int i: gameMap1.getXRange()) {
+			Location here = gameMap1.at(i, gameMap1.getYRange().min());
+			int yToEnter = gameMap2.getYRange().max();
+			here.addExit(new Exit("North", gameMap2.at(i, yToEnter), "8"));
+			if (i != gameMap1.getXRange().max()) {
+				here.addExit(new Exit("North-East", gameMap2.at(i + 1, yToEnter), "9"));
+			}
+			if (i != gameMap1.getXRange().min()) {
+				here.addExit(new Exit("North-West", gameMap2.at(i - 1, yToEnter), "7"));
+			}
+		}
+		// Iterate over bottom of gameMap2 and add exits
+		for (int i: gameMap2.getXRange()) {
+			Location here = gameMap2.at(i, gameMap2.getYRange().max());
+			int yToEnter = gameMap1.getYRange().min();
+			here.addExit(new Exit("South", gameMap1.at(i, yToEnter), "2"));
+			if (i != gameMap1.getXRange().max()) {
+				here.addExit(new Exit("South-East", gameMap1.at(i + 1, yToEnter), "3"));
+			}
+			if (i != gameMap1.getXRange().min()) {
+				here.addExit(new Exit("South-West", gameMap1.at(i - 1, yToEnter), "1"));
+			}
+		}
+
 		Actor player = new Player("Player", '@', 100);
-		world.addPlayer(player, gameMap1.at(0, 0)); // TODO: Change back to (9, 4)
+		world.addPlayer(player, gameMap1.at(9, 4));
 
 		// Place a pair of stegosaurs (of opposite sex) in the middle of the map
 		gameMap1.at(30, 12).addActor(new Stegosaur("Male"));
