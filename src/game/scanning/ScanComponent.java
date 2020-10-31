@@ -2,8 +2,11 @@ package game.scanning;
 
 import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.Ground;
+import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
+import game.actors.Dinosaur;
 import game.ground.Dirt;
+import game.items.eggs.Egg;
 
 import java.util.ArrayList;
 
@@ -71,6 +74,24 @@ abstract class ScanComponent {
     protected static boolean isGrass(Ground ground) {
         if (ground instanceof Dirt) {
             return ((Dirt) ground).hasGrass();
+        }
+        return false;
+    }
+
+    /**
+     * Assess whether Dinosaur can scan for this Egg.
+     *
+     * Check whether the item is an Egg type, and is of a different species
+     * from the Dinosaur.
+     *
+     * @param item - Item that is being scanned for
+     * @param dinosaur - Dinosaur that is requesting to scan the item
+     * @return boolean value on whether the Dinosaur can scan for the Item
+     */
+    protected static boolean canSearchForEgg(Item item, Dinosaur dinosaur) {
+        if (item instanceof Egg) {
+            Egg egg = (Egg) item;
+            return !egg.getDinosaurName().equals(dinosaur.getName());
         }
         return false;
     }

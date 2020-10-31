@@ -3,7 +3,7 @@ package game.ground;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
-import game.portables.Hay;
+import game.items.foods.Hay;
 import game.scanning.Scan;
 
 import java.util.Random;
@@ -17,6 +17,7 @@ public class Dirt extends Ground {
 	private Boolean grass;
 	private final Random random = new Random();
 
+	static final int FILL = 5;
 	static final int POINTS_WHEN_HARVEST_OR_GROW_GRASS = 1;
 	static final int GROW_CHANCE_AT_START = 2;
 	static final int GROW_CHANCE_FOR_ADJACENT_TREE = 2;
@@ -36,17 +37,23 @@ public class Dirt extends Ground {
 	}
 
 	/**
+	 * Return the hunger level fill when eaten by Dinosaurs. Use with Dinosaur's eatAtLocation
+	 * method.
+	 *
+	 * There is no feed method because this item cannot be fed by Player, so it is not needed.
+	 *
+	 * @return integer value of the hunger level fill when eaten by Dinosaurs
+	 */
+	public int getFill() { return FILL; }
+
+	/**
 	 * Return boolean value when Dirt has grass.
 	 *
 	 * @return boolean whether Dirt has grass
 	 */
 	public boolean hasGrass() { return this.grass; }
 
-	/**
-	 * Call for Dirt to tick over the next day.
-	 *
-	 * @param location - Location of the item
-	 */
+	@Override
 	public void tick(Location location) {
 		if (!this.grass) {
 			if (this.chanceOfGrass(location)) {

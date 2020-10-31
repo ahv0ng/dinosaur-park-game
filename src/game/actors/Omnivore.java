@@ -4,17 +4,18 @@ import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
-import game.Corpse;
 import game.behaviours.FollowBehaviour;
+import game.ground.Dirt;
+import game.items.corpses.Corpse;
+import game.items.eggs.Egg;
+import game.items.foods.Food;
 import game.scanning.Scan;
-import game.portables.Food;
 
 /**
  * Extends Dinosaur.
  * @author Nicholas Chua and Alden Vong
  */
 public abstract class Omnivore extends Dinosaur {
-    static final int HUNGER_POINTS_FROM_CORPSE = 50;
 
     /**
      * Constructor for Omnivores.
@@ -37,24 +38,38 @@ public abstract class Omnivore extends Dinosaur {
     protected boolean canEat(Item item) { return item instanceof Food; }
 
     /**
-     * Eat at the Location. Omnivores can eat corpses at their current location.
+     * Eat at the Location. Omnivores can eat grass or corpses at their current location.
      *
      * @param location - Location type of the current location of Omnivore
      */
     @Override
     protected void eatAtLocation(Location location) {
-        Corpse corpse = Scan.getCorpse(location);
+        if (location.getGround() instanceof Dirt) {
+            Dirt dirt = (Dirt) location.getGround();
+            if (dirt.hasGrass()) {
+                this.increaseHunger(dirt.getFill());
+                System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+            }
+        }
 
+        Corpse corpse = Scan.getCorpse(location);
         if (corpse != null) {
-            this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
+            this.increaseHunger(corpse.getFill());
             location.removeItem(corpse);
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
+        }
+
+        Egg egg = Scan.getEgg(location);
+        if (egg != null) {
+            this.increaseHunger(egg.getFill());
+            location.removeItem(egg);
+            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
         }
     }
 
     /**
      * Evaluate behaviour of Omnivore when looking for food. Omnivore will search
-     * for Corpses or Dirt with grass.
+     * for Dirt with grass or Corpses.
      *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
@@ -65,18 +80,24 @@ public abstract class Omnivore extends Dinosaur {
         FollowBehaviour behaviour;
         Action action = null;
 
-        // Search for potential foods
-        Location corpseLocation = Scan.getLocationOfCorpse(location);
         Location grassLocation = Scan.getLocationOfGrass(location);
+        if (grassLocation != null) {
+            // Follow the grass
+            behaviour = new FollowBehaviour(grassLocation);
+            action = behaviour.getFollowLocationAction(this, map);
+        }
 
+        Location corpseLocation = Scan.getLocationOfCorpse(location);
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
             action = behaviour.getFollowLocationAction(this, map);
         }
-        else if (grassLocation != null) {
-            // Follow the grass
-            behaviour = new FollowBehaviour(grassLocation);
+
+        Location eggLocation = Scan.getLocationOfEgg(location);
+        if (eggLocation != null) {
+            // Follow the egg
+            behaviour = new FollowBehaviour(eggLocation);
             action = behaviour.getFollowLocationAction(this, map);
         }
 

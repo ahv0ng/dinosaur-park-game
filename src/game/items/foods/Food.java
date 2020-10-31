@@ -1,6 +1,7 @@
-package game.portables;
+package game.items.foods;
 
 import game.actors.Dinosaur;
+import game.items.PortableItem;
 
 /**
  * Abstract class. Extends PortableItem.
@@ -21,7 +22,11 @@ public abstract class Food extends PortableItem {
     }
 
     /**
-     * Feed Item to Dinosaur.
+     * Feed Item to Dinosaur through FeedAction.
+     *
+     * Players have a choice to feed Food item to Dinosaur. Whereas other
+     * types of Items cannot be fed by the Player, the Dinosaur chooses
+     * to eat those other Items.
      *
      * @param dinosaur - Dinosaur to feed Item
      */

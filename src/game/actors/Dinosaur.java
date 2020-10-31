@@ -1,14 +1,13 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
-import game.Corpse;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
-import game.portables.Egg;
-import game.portables.Food;
+import game.items.eggs.Egg;
+import game.items.foods.Food;
 import game.scanning.Scan;
 
 import java.util.Random;
@@ -19,7 +18,6 @@ import java.util.Random;
  * @author Nicholas Chua and Alden Vong
  */
 
-// TODO: Increase from eating specific food to be put into food classes themselves
 public abstract class Dinosaur extends Actor {
     private int age;
     private int hungerLevel;
@@ -27,7 +25,7 @@ public abstract class Dinosaur extends Actor {
     private int daysUnconscious;
     private int daysUntilLay;
     private Boolean pregnant;
-    private Boolean canFly; // Assign true to flying dinosaurs like Archaeopteryx, otherwise all Dinosaurs are false
+    private Boolean canFly;
     private final String sex;
     private final Random random = new Random();
 
@@ -37,7 +35,7 @@ public abstract class Dinosaur extends Actor {
     static final int MAX_HUNGRY_THIRSTY = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
     static final int HUNGRY_THIRSTY_THRESHOLD = 50;
-    static final int THIRST_POINTS_FOR_DRINK = 10;
+    static final int THIRST_POINTS_FOR_DRINK = 10; // TODO: Move this to water for encapsulation
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -127,17 +125,19 @@ public abstract class Dinosaur extends Actor {
                 return this.lookForFoodBehaviour(map, location);
             }
         }
-        else if (this.isThirsty()) { // TODO: Figure out why IntelliJ insists on this warning and fix if possible
+        else if (this.isThirsty()){ // TODO: Figure out why IntelliJ insists on this warning and fix if possible
             // Look for water
             this.drinkAtLocation(location);
             if (this.lookForWaterBehaviour(map, location) != null) {
                 return this.lookForWaterBehaviour(map, location);
             }
         }
-        // Wander around or do nothing
-        Action wander = new WanderBehaviour().getAction(this, map);
-        if (wander != null)
-            return wander;
+        else {
+            // Wander around or do nothing
+            Action wander = new WanderBehaviour().getAction(this, map);
+            if (wander != null)
+                return wander;
+        }
         return new DoNothingAction();
     }
 
@@ -149,9 +149,15 @@ public abstract class Dinosaur extends Actor {
      */
     private void generalBehaviour(GameMap map, Location location) {
         this.age++;
-        if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
-        if (this.isThirsty()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is thirsty!"); }
-        if (this.pregnant) { this.pregnantBehaviour(map, location); }
+        if (this.isHungry()) {
+            System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!");
+        }
+        if (this.isThirsty()) {
+            System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is thirsty!");
+        }
+        if (this.pregnant) {
+            this.pregnantBehaviour(map, location);
+        }
     }
 
     /**
@@ -253,17 +259,13 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Kill dinosaur and replace with Corpse object at Dinosaur's last location.
+     * Kill Dinosaur and replace with Corpse object at Dinosaur's last location.
+     *
+     * Used by AttackAction and Dinosaur's unconsciousBehaviour method.
      *
      * @param map - the game map
      */
-    private void die(GameMap map) {
-        Corpse corpse = new Corpse();
-        map.locationOf(this).addItem(corpse);
-        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger or thirst.");
-        map.removeActor(this);
-    }
+    public abstract void die(GameMap map);
 
     /**
      * Evaluate the behaviour of a mating Dinosaur.

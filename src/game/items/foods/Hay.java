@@ -1,4 +1,4 @@
-package game.portables;
+package game.items.foods;
 
 import game.EcoPointsSystem;
 import game.actors.Dinosaur;
@@ -20,11 +20,7 @@ public class Hay extends Food {
         super("Hay", 'h');
     }
 
-    /**
-     * Feed Hay to Dinosaur.
-     *
-     * @param dinosaur - Dinosaur to feed Hay
-     */
+    @Override
     public void feed(Dinosaur dinosaur) {
         dinosaur.increaseHunger(FILL);
         EcoPointsSystem.earn(POINTS_WHEN_FED);

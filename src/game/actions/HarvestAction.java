@@ -6,8 +6,8 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import game.ground.Dirt;
 import game.ground.Tree;
-import game.portables.Fruit;
-import game.portables.Hay;
+import game.items.foods.Fruit;
+import game.items.foods.Hay;
 
 /**
  * Special action for harvesting Dirt or Tree. Extends Action.

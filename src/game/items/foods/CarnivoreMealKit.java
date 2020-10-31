@@ -1,6 +1,4 @@
-package game.portables;
-
-import game.actors.Dinosaur;
+package game.items.foods;
 
 /**
  * Extends MealKit.
@@ -15,14 +13,4 @@ public class CarnivoreMealKit extends MealKit {
      */
     public CarnivoreMealKit() {
         super("Carnivore Meal Kit", 'c');
-    }
-
-    /**
-     * Feed CarnivoreMealKit to Allosaur.
-     *
-     * @param dinosaur - Allosaur to feed CarnivoreMealKit
-     */
-    public void feed(Dinosaur dinosaur) {
-        dinosaur.increaseHunger(FILL);
-    }
 }

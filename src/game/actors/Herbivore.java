@@ -7,16 +7,15 @@ import edu.monash.fit2099.engine.Location;
 import game.behaviours.FollowBehaviour;
 import game.ground.Dirt;
 import game.scanning.Scan;
-import game.portables.Fruit;
-import game.portables.Hay;
-import game.portables.VegetarianMealKit;
+import game.items.foods.Fruit;
+import game.items.foods.Hay;
+import game.items.foods.VegetarianMealKit;
 
 /**
  * Extends Dinosaur.
  * @author Nicholas Chua and Alden Vong
  */
 public abstract class Herbivore extends Dinosaur {
-    static final int HUNGER_POINTS_FOR_GRAZE_GRASS = 5;
 
     /**
      * Constructor for Herbivore when game starts.
@@ -69,7 +68,7 @@ public abstract class Herbivore extends Dinosaur {
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
-                this.increaseHunger(HUNGER_POINTS_FOR_GRAZE_GRASS);
+                this.increaseHunger(dirt.getFill());
                 System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
             }
         }
