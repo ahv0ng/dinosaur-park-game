@@ -63,6 +63,7 @@ public class BreedingBehaviour implements Behaviour {
      * @param target Actor being looked for
      * @return Boolean value
      */
+    // TODO: Decide if this should be in a scanning package class or not
     private Boolean adjacentActor(GameMap map, Location location, Actor target) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {
