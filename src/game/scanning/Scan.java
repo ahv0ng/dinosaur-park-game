@@ -32,16 +32,25 @@ public class Scan {
     }
 
     /**
-     * Using ScanLocations, return the Location of the nearest Dirt object with
-     * grass attribute.
+     * Using ScanLocations, return the Location of a Dirt with
+     * grass attribute set to true.
      *
      * @param currentLocation - current Location of the caller
-     * @return Location of the nearest Dirt with grass attribute
+     * @return Location of a Dirt with grass attribute set to true
      */
     public static Location getLocationOfGrass(Location currentLocation) {
         return ScanLocations.getLocationOfGrass(currentLocation);
     }
 
+    /**
+     * Using ScanLocations, return the Location of a Water.
+     *
+     * @param currentLocation - current Location of the caller
+     * @return Location of a Water
+     */
+    public static Location getLocationOfWater(Location currentLocation) {
+        return ScanLocations.getLocationOfWater(currentLocation);
+    }
     /**
      * Using ScanLocations, return the Location of the nearest Corpse.
      *
@@ -81,6 +90,14 @@ public class Scan {
     public static int getGrass(Location currentLocation) {
         return ScanGrounds.getGrass(currentLocation);
     }
+
+    /**
+     * Using ScanGrounds, determine if there is a Water adjacent to a given Location.
+     *
+     * @param currentLocation - the current Location of the caller
+     * @return true is there is a Water adjacent to currentLocation, false otherwise
+     */
+    public static Boolean adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
 
     /**
      * Using ScanGrounds, return the nearest Stegosaur.
