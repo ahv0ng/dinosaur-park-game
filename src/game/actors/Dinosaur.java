@@ -5,9 +5,11 @@ import game.Corpse;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
+import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
 import game.portables.Egg;
 import game.portables.Food;
+import game.scanning.Scan;
 
 import java.util.Random;
 
@@ -32,10 +34,10 @@ public abstract class Dinosaur extends Actor {
     static final int MATING_AGE = 30;
     static final int PREGNANCY_LENGTH = 10;
     static final int MIN_HUNGRY_THIRSTY = 0;
-    static final int MAX_HUNGER_THIRSTY = 100;
+    static final int MAX_HUNGRY_THIRSTY = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
     static final int HUNGRY_THIRSTY_THRESHOLD = 50;
-    static final int THIRST_POINTS_FOR_DRINK = 5;
+    static final int THIRST_POINTS_FOR_DRINK = 10;
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -118,13 +120,14 @@ public abstract class Dinosaur extends Actor {
         }
         else if (this.isHungry()) {
             // Look for food
-            this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour
+            this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
             if (this.lookForFoodBehaviour(map, location) != null) {
                 return this.lookForFoodBehaviour(map, location);
             }
         }
         else if (this.isThirsty()) { // TODO: Figure out why IntelliJ insists on this warning and fix if possible
             // Look for water
+            this.drinkAtLocation(location);
             if (this.lookForWaterBehaviour(map, location) != null) {
                 return this.lookForWaterBehaviour(map, location);
             }
@@ -145,6 +148,7 @@ public abstract class Dinosaur extends Actor {
     private void generalBehaviour(GameMap map, Location location) {
         this.age++;
         if (this.isHungry()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is hungry!"); }
+        if (this.isThirsty()) { System.out.println(this + " at (" + location.x() + ", " + location.y() + ") is thirsty!"); }
         if (this.pregnant) { this.pregnantBehaviour(map, location); }
     }
 
@@ -165,7 +169,7 @@ public abstract class Dinosaur extends Actor {
     /**
      * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
      *
-     * @param location - Location type of the current Location of Dinosaur
+     * @param location - the current Location of Dinosaur
      */
     protected abstract void eatAtLocation(Location location);
 
@@ -190,7 +194,7 @@ public abstract class Dinosaur extends Actor {
     protected abstract boolean canEat(Item item);
 
     /**
-     * Increase hunger level. Hunger level cannot exceed MAX_HUNGER.
+     * Increase hunger level. Hunger level cannot exceed MAX_HUNGRY_THIRSTY.
      *
      * @param hunger - integer increase for the hunger level.
      */
@@ -200,14 +204,35 @@ public abstract class Dinosaur extends Actor {
         }
 
         int totalHunger = this.hungerLevel + hunger;
-        if (totalHunger >= MAX_HUNGER_THIRSTY) {
+        if (totalHunger >= MAX_HUNGRY_THIRSTY) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
             System.out.println(this.toString() + " is full now.");
-            this.hungerLevel = MAX_HUNGER_THIRSTY;
+            this.hungerLevel = MAX_HUNGRY_THIRSTY;
         }
         else {
             // Else increase hungerLevel normally
             this.hungerLevel = totalHunger;
+        }
+    }
+    // TODO: Method names are potentially confusing - can we change them?
+    /**
+     * Increase thirst level. Thirst level cannot exceed MAX_HUNGRY_THIRSTY.
+     *
+     * @param thirst - integer increase for the thirst level.
+     */
+    public void increaseThirst(int thirst) {
+        if (thirst < 0) {
+            throw new IllegalArgumentException();
+        }
+        int totalThirst = this.thirstLevel + thirst;
+        if (totalThirst >= MAX_HUNGRY_THIRSTY) {
+            // Handles the case when given thirst will cause thirstLevel to exceed maximum
+            System.out.println(this.toString() + " is fully quenched now.");
+            this.thirstLevel = MAX_HUNGRY_THIRSTY;
+        }
+        else {
+            // Else increase thirstLevel normally
+            this.thirstLevel = totalThirst;
         }
     }
 
@@ -234,7 +259,7 @@ public abstract class Dinosaur extends Actor {
         Corpse corpse = new Corpse();
         map.locationOf(this).addItem(corpse);
         System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger.");
+                map.locationOf(this).y() + ") died from hunger or thirst.");
         map.removeActor(this);
     }
 
@@ -310,6 +335,30 @@ public abstract class Dinosaur extends Actor {
      * @return Action of the thirsty Dinosaur
      */
     private Action lookForWaterBehaviour(GameMap map, Location location) {
+        FollowBehaviour behaviour;
+        Action action = null;
 
+        // Search for Water
+        Location waterLocation = Scan.getLocationOfWater(location);
+
+        if (waterLocation != null) {
+            // Follow the Water
+            behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
+            action = behaviour.getFollowLocationAction(this, map);
+        }
+        // If there is no Water nearby, it will return null for no Action
+        return action;
     }
+
+    /**
+     * Drink at the Location. Attempt to drink is successful only if there is an adjacent Water.
+     *
+     * @param location - the current Location of Dinosaur
+     */
+    private void drinkAtLocation(Location location) {
+        if (Scan.adjacentWater(location)) {
+            this.increaseThirst(THIRST_POINTS_FOR_DRINK);
+            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " drank water.");
+            }
+        }
 }

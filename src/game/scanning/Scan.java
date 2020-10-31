@@ -97,7 +97,7 @@ public class Scan {
      * @param currentLocation - the current Location of the caller
      * @return true is there is a Water adjacent to currentLocation, false otherwise
      */
-    protected static Boolean adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
+    public static Boolean adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
 
     /**
      * Using ScanGrounds, return the nearest Stegosaur.
