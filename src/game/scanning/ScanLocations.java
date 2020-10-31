@@ -2,9 +2,9 @@ package game.scanning;
 
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
-import game.Corpse;
+import game.items.corpses.Corpse;
+import game.actors.Dinosaur;
 import game.ground.Water;
-import game.portables.StegosaurEgg;
 
 /**
  * Extends ScanComponent. Singleton class to find the nearest Locations of
@@ -69,10 +69,12 @@ class ScanLocations extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return reference to a Location with StegosaurEgg
      */
-    protected static Location getLocationOfStegosaurEgg(Location currentLocation) {
+    protected static Location getLocationOfEgg(Location currentLocation) {
+        Dinosaur dinosaur = (Dinosaur) currentLocation.getActor();
         for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             for (Item item : location.getItems()) {
-                if (item instanceof StegosaurEgg) {
+                // Prevent searching a non-Egg item that are the same species
+                if (canSearchForEgg(item, dinosaur)) {
                     return location;
                 }
             }

@@ -4,7 +4,7 @@ import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import game.actors.Dinosaur;
-import game.portables.Food;
+import game.items.foods.Food;
 
 /**
  * Special action to feed a dinosaur. Extends Action.

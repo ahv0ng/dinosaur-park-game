@@ -3,7 +3,12 @@ package game.ground;
 import edu.monash.fit2099.engine.*;
 import game.EcoPointsSystem;
 import game.actions.PurchaseAction;
-import game.portables.*;
+import game.items.*;
+import game.items.eggs.*;
+import game.items.foods.CarnivoreMealKit;
+import game.items.foods.Fruit;
+import game.items.foods.Hay;
+import game.items.foods.VegetarianMealKit;
 
 import java.util.Scanner;
 

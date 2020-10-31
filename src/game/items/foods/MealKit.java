@@ -1,4 +1,4 @@
-package game.portables;
+package game.items.foods;
 
 import game.actors.Dinosaur;
 
@@ -20,10 +20,6 @@ public abstract class MealKit extends Food {
         super(name, displayChar);
     }
 
-    /**
-     * Feed MealKit to Dinosaur.
-     *
-     * @param dinosaur - Dinosaur to feed MealKit
-     */
-    public abstract void feed(Dinosaur dinosaur);
+    @Override
+    public void feed(Dinosaur dinosaur) { dinosaur.increaseHunger(FILL); }
 }

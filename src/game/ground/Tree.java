@@ -2,7 +2,7 @@ package game.ground;
 
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
-import game.portables.Fruit;
+import game.items.foods.Fruit;
 
 import java.util.Random;
 

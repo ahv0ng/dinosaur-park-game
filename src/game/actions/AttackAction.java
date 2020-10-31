@@ -1,36 +1,30 @@
 package game.actions;
 
 import edu.monash.fit2099.engine.*;
-import game.Corpse;
+import game.actors.Dinosaur;
 
 import java.util.Random;
 
 /**
- * Special Action for attacking other Actors.
+ * Special Action for attacking other Dinosaurs. So far, only Dinosaurs can die.
+ *
+ * @author Nicholas Chua and Alden Vong
  */
 public class AttackAction extends Action {
-
-	/**
-	 * The Actor that is to be attacked
-	 */
-	protected Actor target;
-	/**
-	 * Random number generator
-	 */
+	protected Dinosaur target;
 	protected Random rand = new Random();
 
 	/**
-	 * Constructor.
+	 * Constructor for AttackAction.
 	 *
 	 * @param target the Actor to attack
 	 */
-	public AttackAction(Actor target) {
+	public AttackAction(Dinosaur target) {
 		this.target = target;
 	}
 
 	@Override
 	public String execute(Actor actor, GameMap map) {
-
 		Weapon weapon = actor.getWeapon();
 
 		if (rand.nextBoolean()) {
@@ -42,16 +36,7 @@ public class AttackAction extends Action {
 
 		target.hurt(damage);
 		if (!target.isConscious()) {
-			Corpse corpse = new Corpse();
-			map.locationOf(target).addItem(corpse);
-			
-			Actions dropActions = new Actions();
-			for (Item item : target.getInventory())
-				dropActions.add(item.getDropAction());
-			for (Action drop : dropActions)
-				drop.execute(target, map);
-			map.removeActor(target);
-			
+			target.die(map);
 			result += System.lineSeparator() + target + " is killed.";
 		}
 

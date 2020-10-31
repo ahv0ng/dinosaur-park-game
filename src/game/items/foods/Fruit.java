@@ -1,4 +1,4 @@
-package game.portables;
+package game.items.foods;
 
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
@@ -32,11 +32,7 @@ public class Fruit extends Food {
      */
     public int getAge() { return this.age; }
 
-    /**
-     * Call for Item to tick over next day.
-     *
-     * @param location - Location of the item
-     */
+    @Override
     public void tick(Location location) {
         // Evaluate age and rotting status
         this.age++;
@@ -45,11 +41,7 @@ public class Fruit extends Food {
         }
     }
 
-    /**
-     * Feed Fruit to Stegosaur.
-     *
-     * @param dinosaur - Dinosaur to feed Fruit
-     */
+    @Override
     public void feed(Dinosaur dinosaur) {
         dinosaur.increaseHunger(FILL);
         EcoPointsSystem.earn(POINTS_WHEN_FED);

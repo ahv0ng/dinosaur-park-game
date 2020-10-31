@@ -1,11 +1,11 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
-import game.Corpse;
+import game.items.corpses.Corpse;
 import game.actions.AttackAction;
 import game.behaviours.FollowBehaviour;
-import game.portables.CarnivoreMealKit;
-import game.portables.Egg;
+import game.items.foods.CarnivoreMealKit;
+import game.items.eggs.Egg;
 import game.scanning.Scan;
 
 /**
@@ -14,8 +14,6 @@ import game.scanning.Scan;
  */
 public abstract class Carnivore extends Dinosaur {
     static final int BITE_DAMAGE = 20;
-    static final int HUNGER_POINTS_FROM_CORPSE = 50;
-    static final int HUNGER_POINTS_FROM_STEGOSAURUS_EGG = 10;
 
     /**
      * Constructor for Carnivore.
@@ -38,7 +36,7 @@ public abstract class Carnivore extends Dinosaur {
     protected boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
 
     /**
-     * Eat at the Location. Carnivores can eat Corpses and StegosaurEggs at their
+     * Eat at the Location. Carnivores can eat Corpses or Egg at their
      * current location.
      *
      * @param location - Location type of the current location of Carnivore
@@ -46,15 +44,15 @@ public abstract class Carnivore extends Dinosaur {
     @Override
     protected void eatAtLocation(Location location) {
         Corpse corpse = Scan.getCorpse(location);
-        Egg egg = Scan.getEgg(location);
-
         if (corpse != null) {
-            this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
+            this.increaseHunger(corpse.getFill());
             location.removeItem(corpse);
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
         }
-        else if (egg != null) {
-            this.increaseHunger(HUNGER_POINTS_FROM_STEGOSAURUS_EGG);
+
+        Egg egg = Scan.getEgg(location);
+        if (egg != null) {
+            this.increaseHunger(egg.getFill());
             location.removeItem(egg);
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
         }
@@ -62,8 +60,8 @@ public abstract class Carnivore extends Dinosaur {
 
     /**
      * Evaluate behaviour of Carnivore when looking for food. Carnivore will
-     * search for Corpses or StegosaurEgg. If none nearby, it will search for
-     * a Stegosaur to attack.
+     * search for Corpses or Egg. If none nearby, it will search for
+     * a Dinosaur to attack.
      *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
@@ -81,10 +79,10 @@ public abstract class Carnivore extends Dinosaur {
             action = behaviour.getFollowLocationAction(this, map);
         }
 
-        Location stegosaurEggLocation = Scan.getLocationOfStegosaurEgg(location);
-        if (stegosaurEggLocation != null) {
-            // Follow the stegosaurEgg
-            behaviour = new FollowBehaviour(stegosaurEggLocation);
+        Location eggLocation = Scan.getLocationOfEgg(location);
+        if (eggLocation != null) {
+            // Follow the egg
+            behaviour = new FollowBehaviour(eggLocation);
             action = behaviour.getFollowLocationAction(this, map);
         }
 

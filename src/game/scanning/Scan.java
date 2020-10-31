@@ -1,9 +1,9 @@
 package game.scanning;
 
 import edu.monash.fit2099.engine.Location;
-import game.Corpse;
+import game.items.corpses.Corpse;
 import game.actors.Dinosaur;
-import game.portables.Egg;
+import game.items.eggs.Egg;
 
 import java.util.ArrayList;
 
@@ -67,8 +67,8 @@ public class Scan {
      * @param currentLocation - current Location of the caller
      * @return Location of the nearest StegosaurEgg
      */
-    public static Location getLocationOfStegosaurEgg(Location currentLocation) {
-        return ScanLocations.getLocationOfStegosaurEgg(currentLocation);
+    public static Location getLocationOfEgg(Location currentLocation) {
+        return ScanLocations.getLocationOfEgg(currentLocation);
     }
 
     /**

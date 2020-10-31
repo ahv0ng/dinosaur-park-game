@@ -1,4 +1,4 @@
-package game.portables;
+package game.items.eggs;
 
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
@@ -20,11 +20,6 @@ public class StegosaurEgg extends Egg {
         super("Stegosaur Egg", 'o', "Stegosaur");
     }
 
-    /**
-     * Hatch StegosaurEgg onto the location.
-     *
-     * @param location - Location of the item
-     */
     @Override
     public void hatch(Location location) {
         location.addActor(new Stegosaur());

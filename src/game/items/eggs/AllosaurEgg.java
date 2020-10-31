@@ -1,4 +1,4 @@
-package game.portables;
+package game.items.eggs;
 
 import edu.monash.fit2099.engine.Location;
 import game.EcoPointsSystem;
@@ -20,11 +20,7 @@ public class AllosaurEgg extends Egg {
         super("Allosaur Egg", '0', "Allosaur");
     }
 
-    /**
-     * Hatch Egg into an Allosaur. Earn 1000 points for hatching.
-     *
-     * @param location - Location of the Egg
-     */
+    @Override
     public void hatch(Location location) {
         location.addActor(new Allosaur());
         location.removeItem(this);
