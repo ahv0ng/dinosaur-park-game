@@ -23,8 +23,8 @@ public abstract class Carnivore extends Dinosaur {
      * @param name - String type for Carnivore name
      * @param displayChar - Char type for displaying Carnivore on the map
      */
-    public Carnivore(String name, Character displayChar) {
-        super(name, displayChar);
+    public Carnivore(boolean flight, String name, Character displayChar) {
+        super(flight, name, displayChar);
     }
 
     /**

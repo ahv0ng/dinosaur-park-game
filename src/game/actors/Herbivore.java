@@ -26,9 +26,9 @@ public abstract class Herbivore extends Dinosaur {
      * @param name - String name of the Herbivore
      * @param displayChar - Char type for displaying Herbivore on the map
      */
-    public Herbivore(String sex, String name, Character displayChar) {
+    public Herbivore(String sex, boolean flight, String name, Character displayChar) {
         // Use only for start of game, see Dinosaur constructor
-        super(sex, name, displayChar);
+        super(sex, flight, name, displayChar);
     }
 
     /**
@@ -37,8 +37,8 @@ public abstract class Herbivore extends Dinosaur {
      * @param name - String name of the Herbivore
      * @param displayChar - Char type for displaying Herbivore on the map
      */
-    public Herbivore(String name, Character displayChar) {
-        super(name, displayChar);
+    public Herbivore(boolean flight, String name, Character displayChar) {
+        super(flight, name, displayChar);
     }
 
     /**

@@ -12,7 +12,7 @@ public class Allosaur extends Carnivore {
     /**
      * Constructor for Allosaur.
      */
-    public Allosaur() { super("Allosaur", 'a'); }
+    public Allosaur() { super(false, "Allosaur", 'a'); }
 
     @Override
     protected AllosaurEgg layEgg() { return new AllosaurEgg(); }

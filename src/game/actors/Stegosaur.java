@@ -14,12 +14,12 @@ public class Stegosaur extends Herbivore {
      *
      * @param sex - String of the Dinosaur's sex
      */
-    public Stegosaur(String sex) { super(sex, "Stegosaur", 's'); }
+    public Stegosaur(String sex) { super(sex, false, "Stegosaur", 's'); }
 
     /**
      * Constructor for Stegosaur when a StegosaurEgg hatches.
      */
-    public Stegosaur() { super("Stegosaur", 's'); }
+    public Stegosaur() { super(false, "Stegosaur", 's'); }
 
     /**
      * Lay a StegosaurEgg.

@@ -27,7 +27,7 @@ public abstract class Dinosaur extends Actor {
     private int daysUnconscious;
     private int daysUntilLay;
     private Boolean pregnant;
-    protected Boolean canFly; // Assign true to flying dinosaurs like Archaeopteryx, otherwise all Dinosaurs are false
+    private Boolean canFly; // Assign true to flying dinosaurs like Archaeopteryx, otherwise all Dinosaurs are false
     private final String sex;
     private final Random random = new Random();
 
@@ -47,7 +47,7 @@ public abstract class Dinosaur extends Actor {
      * @param name - String name of the Dinosaur
      * @param displayChar - Char type for displaying Dinosaur on the map
      */
-    public Dinosaur(String sex, String name, Character displayChar) {
+    public Dinosaur(String sex, boolean flight, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 30;
         this.hungerLevel = 50;
@@ -55,7 +55,7 @@ public abstract class Dinosaur extends Actor {
         this.daysUnconscious = 0;
         this.sex = sex;
         this.pregnant = false;
-        this.canFly = false;
+        this.canFly = flight;
     }
 
     /**
@@ -64,13 +64,13 @@ public abstract class Dinosaur extends Actor {
      * @param name - String name of the Dinosaur
      * @param displayChar - Char type for displaying Dinosaur on the map
      */
-    public Dinosaur(String name, Character displayChar) {
+    public Dinosaur(boolean flight, String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 0;
         this.hungerLevel = 10;
         this.daysUnconscious = 0;
         this.pregnant = false;
-        this.canFly = false;
+        this.canFly = flight;
 
         // Randomise sex for this dinosaur
         String[] sexTypes = {"Male", "Female"};

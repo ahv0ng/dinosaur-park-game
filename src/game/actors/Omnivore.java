@@ -22,8 +22,8 @@ public abstract class Omnivore extends Dinosaur {
      * @param name - String type of the Omnivore's name
      * @param displayChar - Char type for displaying Omnivore on the map
      */
-    public Omnivore(String name, Character displayChar) {
-        super(name, displayChar);
+    public Omnivore(boolean flight, String name, Character displayChar) {
+        super(flight, name, displayChar);
     }
 
     /**
