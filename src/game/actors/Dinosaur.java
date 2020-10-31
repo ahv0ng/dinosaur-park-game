@@ -35,6 +35,7 @@ public abstract class Dinosaur extends Actor {
     static final int MAX_HUNGER_THIRSTY = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
     static final int HUNGRY_THIRSTY_THRESHOLD = 50;
+    static final int THIRST_POINTS_FOR_DRINK = 5;
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -48,6 +49,7 @@ public abstract class Dinosaur extends Actor {
         super(name, displayChar, 100);
         this.age = 30;
         this.hungerLevel = 50;
+        this.thirstLevel = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.pregnant = false;
@@ -99,28 +101,34 @@ public abstract class Dinosaur extends Actor {
         Location location = map.locationOf(this);
         this.generalBehaviour(map, location);
 
-        if (this.hungerLevel == MIN_HUNGRY_THIRSTY) {
+        if (this.hungerLevel == MIN_HUNGRY_THIRSTY || this.thirstLevel == MIN_HUNGRY_THIRSTY) {
             // Continue being unconscious until fed/dies
             return this.unconsciousBehaviour(map);
         }
 
         this.daysUnconscious = 0; // Reset daysUnconscious every turn it is not unconscious
         this.hungerLevel--;
+        this.thirstLevel--;
 
-        if (!(this.isHungry())) {
+        if (!(this.isHungry()) && !(this.isThirsty())) {
             // Look for a mate
             if (this.breedBehaviour(map) != null) {
                 return this.breedBehaviour(map);
             }
         }
-        else if (this.isHungry()) { // TODO: Figure out why IntelliJ insists on this warning and fix if possible
+        else if (this.isHungry()) {
             // Look for food
-            this.eatAtLocation(location);
+            this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour
             if (this.lookForFoodBehaviour(map, location) != null) {
                 return this.lookForFoodBehaviour(map, location);
             }
         }
-
+        else if (this.isThirsty()) { // TODO: Figure out why IntelliJ insists on this warning and fix if possible
+            // Look for water
+            if (this.lookForWaterBehaviour(map, location) != null) {
+                return this.lookForWaterBehaviour(map, location);
+            }
+        }
         // Wander around or do nothing
         Action wander = new WanderBehaviour().getAction(this, map);
         if (wander != null)
@@ -146,6 +154,13 @@ public abstract class Dinosaur extends Actor {
      * @return boolean value whether Dinosaur is hungry
      */
     private boolean isHungry() { return this.hungerLevel <= HUNGRY_THIRSTY_THRESHOLD; }
+
+    /**
+     * Helper method to evaluate whether Dinosaur is thirsty.
+     *
+     * @return boolean value whether Dinosaur is thirsty
+     */
+    private boolean isThirsty() { return this.thirstLevel <= HUNGRY_THIRSTY_THRESHOLD; }
 
     /**
      * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
@@ -287,4 +302,14 @@ public abstract class Dinosaur extends Actor {
      * @return Action of the hungry Dinosaur
      */
     protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
+
+    /**
+     * Evaluate the behaviour of a thirsty Dinosaur
+     * @param map - the game map
+     * @param location - the current location of the Dinosaur
+     * @return Action of the thirsty Dinosaur
+     */
+    private Action lookForWaterBehaviour(GameMap map, Location location) {
+
+    }
 }
