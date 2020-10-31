@@ -4,9 +4,9 @@ import edu.monash.fit2099.engine.*;
 import game.Corpse;
 import game.actions.AttackAction;
 import game.behaviours.FollowBehaviour;
-import game.scanning.Scan;
 import game.portables.CarnivoreMealKit;
-import game.portables.StegosaurEgg;
+import game.portables.Egg;
+import game.scanning.Scan;
 
 /**
  * Extends Dinosaur.
@@ -46,16 +46,16 @@ public abstract class Carnivore extends Dinosaur {
     @Override
     protected void eatAtLocation(Location location) {
         Corpse corpse = Scan.getCorpse(location);
-        StegosaurEgg stegosaurEgg = Scan.getStegosaurEgg(location);
+        Egg egg = Scan.getEgg(location);
 
         if (corpse != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_CORPSE);
             location.removeItem(corpse);
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
         }
-        else if (stegosaurEgg != null) {
+        else if (egg != null) {
             this.increaseHunger(HUNGER_POINTS_FROM_STEGOSAURUS_EGG);
-            location.removeItem(stegosaurEgg);
+            location.removeItem(egg);
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
         }
     }
@@ -74,32 +74,32 @@ public abstract class Carnivore extends Dinosaur {
         FollowBehaviour behaviour;
         Action action = null;
 
-        // Search location of potential foods
         Location corpseLocation = Scan.getLocationOfCorpse(location);
-        Location stegosaurEggLocation = Scan.getLocationOfStegosaurEgg(location);
-        Stegosaur stegosaur = Scan.getStegosaur(location);
-
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
             action = behaviour.getFollowLocationAction(this, map);
         }
-        else if (stegosaurEggLocation != null) {
+
+        Location stegosaurEggLocation = Scan.getLocationOfStegosaurEgg(location);
+        if (stegosaurEggLocation != null) {
             // Follow the stegosaurEgg
             behaviour = new FollowBehaviour(stegosaurEggLocation);
             action = behaviour.getFollowLocationAction(this, map);
         }
-        else if (stegosaur != null) {
-            // Follow the Stegosaur
-            behaviour = new FollowBehaviour(stegosaur);
+
+        Dinosaur dinosaur = Scan.getOtherSpeciesDinosaur(location);
+        if (dinosaur != null) {
+            // Follow the Dinosaur
+            behaviour = new FollowBehaviour(dinosaur);
             action = behaviour.getAction(this, map);
 
             if (action != null) {
                 action = behaviour.getAction(this, map);
             }
             else {
-                // Else if there is a Stegosaur nearby and you cannot go closer, it must be adjacent
-                action = new AttackAction(stegosaur);
+                // Else if there is a Dinosaur nearby and you cannot go closer, it must be adjacent
+                action = new AttackAction(dinosaur);
             }
         }
 

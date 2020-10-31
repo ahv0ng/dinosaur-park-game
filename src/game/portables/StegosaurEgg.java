@@ -17,7 +17,7 @@ public class StegosaurEgg extends Egg {
      * Constructor for StegosaurEgg.
      */
     public StegosaurEgg() {
-        super("Stegosaur Egg", 'o');
+        super("Stegosaur Egg", 'o', "Stegosaur");
     }
 
     /**

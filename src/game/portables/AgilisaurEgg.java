@@ -8,7 +8,9 @@ public class AgilisaurEgg extends Egg {
     static final int COST = 750;
     static final int POINTS_WHEN_HATCH = 750;
 
-    public AgilisaurEgg() { super("Agilisaur Egg", '6'); }
+    public AgilisaurEgg() {
+        super("Agilisaur Egg", '6', "Agilisaur");
+    }
 
     @Override
     public void hatch(Location location) {

@@ -77,6 +77,8 @@ public abstract class Dinosaur extends Actor {
         this.sex = sexTypes[random.nextInt(2)];
     }
 
+    public String getName() { return this.name; }
+
     /**
      * Return Dinosaur's sex.
      *

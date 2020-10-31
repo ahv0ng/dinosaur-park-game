@@ -9,6 +9,8 @@ import edu.monash.fit2099.engine.Location;
  */
 public abstract class Egg extends PortableItem {
     private int timeAlive;
+    private String dinosaurName;
+
     static int POINTS_WHEN_HATCH;
     static final int TIME_TO_HATCH = 10;
 
@@ -18,9 +20,12 @@ public abstract class Egg extends PortableItem {
      * @param name - String name of the object
      * @param displayChar - Char of display character on the map
      */
-    public Egg(String name, char displayChar) {
+    public Egg(String name, char displayChar, String dinosaurName) {
         super(name, displayChar);
+        this.dinosaurName = dinosaurName;
     }
+
+    public String getDinosaurName() { return this.dinosaurName; }
 
     /**
      * Call for Item to tick over next day.
