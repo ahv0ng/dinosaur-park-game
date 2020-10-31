@@ -12,7 +12,7 @@ public class ArchaeopteryxEgg extends Egg {
      * Constructor for ArchaeopteryxEgg.
      */
     public ArchaeopteryxEgg() {
-        super("Archaeopteryx Egg", '0');
+        super("Archaeopteryx Egg", '0', "Archaeopteryx");
     }
 
     /**

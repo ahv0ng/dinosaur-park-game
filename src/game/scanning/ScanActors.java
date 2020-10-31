@@ -2,7 +2,8 @@ package game.scanning;
 
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Location;
-import game.actors.Stegosaur;
+import game.actors.Dinosaur;
+import game.actors.Player;
 
 /**
  * Extends ScanComponent. Singleton class to get the nearest Actor. Does not
@@ -12,17 +13,27 @@ import game.actors.Stegosaur;
  */
 class ScanActors extends ScanComponent {
 
+    //TODO: test this feature
     /**
-     * If there is a Stegosaur within 3 tiles of a given Location, return Stegosaur.
+     * If there is a Dinosaur within 3 tiles of the caller's Location, and the Dinosaur
+     * is not the same species as the caller, return Dinosaur.
      *
-     * @param currentLocation the current Location of the caller
-     * @return reference to Stegosaur (null if doesn't exist)
+     * @param currentLocation - the current Location of the caller
+     * @return reference to the Dinosaur
      */
-    protected static Stegosaur getStegosaur(Location currentLocation) {
+    protected static Dinosaur getOtherSpeciesDinosaur(Location currentLocation) {
+        Dinosaur currentDinosaur = (Dinosaur) currentLocation.getActor();
+
         for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             Actor actor = location.getActor();
-            if (actor instanceof Stegosaur) {
-                return (Stegosaur) actor;
+
+            if (actor instanceof Player) {
+                // Avoid searching for Player
+                continue;
+            }
+            // Prevent searching for same species
+            else if (actor.getClass() != currentDinosaur.getClass()) {
+                return (Dinosaur) actor;
             }
         }
         return null;

@@ -2,8 +2,8 @@ package game.scanning;
 
 import edu.monash.fit2099.engine.Location;
 import game.Corpse;
-import game.actors.Stegosaur;
-import game.portables.StegosaurEgg;
+import game.actors.Dinosaur;
+import game.portables.Egg;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class Scan {
      * @return ArrayList of the adjacent Locations within three spaces
      */
     public static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
-        return ScanComponent.adjacentLocationsIn3Spaces(currentLocation);
+        return ScanLocations.adjacentLocationsIn3Spaces(currentLocation);
     }
 
     /**
@@ -95,22 +95,22 @@ public class Scan {
      * Using ScanGrounds, determine if there is a Water adjacent to a given Location.
      *
      * @param currentLocation - the current Location of the caller
-     * @return true is there is a Water adjacent to currentLocation, false otherwise
+     * @return boolean value if there is a Water adjacent to currentLocation
      */
     public static Boolean adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
 
     /**
-     * Using ScanGrounds, return the nearest Stegosaur.
+     * Using ScanActors, return the nearest Dinosaur that is not the same species.
      *
-     * @param currentLocation - current Location of the caller
-     * @return nearest Stegosaur actor
+     * @param currentLocation - the current Location of the caller
+     * @return nearest Dinosaur
      */
-    public static Stegosaur getStegosaur(Location currentLocation) {
-        return ScanActors.getStegosaur(currentLocation);
+    public static Dinosaur getOtherSpeciesDinosaur(Location currentLocation) {
+        return ScanActors.getOtherSpeciesDinosaur(currentLocation);
     }
 
     /**
-     * Using ScanGrounds, return the nearest Corpse.
+     * Using ScanItems, return the nearest Corpse.
      *
      * @param currentLocation - current Location of the caller
      * @return nearest Corpse item
@@ -120,12 +120,12 @@ public class Scan {
     }
 
     /**
-     * Using ScanGrounds, return the nearest StegosaurEgg.
+     * Using ScanItems, return the nearest Egg.
      *
      * @param currentLocation - current Location of the caller
-     * @return nearest StegosaurEgg item
+     * @return nearest Egg item
      */
-    public static StegosaurEgg getStegosaurEgg(Location currentLocation) {
-        return ScanItems.getStegosaurEgg(currentLocation);
+    public static Egg getEgg(Location currentLocation) {
+        return ScanItems.getEgg(currentLocation);
     }
 }

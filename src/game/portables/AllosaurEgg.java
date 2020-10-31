@@ -17,7 +17,7 @@ public class AllosaurEgg extends Egg {
      * Constructor for AllosaurEgg.
      */
     public AllosaurEgg() {
-        super("Allosaur Egg", '0');
+        super("Allosaur Egg", '0', "Allosaur");
     }
 
     /**
