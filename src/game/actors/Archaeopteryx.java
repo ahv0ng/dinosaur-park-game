@@ -3,7 +3,6 @@ package game.actors;
 import edu.monash.fit2099.engine.GameMap;
 import game.items.corpses.ArchaeopteryxCorpse;
 import game.items.eggs.ArchaeopteryxEgg;
-import game.items.eggs.Egg;
 
 /**
  * Extends Carnivore.

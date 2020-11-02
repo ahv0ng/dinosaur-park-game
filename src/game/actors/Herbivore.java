@@ -92,7 +92,7 @@ public abstract class Herbivore extends Dinosaur {
         if (grassLocation != null) {
             // Follow the grass
             behaviour = new FollowBehaviour(Scan.getLocationOfGrass(location));
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         // If there is no potential food nearby, it will return null for no Action
