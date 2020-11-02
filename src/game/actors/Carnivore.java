@@ -95,6 +95,7 @@ public abstract class Carnivore extends Dinosaur {
             if (action != null) {
                 action = behaviour.getAction(this, map);
             }
+            // TODO: Fix this implementation, as it means that an attack will not be made if they are diagonal
             else {
                 // Else if there is a Dinosaur nearby and you cannot go closer, it must be adjacent
                 action = new AttackAction(dinosaur);

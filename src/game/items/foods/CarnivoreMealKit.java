@@ -13,4 +13,5 @@ public class CarnivoreMealKit extends MealKit {
      */
     public CarnivoreMealKit() {
         super("Carnivore Meal Kit", 'c');
+    }
 }

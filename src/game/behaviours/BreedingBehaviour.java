@@ -7,6 +7,7 @@ import game.scanning.Scan;
 
 import java.util.ArrayList;
 
+// TODO: Fix bug where dinosaur tries to mate with Player
 /**
  * A class that figures out an Action (either a MateAction or MoveAction) that will move an acting Actor one tile
  * closer to a target Actor, or breed with a target Actor. Uses the FollowBehaviour class.
@@ -63,7 +64,7 @@ public class BreedingBehaviour implements Behaviour {
      * @param target Actor being looked for
      * @return Boolean value
      */
-    // TODO: Decide if this should be in a scanning package class or not
+    // TODO: Put this somewhere else to be used for attacking as well
     private Boolean adjacentActor(GameMap map, Location location, Actor target) {
         ArrayList<Location> locationArrayList = new ArrayList<>();
         for (Exit exit : location.getExits()) {

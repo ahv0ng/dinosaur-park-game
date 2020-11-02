@@ -29,5 +29,5 @@ public class Archaeopteryx extends Carnivore {
     }
 
     @Override
-    protected Egg layEgg() { return new ArchaeopteryxEgg(); }
+    protected ArchaeopteryxEgg layEgg() { return new ArchaeopteryxEgg(); }
 }

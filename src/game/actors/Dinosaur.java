@@ -37,6 +37,8 @@ public abstract class Dinosaur extends Actor {
     static final int HUNGRY_THIRSTY_THRESHOLD = 50;
     static final int THIRST_POINTS_FOR_DRINK = 10; // TODO: Move this to water for encapsulation
 
+    // TODO: Put name and displayChar characters first
+    // TODO: Change canFly to setter
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
      * the start.
@@ -98,6 +100,8 @@ public abstract class Dinosaur extends Actor {
      */
     public boolean canFly() { return this.canFly; }
 
+    // TODO: Make separate Action for Eat and Drink (refactor)
+    // TODO: Local variables for behaviours
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         Location location = map.locationOf(this);
@@ -222,7 +226,7 @@ public abstract class Dinosaur extends Actor {
             this.hungerLevel = totalHunger;
         }
     }
-    // TODO: Method names are potentially confusing - can we change them?
+    // TODO: Change method names and hungerLevel, thirstLevel
     /**
      * Increase thirst level. Thirst level cannot exceed MAX_HUNGRY_THIRSTY.
      *
