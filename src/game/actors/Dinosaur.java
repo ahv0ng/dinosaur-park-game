@@ -144,12 +144,11 @@ public abstract class Dinosaur extends Actor {
                 return action;
             }
         }
-        else {
-            // Wander around or do nothing
-            action = new WanderBehaviour().getAction(this, map);
-            if (action != null)
-                return action;
-        }
+        // Wander around or do nothing
+        action = new WanderBehaviour().getAction(this, map);
+        if (action != null)
+            return action;
+
         return new DoNothingAction();
     }
 
