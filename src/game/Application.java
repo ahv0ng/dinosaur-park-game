@@ -121,54 +121,66 @@ public class Application {
 
 		GameMap gameMap1 = new GameMap(groundFactory, map1);
 		GameMap gameMap2 = new GameMap(groundFactory, map2);
+
 		world.addGameMap(gameMap1);
 		world.addGameMap(gameMap2);
 
-		// TODO: Add separate method in Application for this; see if can make coordinates different
-		// Iterate over top row of gameMap1 and add exits
-		for (int i: gameMap1.getXRange()) {
-			int yToLeave = gameMap1.getYRange().min();
-			int yToEnter = gameMap2.getYRange().max();
-			int xRightCorner = gameMap2.getXRange().max();
-			int xLeftCorner = gameMap2.getXRange().min();
-
-			Location here = gameMap1.at(i, yToLeave);
-			here.addExit(new Exit("North", gameMap2.at(i, yToEnter), "8"));
-
-			// Ensures that system does not try and access coordinates out of bounds
-			if (i != xRightCorner) {
-				here.addExit(new Exit("North-East", gameMap2.at(i + 1, yToEnter), "9"));
-			}
-			if (i != xLeftCorner) {
-				here.addExit(new Exit("North-West", gameMap2.at(i - 1, yToEnter), "7"));
-			}
-		}
-		// Iterate over bottom row of gameMap2 and add exits
-		for (int i: gameMap2.getXRange()) {
-			int yToLeave = gameMap2.getYRange().max();
-			int yToEnter = gameMap1.getYRange().min();
-			int xRightCorner = gameMap1.getXRange().max();
-			int xLeftCorner = gameMap1.getXRange().min();
-
-			Location here = gameMap2.at(i, yToLeave);
-			here.addExit(new Exit("South", gameMap1.at(i, yToEnter), "2"));
-
-			// Ensures that system does not try and access coordinates out of bounds
-			if (i != xRightCorner) {
-				here.addExit(new Exit("South-East", gameMap1.at(i + 1, yToEnter), "3"));
-			}
-			if (i != xLeftCorner) {
-				here.addExit(new Exit("South-West", gameMap1.at(i - 1, yToEnter), "1"));
-			}
-		}
+		addMapNorth(gameMap1, gameMap2);
 
 		Actor player = new Player("Player", '@', 100);
-		world.addPlayer(player, gameMap1.at(0, 0)); // TODO: Change back to (9, 4)
+		world.addPlayer(player, gameMap1.at(9, 4));
 
 		// Place a pair of stegosaurs (of opposite sex) in the middle of the map
 		gameMap1.at(30, 12).addActor(new Stegosaur("Male"));
 		gameMap1.at(32, 12).addActor(new Stegosaur("Female"));
 
 		world.run();
+	}
+
+	/**
+	 * Extends GameMap existingMap, by "placing" another GameMap mapToAdd to the north
+	 * of existingMap. Thus, Player can move between game maps (system only displays the GameMap
+	 * Player is in). Activity in all game maps continues as normal.
+	 *
+	 * @param existingMap - GameMap currently existing in the game
+	 * @param mapToAdd - GameMap to add to the north of existingMap
+	 */
+	private static void addMapNorth(GameMap existingMap, GameMap mapToAdd) {
+		// Iterate over top row of existingMap and add exits
+		for (int i: existingMap.getXRange()) {
+			int yToLeave = existingMap.getYRange().min();
+			int yToEnter = mapToAdd.getYRange().max();
+			int xRightCorner = mapToAdd.getXRange().max();
+			int xLeftCorner = mapToAdd.getXRange().min();
+
+			Location here = existingMap.at(i, yToLeave);
+			here.addExit(new Exit("North", mapToAdd.at(i, yToEnter), "8"));
+
+			// Ensures that system does not try and access coordinates out of bounds
+			if (i != xRightCorner) {
+				here.addExit(new Exit("North-East", mapToAdd.at(i + 1, yToEnter), "9"));
+			}
+			if (i != xLeftCorner) {
+				here.addExit(new Exit("North-West", mapToAdd.at(i - 1, yToEnter), "7"));
+			}
+		}
+		// Iterate over bottom row of mapToAdd and add exits
+		for (int i: mapToAdd.getXRange()) {
+			int yToLeave = mapToAdd.getYRange().max();
+			int yToEnter = existingMap.getYRange().min();
+			int xRightCorner = existingMap.getXRange().max();
+			int xLeftCorner = existingMap.getXRange().min();
+
+			Location here = mapToAdd.at(i, yToLeave);
+			here.addExit(new Exit("South", existingMap.at(i, yToEnter), "2"));
+
+			// Ensures that system does not try and access coordinates out of bounds
+			if (i != xRightCorner) {
+				here.addExit(new Exit("South-East", existingMap.at(i + 1, yToEnter), "3"));
+			}
+			if (i != xLeftCorner) {
+				here.addExit(new Exit("South-West", existingMap.at(i - 1, yToEnter), "1"));
+			}
+		}
 	}
 }
