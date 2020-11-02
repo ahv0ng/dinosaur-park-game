@@ -16,12 +16,18 @@ public class Stegosaur extends Herbivore {
      *
      * @param sex - String of the Dinosaur's sex
      */
-    public Stegosaur(String sex) { super(sex, false, "Stegosaur", 's'); }
+    public Stegosaur(String sex) {
+        super("Stegosaur", 's', sex);
+        this.setFly(false);
+    }
 
     /**
      * Constructor for Stegosaur when a StegosaurEgg hatches.
      */
-    public Stegosaur() { super(false, "Stegosaur", 's'); }
+    public Stegosaur() {
+        super("Stegosaur", 's');
+        this.setFly(false);
+    }
 
     @Override
     public void die(GameMap map) {

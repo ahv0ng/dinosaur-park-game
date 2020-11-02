@@ -12,7 +12,10 @@ public class Agilisaur extends Omnivore {
     /**
      * Constructor for Agilisaur.
      */
-    public Agilisaur() { super(false, "Agilisaur", 'g'); }
+    public Agilisaur() {
+        super("Agilisaur", 'g');
+        this.setFly(false);
+    }
 
     @Override
     public void die(GameMap map) {

@@ -14,7 +14,10 @@ public class Allosaur extends Carnivore {
     /**
      * Constructor for Allosaur.
      */
-    public Allosaur() { super(false, "Allosaur", 'a'); }
+    public Allosaur() {
+        super("Allosaur", 'a');
+        this.setFly(false);
+    }
 
     @Override
     public void die(GameMap map) {

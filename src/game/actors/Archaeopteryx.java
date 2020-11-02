@@ -16,7 +16,8 @@ public class Archaeopteryx extends Carnivore {
      * Constructor for Archaeopteryx.
      */
     public Archaeopteryx() {
-        super(true, "Archaeopteryx", 'x');
+        super("Archaeopteryx", 'x');
+        this.setFly(true);
     }
 
     @Override
