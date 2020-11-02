@@ -98,11 +98,11 @@ public abstract class Dinosaur extends Actor {
     public boolean checkFly() { return this.canFly; }
 
     /**
-     * Used in constructors for all Dinosaur species to define whether a species
-     * is capable of flight or not.
+     * Set canFly attribute. Use if Dinosaur subclass can fly.
      *
      * @param canFly - boolean value to be assigned to canFly attribute
      */
+    // TODO: Could change this so that it sets automatically, that could be cool and don't need to use this for every Dinosaur
     protected void setFly(boolean canFly) { this.canFly = canFly; }
 
     // TODO: Make separate Action for Eat and Drink (refactor)
@@ -114,13 +114,14 @@ public abstract class Dinosaur extends Actor {
 
         if (this.hungerPoints == MIN_HUNGRY_THIRSTY || this.thirstPoints == MIN_HUNGRY_THIRSTY) {
             // Continue being unconscious until fed/dies
-            return this.unconsciousBehaviour(map);
+            return this.unconsciousAction(map);
         }
 
         this.daysUnconscious = 0; // Reset daysUnconscious every turn it is not unconscious
         this.hungerPoints--;
         this.thirstPoints--;
 
+        Action action;
         if (!(this.isHungry()) && !(this.isThirsty())) {
             // Look for a mate
             if (this.breedBehaviour(map) != null) {
@@ -130,22 +131,24 @@ public abstract class Dinosaur extends Actor {
         else if (this.isHungry()) {
             // Look for food
             this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
-            if (this.lookForFoodBehaviour(map, location) != null) {
-                return this.lookForFoodBehaviour(map, location);
+            action = this.lookForFoodBehaviour(map, location);
+            if (action != null) {
+                return action;
             }
         }
         else if (this.isThirsty()){ // TODO: Figure out why IntelliJ insists on this warning and fix if possible
             // Look for water
             this.drinkAtLocation(location);
-            if (this.lookForWaterBehaviour(map, location) != null) {
-                return this.lookForWaterBehaviour(map, location);
+            action = this.lookForWaterBehaviour(map, location);
+            if (action != null) {
+                return action;
             }
         }
         else {
             // Wander around or do nothing
-            Action wander = new WanderBehaviour().getAction(this, map);
-            if (wander != null)
-                return wander;
+            action = new WanderBehaviour().getAction(this, map);
+            if (action != null)
+                return action;
         }
         return new DoNothingAction();
     }
@@ -259,7 +262,7 @@ public abstract class Dinosaur extends Actor {
      * @param map - the game map
      * @return Action of the Dinosaur
      */
-    protected Action unconsciousBehaviour(GameMap map) {
+    protected Action unconsciousAction(GameMap map) {
         this.daysUnconscious++;
         if (this.daysUnconscious == MAX_DAYS_UNCONSCIOUS) {
             this.die(map);
@@ -304,14 +307,6 @@ public abstract class Dinosaur extends Actor {
     }
 
     /**
-     * Evaluate whether target Dinosaur is of the opposite sex to the current Dinosaur.
-     *
-     * @param target Dinosaur object planning to mate with
-     * @return boolean value whether target is of the opposite sex
-     */
-    public boolean isOppositeSex(Dinosaur target) { return !this.sex.equals(target.getSex()); }
-
-    /**
      * Evaluate the behaviour of a pregnant Dinosaur.
      *
      * @param map - the game map
@@ -351,15 +346,12 @@ public abstract class Dinosaur extends Actor {
         FollowBehaviour behaviour;
         Action action = null;
 
-        // Search for Water
         Location waterLocation = Scan.getLocationOfWater(location);
-
         if (waterLocation != null) {
-            // Follow the Water
             behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
-        // If there is no Water nearby, it will return null for no Action
+        // If there is no Water nearby, it should return null for no Action
         return action;
     }
 

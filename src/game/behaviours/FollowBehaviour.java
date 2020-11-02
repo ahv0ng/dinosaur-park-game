@@ -9,29 +9,28 @@ import edu.monash.fit2099.engine.*;
  * @author Nicholas Chua & Alden Vong
  */
 public class FollowBehaviour implements Behaviour {
-
 	private Actor targetActor;
 	private Location targetLocation;
 
 	/**
-	 * Constructor.
+	 * Constructor when an Actor object is passed.
 	 *
-	 * @param subject the Actor to follow
+	 * @param actor the Actor to follow
 	 */
-	public FollowBehaviour(Actor subject) {
-		this.targetActor = subject;
+	public FollowBehaviour(Actor actor) {
+		this.targetActor = actor;
 	}
 
 	/**
-	 * Constructor.
+	 * Constructor when a Location object is passed.
 	 *
-	 * @param subject the Location to move towards
+	 * @param location the Location to move towards
 	 */
-	public FollowBehaviour(Location subject) { this.targetLocation = subject;}
+	public FollowBehaviour(Location location) { this.targetLocation = location;}
 
 	/**
-	 * Returns a MoveAction to get closer to a target Actor.
-	 * If no movement is possible, returns null.
+	 * Return a MoveAction to get closer to a target Actor. If no movement is
+	 * possible, return null.
 	 *
 	 * @param actor the Actor acting
 	 * @param map the GameMap containing the Actor
@@ -39,17 +38,23 @@ public class FollowBehaviour implements Behaviour {
 	 */
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
-		if(!map.contains(targetActor) || !map.contains(actor))
-			return null;
+		Location actorLocation = map.locationOf(actor);
+		Location targetLocation;
 
-		Location here = map.locationOf(actor);
-		Location there = map.locationOf(targetActor);
+		if (map.contains(this.targetActor)) {
+			targetLocation = map.locationOf(this.targetActor);
+		}
+		else {
+			targetLocation = this.targetLocation;
+		}
 
-		int currentDistance = distance(here, there);
-		for (Exit exit : here.getExits()) {
+		int currentDistance = this.calculateDistance(actorLocation, targetLocation);
+		for (Exit exit : actorLocation.getExits()) {
 			Location destination = exit.getDestination();
 			if (destination.canActorEnter(actor)) {
-				int newDistance = distance(destination, there);
+				int newDistance = calculateDistance(destination, targetLocation);
+
+				// Compare the new distance whether it is closer to target
 				if (newDistance < currentDistance) {
 					return new MoveActorAction(destination, exit.getName());
 				}
@@ -58,38 +63,14 @@ public class FollowBehaviour implements Behaviour {
 		return null;
 	}
 
-	/**
-	 * Returns a MoveAction to get closer to a target Location.
-	 * If no movement is possible, returns null.
-	 *
-	 * @param actor the Actor acting
-	 * @param map the GameMap containing the Actor
-	 * @return an Action, or null if no MoveAction is possible
-	 */
-	public Action getFollowLocationAction(Actor actor, GameMap map) {
-		Location here = map.locationOf(actor);
-		Location there = this.targetLocation;
-
-		int currentDistance = distance(here, there);
-		for (Exit exit : here.getExits()) {
-			Location destination = exit.getDestination();
-			if (destination.canActorEnter(actor)) {
-				int newDistance = distance(destination, there);
-				if (newDistance < currentDistance) {
-					return new MoveActorAction(destination, exit.getName());
-				}
-			}
-		}
-		return null;
-	}
 	/**
 	 * Compute the Manhattan distance between two locations.
 	 *
-	 * @param a the first location
-	 * @param b the first location
+	 * @param a the caller's location
+	 * @param b the target's location
 	 * @return the number of steps between a and b if you only move in the four cardinal directions.
 	 */
-	private int distance(Location a, Location b) {
+	private int calculateDistance(Location a, Location b) {
 		return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
 	}
 }

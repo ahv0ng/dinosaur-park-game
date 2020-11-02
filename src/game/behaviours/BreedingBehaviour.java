@@ -1,13 +1,14 @@
 package game.behaviours;
 
-import edu.monash.fit2099.engine.*;
+import edu.monash.fit2099.engine.Action;
+import edu.monash.fit2099.engine.Actor;
+import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.Location;
 import game.actions.MateAction;
 import game.actors.Dinosaur;
+import game.actors.Player;
 import game.scanning.Scan;
 
-import java.util.ArrayList;
-
-// TODO: Fix bug where dinosaur tries to mate with Player
 /**
  * A class that figures out an Action (either a MateAction or MoveAction) that will move an acting Actor one tile
  * closer to a target Actor, or breed with a target Actor. Uses the FollowBehaviour class.
@@ -15,72 +16,107 @@ import java.util.ArrayList;
  * @author Nicholas Chua & Alden Vong
  */
 public class BreedingBehaviour implements Behaviour {
+
     /**
-     * Returns an Action such that the acting Actor moves closer to the target Actor, or breeds with the target Actor.
+     * Return an Action such that the acting Actor moves closer to the target Actor,
+     * or breeds with the target Actor.
      *
-     * @param actor the Actor looking for a mate
+     * @param actor the Actor seeking for a mate
      * @param map the GameMap containing the Actor
      * @return an Action, or null if none are possible
      */
     @Override
     public Action getAction(Actor actor, GameMap map) {
-        // Baby dinosaurs cannot breed
-        if (!(((Dinosaur) actor).isAdult())) {
+        Dinosaur seekingDinosaur = (Dinosaur) actor;
+        if (!this.canBreed(seekingDinosaur)) {
             return null;
         }
-        // Pregnant dinosaurs cannot breed until egg has been laid
-        if (((Dinosaur) actor).isPregnant()) {
-            return null;
-        }
-        // Check if there is a suitable mate in range. If next to one, mate. If not next to one but
-        // one is in range, then move towards them.
-        for (Location loc : Scan.adjacentLocationsIn3Spaces(map.locationOf(actor))) {
-            if (map.getActorAt(loc) != null && suitableMate((Dinosaur) actor, (Dinosaur) map.getActorAt(loc))) {
-                Dinosaur potentialMate = (Dinosaur) map.getActorAt(loc);
-                if (adjacentActor(map, map.locationOf(actor), potentialMate)) {
-                    return new MateAction(potentialMate);
-                }
-                return new FollowBehaviour(potentialMate).getAction(actor, map);
-                }
+
+        Location seekingLocation = map.locationOf(seekingDinosaur);
+        for (Location location : Scan.adjacentLocationsIn3Spaces(map.locationOf(seekingDinosaur))) {
+            Actor targetActor = location.getActor();
+            if (targetActor == null || targetActor instanceof Player) {
+                continue;
             }
+            Dinosaur targetDinosaur = (Dinosaur) targetActor;
+            if (!this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
+                continue;
+            }
+            else if (this.isAdjacent(seekingLocation, location)) {
+                return new MateAction(targetDinosaur);
+            }
+            return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
+        }
+
         // No suitable mates in range
         return null;
     }
+
     /**
-     * Evaluates whether two given dinosaurs are of the same species.
+     * Evaluate whether the two Dinosaurs have satisfied the mating conditions. This
+     * means that the two Dinosaurs are adult, not pregnant, of the same species
+     * and of the opposite sex.
      *
-     * @param dinosaur1 some Dinosaur
-     * @param dinosaur2 some Dinosaur
-     * @return Boolean value
+     * @param seekingDinosaur - Dinosaur asking to mate
+     * @param targetDinosaur - the target Dinosaur
+     * @return boolean value evaluating whether the mating conditions have been met
      */
-    private Boolean sameSpecies(Dinosaur dinosaur1, Dinosaur dinosaur2) {
-        return dinosaur1.getClass().equals(dinosaur2.getClass());
-    }
-    /**
-     * Evaluates whether target is in an adjacent tile to a given location
-     *
-     * @param map the GameMap containing target
-     * @param location the location for which adjacent tiles are checked for target
-     * @param target Actor being looked for
-     * @return Boolean value
-     */
-    // TODO: Put this somewhere else to be used for attacking as well
-    private Boolean adjacentActor(GameMap map, Location location, Actor target) {
-        ArrayList<Location> locationArrayList = new ArrayList<>();
-        for (Exit exit : location.getExits()) {
-            locationArrayList.add(exit.getDestination());
+    private boolean satisfiesMatingConditions(Dinosaur seekingDinosaur, Dinosaur targetDinosaur) {
+        if (!this.canBreed(targetDinosaur)) {
+            return false;
         }
-        return locationArrayList.contains(map.locationOf(target));
+        else if (!this.isSameSpecies(seekingDinosaur, targetDinosaur)) {
+            return false;
+        }
+        else return this.isOppositeSex(seekingDinosaur, targetDinosaur);
     }
+
     /**
-     * Evaluates whether dinosaur2 is a suitable mate for dinosaur1 (i.e. same species, opposite sex and not already pregnant).
+     * Evaluate whether the Dinosaur is able to breed. Return true if Dinosaur
+     * is not an adult and/or pregnant.
      *
-     * @param dinosaur1 Dinosaur looking for a mate
-     * @param dinosaur2 the potential mate for dinosaur1
-     * @return Boolean value
+     * @param dinosaur - the Dinosaur seeking to mate
+     * @return boolean value whether Dinosaur is able to breed
      */
-    private Boolean suitableMate(Dinosaur dinosaur1, Dinosaur dinosaur2) {
-        return (sameSpecies(dinosaur1, dinosaur2) && dinosaur1.isOppositeSex(dinosaur2)
-                && !(dinosaur2.isPregnant()));
+    private boolean canBreed(Dinosaur dinosaur) {
+        // While this method is always inverted, this way is more readable
+        return dinosaur.isAdult() && !dinosaur.isPregnant();
+    }
+
+    /**
+     * Evaluate whether the two Dinosaurs are of the same species.
+     *
+     * @param dinosaur1 - Any Dinosaur
+     * @param dinosaur2 - Another Dinosaur
+     * @return boolean value whether the two Dinosaurs are the same species
+     */
+    private boolean isSameSpecies(Dinosaur dinosaur1, Dinosaur dinosaur2) {
+        return dinosaur1.getClass() != dinosaur2.getClass();
+    }
+
+    /**
+     * Evaluate whether the two Dinosaurs are of the opposite sex.
+     *
+     * @param dinosaur1 - Any Dinosaur
+     * @param dinosaur2 - Another Dinosaur
+     * @return boolean value whether the two Dinosaurs are the opposite sex
+     */
+    private boolean isOppositeSex(Dinosaur dinosaur1, Dinosaur dinosaur2) {
+        return !dinosaur1.getSex().equals(dinosaur2.getSex());
+    }
+
+    /**
+     * Evaluate whether the two given Dinosaur Locations are adjacent. These
+     * are considered adjacent if the difference in x and y coordinates are
+     * not greater than 1.
+     *
+     * @param location1 - Location of a Dinosaur
+     * @param location2 - Location of another Dinosaur
+     * @return boolean value whether the Locations are adjacent
+     */
+    private boolean isAdjacent(Location location1, Location location2) {
+        int xDifference = Math.abs(location1.x() - location2.x());
+        int yDifference = Math.abs(location1.y() - location2.y());
+        return xDifference < 1 && yDifference < 1;
     }
 }

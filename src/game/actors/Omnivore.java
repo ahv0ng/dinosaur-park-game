@@ -84,21 +84,21 @@ public abstract class Omnivore extends Dinosaur {
         if (grassLocation != null) {
             // Follow the grass
             behaviour = new FollowBehaviour(grassLocation);
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         Location corpseLocation = Scan.getLocationOfCorpse(location);
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         Location eggLocation = Scan.getLocationOfEgg(location);
         if (eggLocation != null) {
             // Follow the egg
             behaviour = new FollowBehaviour(eggLocation);
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         // If there is no potential food nearby, it will return null for no Action

@@ -76,14 +76,14 @@ public abstract class Carnivore extends Dinosaur {
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         Location eggLocation = Scan.getLocationOfEgg(location);
         if (eggLocation != null) {
             // Follow the egg
             behaviour = new FollowBehaviour(eggLocation);
-            action = behaviour.getFollowLocationAction(this, map);
+            action = behaviour.getAction(this, map);
         }
 
         Dinosaur dinosaur = Scan.getOtherSpeciesDinosaur(location);
@@ -92,16 +92,12 @@ public abstract class Carnivore extends Dinosaur {
             behaviour = new FollowBehaviour(dinosaur);
             action = behaviour.getAction(this, map);
 
-            if (action != null) {
-                action = behaviour.getAction(this, map);
-            }
             // TODO: Fix this implementation, as it means that an attack will not be made if they are diagonal
-            else {
-                // Else if there is a Dinosaur nearby and you cannot go closer, it must be adjacent
+            if (action != null) {
+                // If no action to move closer, then dinosaur must be adjacent already
                 action = new AttackAction(dinosaur);
             }
         }
-
         // If there is no potential food nearby, it will return null for no Action
         return action;
     }
