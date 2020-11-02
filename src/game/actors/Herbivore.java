@@ -68,7 +68,7 @@ public abstract class Herbivore extends Dinosaur {
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
-                this.increaseHunger(dirt.getFill());
+                this.increaseHungerPoints(dirt.getFill());
                 System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
             }
         }

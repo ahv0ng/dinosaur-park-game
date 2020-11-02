@@ -22,7 +22,7 @@ public class Hay extends Food {
 
     @Override
     public void feed(Dinosaur dinosaur) {
-        dinosaur.increaseHunger(FILL);
+        dinosaur.increaseHungerPoints(FILL);
         EcoPointsSystem.earn(POINTS_WHEN_FED);
     }
 }

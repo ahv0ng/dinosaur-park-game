@@ -34,7 +34,7 @@ class ScanGrounds extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return int representing the number of Tree objects adjacent to currentLocation
      */
-    protected static int getTrees(Location currentLocation) {
+    protected static int getNumberOfTrees(Location currentLocation) {
         int numberOfTrees = 0;
         for (Ground ground : getGrounds(currentLocation)) {
             if (ground instanceof Tree) { // Extracting condition into a helper method will be unnecessary
@@ -50,7 +50,7 @@ class ScanGrounds extends ScanComponent {
      * @param currentLocation the current Location of the caller
      * @return integer representing the number of grass tiles adjacent to currentLocation
      */
-    protected static int getGrass(Location currentLocation) {
+    protected static int getNumberOfGrass(Location currentLocation) {
         int numberOfGrass = 0;
         for (Ground ground : getGrounds(currentLocation)) {
             if (isGrass(ground)) {
@@ -61,17 +61,18 @@ class ScanGrounds extends ScanComponent {
     }
 
     /**
-     * Determine if there is a Water adjacent to a given Location.
+     * If there is a Water adjacent to a given Location, returns the Water.
      *
      * @param currentLocation the current Location of the caller
-     * @return true is there is a Water adjacent to currentLocation, false otherwise
+     * @return a Water adjacent to currentLocation, null otherwise
      */
-    protected static Boolean adjacentWater(Location currentLocation) {
-        for (Exit exit : currentLocation.getExits()) {
-            if (exit.getDestination().getGround() instanceof Water) {
-                return true;
+    protected static Water adjacentWater(Location currentLocation) {
+        ArrayList<Location> locationArrayList = ScanComponent.adjacentLocations(currentLocation);
+        for (Location loc : locationArrayList) {
+            if (loc.getGround() instanceof Water) {
+                return (Water) loc.getGround();
             }
         }
-        return false;
+        return null;
     }
 }

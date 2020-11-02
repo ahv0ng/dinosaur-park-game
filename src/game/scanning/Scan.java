@@ -1,6 +1,7 @@
 package game.scanning;
 
 import edu.monash.fit2099.engine.Location;
+import game.ground.Water;
 import game.items.corpses.Corpse;
 import game.actors.Dinosaur;
 import game.items.eggs.Egg;
@@ -77,8 +78,8 @@ public class Scan {
      * @param currentLocation - current Location of the caller
      * @return integer value of adjacent Trees
      */
-    public static int getTrees(Location currentLocation) {
-        return ScanGrounds.getTrees(currentLocation);
+    public static int getNumberOfTrees(Location currentLocation) {
+        return ScanGrounds.getNumberOfTrees(currentLocation);
     }
 
     /**
@@ -87,17 +88,17 @@ public class Scan {
      * @param currentLocation - current Location of the caller
      * @return integer value of adjacent Dirt objects with grass attribute
      */
-    public static int getGrass(Location currentLocation) {
-        return ScanGrounds.getGrass(currentLocation);
+    public static int getNumberOfGrass(Location currentLocation) {
+        return ScanGrounds.getNumberOfGrass(currentLocation);
     }
 
     /**
-     * Using ScanGrounds, determine if there is a Water adjacent to a given Location.
+     * Using ScanGrounds, return a Water adjacent to a given Location (if it exists)
      *
      * @param currentLocation - the current Location of the caller
-     * @return boolean value if there is a Water adjacent to currentLocation
+     * @return a Water adjacent to currentLocation (if it exists)
      */
-    public static Boolean adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
+    public static Water adjacentWater(Location currentLocation) { return ScanGrounds.adjacentWater(currentLocation); }
 
     /**
      * Using ScanActors, return the nearest Dinosaur that is not the same species.

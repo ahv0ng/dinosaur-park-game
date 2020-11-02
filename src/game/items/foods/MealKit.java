@@ -21,5 +21,5 @@ public abstract class MealKit extends Food {
     }
 
     @Override
-    public void feed(Dinosaur dinosaur) { dinosaur.increaseHunger(FILL); }
+    public void feed(Dinosaur dinosaur) { dinosaur.increaseHungerPoints(FILL); }
 }

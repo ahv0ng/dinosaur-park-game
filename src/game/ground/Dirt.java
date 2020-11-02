@@ -69,8 +69,8 @@ public class Dirt extends Ground {
 	 * @return boolean value on whether grass will grow
 	 */
 	public boolean chanceOfGrass(Location location) {
-		int numberOfGrass = Scan.getGrass(location);
-		int numberOfTrees = Scan.getTrees(location);
+		int numberOfGrass = Scan.getNumberOfGrass(location);
+		int numberOfTrees = Scan.getNumberOfTrees(location);
 
 		if (numberOfGrass >= 2 && random.nextInt(100) < GROW_CHANCE_FOR_TWO_GRASS) {
 			return true;

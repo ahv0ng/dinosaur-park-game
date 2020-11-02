@@ -6,6 +6,7 @@ import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
+import game.ground.Water;
 import game.items.eggs.Egg;
 import game.items.foods.Food;
 import game.scanning.Scan;
@@ -20,8 +21,8 @@ import java.util.Random;
 
 public abstract class Dinosaur extends Actor {
     private int age;
-    private int hungerLevel;
-    private int thirstLevel;
+    private int hungerPoints;
+    private int thirstPoints;
     private int daysUnconscious;
     private int daysUntilLay;
     private Boolean pregnant;
@@ -35,7 +36,6 @@ public abstract class Dinosaur extends Actor {
     static final int MAX_HUNGRY_THIRSTY = 100;
     static final int MAX_DAYS_UNCONSCIOUS = 20;
     static final int HUNGRY_THIRSTY_THRESHOLD = 50;
-    static final int THIRST_POINTS_FOR_DRINK = 10; // TODO: Move this to water for encapsulation
 
     /**
      * Constructor for when game starts, so that there are two opposite sex adult Dinosaurs at
@@ -48,8 +48,8 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String name, Character displayChar, String sex) {
         super(name, displayChar, 100);
         this.age = 30;
-        this.hungerLevel = 50;
-        this.thirstLevel = 50;
+        this.hungerPoints = 50;
+        this.thirstPoints = 50;
         this.daysUnconscious = 0;
         this.sex = sex;
         this.pregnant = false;
@@ -64,7 +64,8 @@ public abstract class Dinosaur extends Actor {
     public Dinosaur(String name, Character displayChar) {
         super(name, displayChar, 100);
         this.age = 0;
-        this.hungerLevel = 10;
+        this.hungerPoints = 10;
+        this.thirstPoints = 50;
         this.daysUnconscious = 0;
         this.pregnant = false;
 
@@ -111,14 +112,14 @@ public abstract class Dinosaur extends Actor {
         Location location = map.locationOf(this);
         this.generalBehaviour(map, location);
 
-        if (this.hungerLevel == MIN_HUNGRY_THIRSTY || this.thirstLevel == MIN_HUNGRY_THIRSTY) {
+        if (this.hungerPoints == MIN_HUNGRY_THIRSTY || this.thirstPoints == MIN_HUNGRY_THIRSTY) {
             // Continue being unconscious until fed/dies
             return this.unconsciousBehaviour(map);
         }
 
         this.daysUnconscious = 0; // Reset daysUnconscious every turn it is not unconscious
-        this.hungerLevel--;
-        this.thirstLevel--;
+        this.hungerPoints--;
+        this.thirstPoints--;
 
         if (!(this.isHungry()) && !(this.isThirsty())) {
             // Look for a mate
@@ -173,14 +174,14 @@ public abstract class Dinosaur extends Actor {
      *
      * @return boolean value whether Dinosaur is hungry
      */
-    private boolean isHungry() { return this.hungerLevel <= HUNGRY_THIRSTY_THRESHOLD; }
+    private boolean isHungry() { return this.hungerPoints <= HUNGRY_THIRSTY_THRESHOLD; }
 
     /**
      * Helper method to evaluate whether Dinosaur is thirsty.
      *
      * @return boolean value whether Dinosaur is thirsty
      */
-    private boolean isThirsty() { return this.thirstLevel <= HUNGRY_THIRSTY_THRESHOLD; }
+    private boolean isThirsty() { return this.thirstPoints <= HUNGRY_THIRSTY_THRESHOLD; }
 
     /**
      * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
@@ -214,41 +215,41 @@ public abstract class Dinosaur extends Actor {
      *
      * @param hunger - integer increase for the hunger level.
      */
-    public void increaseHunger(int hunger) {
+    public void increaseHungerPoints(int hunger) {
         if (hunger < 0) {
             throw new IllegalArgumentException();
         }
 
-        int totalHunger = this.hungerLevel + hunger;
+        int totalHunger = this.hungerPoints + hunger;
         if (totalHunger >= MAX_HUNGRY_THIRSTY) {
             // Handles the case when given hunger will cause hungerLevel to exceed maximum
             System.out.println(this.toString() + " is full now.");
-            this.hungerLevel = MAX_HUNGRY_THIRSTY;
+            this.hungerPoints = MAX_HUNGRY_THIRSTY;
         }
         else {
             // Else increase hungerLevel normally
-            this.hungerLevel = totalHunger;
+            this.hungerPoints = totalHunger;
         }
     }
-    // TODO: Change method names and hungerLevel, thirstLevel
+
     /**
      * Increase thirst level. Thirst level cannot exceed MAX_HUNGRY_THIRSTY.
      *
      * @param thirst - integer increase for the thirst level.
      */
-    public void increaseThirst(int thirst) {
+    public void increaseThirstPoints(int thirst) {
         if (thirst < 0) {
             throw new IllegalArgumentException();
         }
-        int totalThirst = this.thirstLevel + thirst;
+        int totalThirst = this.thirstPoints + thirst;
         if (totalThirst >= MAX_HUNGRY_THIRSTY) {
             // Handles the case when given thirst will cause thirstLevel to exceed maximum
             System.out.println(this.toString() + " is fully quenched now.");
-            this.thirstLevel = MAX_HUNGRY_THIRSTY;
+            this.thirstPoints = MAX_HUNGRY_THIRSTY;
         }
         else {
             // Else increase thirstLevel normally
-            this.thirstLevel = totalThirst;
+            this.thirstPoints = totalThirst;
         }
     }
 
@@ -368,8 +369,9 @@ public abstract class Dinosaur extends Actor {
      * @param location - the current Location of Dinosaur
      */
     private void drinkAtLocation(Location location) {
-        if (Scan.adjacentWater(location)) {
-            this.increaseThirst(THIRST_POINTS_FOR_DRINK);
+        Water water = Scan.adjacentWater(location);
+        if (water != null) {
+            this.increaseThirstPoints(water.getFill());
             System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " drank water.");
             }
         }
