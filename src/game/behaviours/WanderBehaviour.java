@@ -1,13 +1,9 @@
 package game.behaviours;
 
+import edu.monash.fit2099.engine.*;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.Exit;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Location;
 
 /**
  * A class that figures out a MoveAction that will move the actor to a random adjacent Location.
@@ -16,12 +12,11 @@ import edu.monash.fit2099.engine.Location;
  */
 public class WanderBehaviour implements Behaviour {
 	
-	private Random random = new Random();
-
+	private final Random random = new Random();
 
 	/**
-	 * Returns a MoveAction to wander to a random Location, if possible.
-	 * If no movement is possible, returns null.
+	 * Return a MoveAction to wander to a random Location, if possible.
+	 * If no movement is possible, return null.
 	 * 
 	 * @param actor the Actor enacting the behaviour
 	 * @param map the GameMap that actor is currently on
@@ -34,7 +29,7 @@ public class WanderBehaviour implements Behaviour {
 		for (Exit exit : map.locationOf(actor).getExits()) {
             Location destination = exit.getDestination();
             if (destination.canActorEnter(actor)) {
-            	actions.add(exit.getDestination().getMoveAction(actor, "around", exit.getHotKey()));
+            	actions.add(destination.getMoveAction(actor, "around", exit.getHotKey()));
             }
         }
 		

@@ -13,20 +13,18 @@ import game.actors.Player;
  */
 class ScanActors extends ScanComponent {
 
-    //TODO: test this feature
     /**
-     * If there is a Dinosaur within 3 tiles of the caller's Location, and the Dinosaur
-     * is not the same species as the caller, return Dinosaur.
+     * If there is a Dinosaur within 3 tiles of the caller's Location, and the
+     * Dinosaur is a different species as the caller, return Dinosaur. Should
+     * not return an instance of Player.
      *
      * @param currentLocation - the current Location of the caller
-     * @return reference to the Dinosaur
+     * @return reference of the Dinosaur
      */
     protected static Dinosaur getOtherSpeciesDinosaur(Location currentLocation) {
         Dinosaur currentDinosaur = (Dinosaur) currentLocation.getActor();
-
         for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             Actor actor = location.getActor();
-
             if (actor instanceof Player) {
                 // Avoid searching for Player
                 continue;
