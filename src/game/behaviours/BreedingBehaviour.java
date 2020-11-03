@@ -31,23 +31,21 @@ public class BreedingBehaviour implements Behaviour {
         if (!this.canBreed(seekingDinosaur)) {
             return null;
         }
-
         Location seekingLocation = map.locationOf(seekingDinosaur);
         for (Location location : Scan.adjacentLocationsIn3Spaces(map.locationOf(seekingDinosaur))) {
             Actor targetActor = location.getActor();
-            if (targetActor == null || targetActor instanceof Player) {
-                continue;
+            if (targetActor instanceof Dinosaur) {
+                Dinosaur targetDinosaur = (Dinosaur) targetActor;
+                if (this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
+                    if (this.isAdjacent(seekingLocation, location)) {
+                        return new MateAction(targetDinosaur);
+                    }
+                    else if (!this.isAdjacent(seekingLocation, location)) {
+                        return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
+                    }
+                }
             }
-            Dinosaur targetDinosaur = (Dinosaur) targetActor;
-            if (!this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
-                continue;
-            }
-            else if (this.isAdjacent(seekingLocation, location)) {
-                return new MateAction(targetDinosaur);
-            }
-            return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
         }
-
         // No suitable mates in range
         return null;
     }
@@ -91,7 +89,7 @@ public class BreedingBehaviour implements Behaviour {
      * @return boolean value whether the two Dinosaurs are the same species
      */
     private boolean isSameSpecies(Dinosaur dinosaur1, Dinosaur dinosaur2) {
-        return dinosaur1.getClass() != dinosaur2.getClass();
+        return dinosaur1.getClass() == dinosaur2.getClass();
     }
 
     /**
@@ -117,6 +115,6 @@ public class BreedingBehaviour implements Behaviour {
     private boolean isAdjacent(Location location1, Location location2) {
         int xDifference = Math.abs(location1.x() - location2.x());
         int yDifference = Math.abs(location1.y() - location2.y());
-        return xDifference < 1 && yDifference < 1;
+        return xDifference <= 1 && yDifference <= 1;
     }
 }

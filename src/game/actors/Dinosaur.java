@@ -3,6 +3,7 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
+import game.behaviours.Behaviour;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
@@ -106,7 +107,6 @@ public abstract class Dinosaur extends Actor {
     protected void setFly(boolean canFly) { this.canFly = canFly; }
 
     // TODO: Make separate Action for Eat and Drink (refactor)
-    // TODO: Local variables for behaviours
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         Location location = map.locationOf(this);
@@ -123,9 +123,10 @@ public abstract class Dinosaur extends Actor {
 
         Action action;
         if (!(this.isHungry()) && !(this.isThirsty())) {
+            Action breedBehaviour = new BreedingBehaviour().getAction(this, map);
             // Look for a mate
-            if (this.breedBehaviour(map) != null) {
-                return this.breedBehaviour(map);
+            if (breedBehaviour != null) {
+                return breedBehaviour;
             }
         }
         else if (this.isHungry()) {
@@ -136,7 +137,7 @@ public abstract class Dinosaur extends Actor {
                 return action;
             }
         }
-        else if (this.isThirsty()){ // TODO: Figure out why IntelliJ insists on this warning and fix if possible
+        else if (this.isThirsty()){
             // Look for water
             this.drinkAtLocation(location);
             action = this.lookForWaterBehaviour(map, location);
@@ -277,16 +278,6 @@ public abstract class Dinosaur extends Actor {
      * @param map - the game map
      */
     public abstract void die(GameMap map);
-
-    /**
-     * Evaluate the behaviour of a mating Dinosaur.
-     *
-     * @param map - the game map
-     * @return BreedingBehaviour of a mating Dinosaur
-     */
-    protected Action breedBehaviour(GameMap map) {
-        return new BreedingBehaviour().getAction(this, map);
-    }
 
     /**
      * Mate with Dinosaur of same species, become pregnant and start countdown for daysUntilLay.
