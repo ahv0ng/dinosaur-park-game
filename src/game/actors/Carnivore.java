@@ -91,8 +91,7 @@ public abstract class Carnivore extends Dinosaur {
             // Follow the Dinosaur
             behaviour = new FollowBehaviour(dinosaur);
             action = behaviour.getAction(this, map);
-
-            // TODO: Fix this implementation, as it means that an attack will not be made if they are diagonal
+            // TODO: Fix this implementation (attack will not be made if they are diagonal) - adjacentWater for Dinosaur
             if (action != null) {
                 // If no action to move closer, then dinosaur must be adjacent already
                 action = new AttackAction(dinosaur);

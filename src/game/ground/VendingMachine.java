@@ -24,6 +24,8 @@ public class VendingMachine extends Ground {
             "LaserGun",
             "StegosaurEgg",
             "AllosaurEgg",
+            "AgilisaurEgg",
+            "ArchaeopteryxEgg",
             "VegetarianMealKit",
             "CarnivoreMealKit"
     };
@@ -79,6 +81,14 @@ public class VendingMachine extends Ground {
             case "AllosaurEgg":
                 System.out.println("Purchasing Allosaur Egg...");
                 purchasedItem = new AllosaurEgg();
+                break;
+            case "AgilisaurEgg":
+                System.out.println("Purchasing Agilisaur Egg...");
+                purchasedItem = new AgilisaurEgg();
+                break;
+            case "ArchaeopteryxEgg":
+                System.out.println("Purchasing Archaeopteryx Egg...");
+                purchasedItem = new ArchaeopteryxEgg();
                 break;
             case "VegetarianMealKit":
                 System.out.println("Purchasing Vegetarian Meal Kit...");

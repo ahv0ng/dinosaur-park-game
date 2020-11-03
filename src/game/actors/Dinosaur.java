@@ -102,7 +102,6 @@ public abstract class Dinosaur extends Actor {
      *
      * @param canFly - boolean value to be assigned to canFly attribute
      */
-    // TODO: Could change this so that it sets automatically, that could be cool and don't need to use this for every Dinosaur
     protected void setFly(boolean canFly) { this.canFly = canFly; }
 
     // TODO: Make separate Action for Eat and Drink (refactor)
