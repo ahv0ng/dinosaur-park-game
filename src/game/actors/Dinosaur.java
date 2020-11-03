@@ -3,7 +3,6 @@ package game.actors;
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
 import game.actions.FeedAction;
-import game.behaviours.Behaviour;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
 import game.behaviours.WanderBehaviour;
@@ -26,8 +25,8 @@ public abstract class Dinosaur extends Actor {
     private int thirstPoints;
     private int daysUnconscious;
     private int daysUntilLay;
-    private Boolean pregnant;
-    private Boolean canFly;
+    private boolean pregnant;
+    private boolean canFly;
     private final String sex;
     private final Random random = new Random();
 
@@ -292,7 +291,7 @@ public abstract class Dinosaur extends Actor {
      *
      * @return boolean value if baby dinosaur becomes an adult
      */
-    public Boolean isAdult() {
+    public boolean isAdult() {
         return this.age >= MATING_AGE;
     }
 

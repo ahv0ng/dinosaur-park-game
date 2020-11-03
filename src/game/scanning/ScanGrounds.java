@@ -68,9 +68,9 @@ class ScanGrounds extends ScanComponent {
      */
     protected static Water adjacentWater(Location currentLocation) {
         ArrayList<Location> locationArrayList = ScanComponent.adjacentLocations(currentLocation);
-        for (Location loc : locationArrayList) {
-            if (loc.getGround() instanceof Water) {
-                return (Water) loc.getGround();
+        for (Location location : locationArrayList) {
+            if (location.getGround() instanceof Water) {
+                return (Water) location.getGround();
             }
         }
         return null;
