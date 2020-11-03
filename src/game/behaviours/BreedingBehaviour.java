@@ -31,24 +31,29 @@ public class BreedingBehaviour implements Behaviour {
         if (!this.canBreed(seekingDinosaur)) {
             return null;
         }
+
         Location seekingLocation = map.locationOf(seekingDinosaur);
         for (Location location : Scan.adjacentLocationsIn3Spaces(map.locationOf(seekingDinosaur))) {
             Actor targetActor = location.getActor();
-            if (targetActor instanceof Dinosaur) {
-                Dinosaur targetDinosaur = (Dinosaur) targetActor;
-                if (this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
-                    if (this.isAdjacent(seekingLocation, location)) {
-                        return new MateAction(targetDinosaur);
-                    }
-                    else if (!this.isAdjacent(seekingLocation, location)) {
-                        return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
-                    }
-                }
+
+            // Pre-condition check to avoid attempt to breed with Player
+            if (targetActor == null || targetActor instanceof Player) {
+                continue;
             }
+            Dinosaur targetDinosaur = (Dinosaur) targetActor;
+            if (!this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
+                continue;
+            }
+            else if (this.isAdjacent(seekingLocation, location)) {
+                return new MateAction(targetDinosaur);
+            }
+            return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
         }
+
         // No suitable mates in range
         return null;
     }
+
 
     /**
      * Evaluate whether the two Dinosaurs have satisfied the mating conditions. This
