@@ -33,8 +33,6 @@ public class Stegosaur extends Herbivore {
     public void die(GameMap map) {
         StegosaurCorpse corpse = new StegosaurCorpse();
         map.locationOf(this).addItem(corpse);
-        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger or thirst.");
         map.removeActor(this);
     }
 

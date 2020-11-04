@@ -23,8 +23,6 @@ public class Allosaur extends Carnivore {
     public void die(GameMap map) {
         AllosaurCorpse corpse = new AllosaurCorpse();
         map.locationOf(this).addItem(corpse);
-        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger or thirst.");
         map.removeActor(this);
     }
 

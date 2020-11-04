@@ -31,6 +31,21 @@ public class Scan {
     public static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
         return ScanLocations.adjacentLocationsIn3Spaces(currentLocation);
     }
+    // TODO: Check with Nick that location of this in ScanComponent is correct
+    /**
+     * Using the base class ScanComponent, return true if the two given locations
+     * are adjacent (difference in x and y coordinates are not greater than 1),
+     * false otherwise.
+     *
+     * @param location1 - a Location
+     * @param location2 - a Location
+     * @return boolean value whether the location1 and location2 are adjacent
+     */
+    public static boolean isAdjacent(Location location1, Location location2) {
+        int xDifference = Math.abs(location1.x() - location2.x());
+        int yDifference = Math.abs(location1.y() - location2.y());
+        return xDifference <= 1 && yDifference <= 1;
+    }
 
     /**
      * Using ScanLocations, return the Location of a Dirt with

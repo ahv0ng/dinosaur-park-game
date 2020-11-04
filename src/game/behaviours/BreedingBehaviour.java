@@ -44,7 +44,7 @@ public class BreedingBehaviour implements Behaviour {
             if (!this.satisfiesMatingConditions(seekingDinosaur, targetDinosaur)) {
                 continue;
             }
-            else if (this.isAdjacent(seekingLocation, location)) {
+            else if (Scan.isAdjacent(seekingLocation, location)) {
                 return new MateAction(targetDinosaur);
             }
             return new FollowBehaviour(targetDinosaur).getAction(seekingDinosaur, map);
@@ -106,20 +106,5 @@ public class BreedingBehaviour implements Behaviour {
      */
     private boolean isOppositeSex(Dinosaur dinosaur1, Dinosaur dinosaur2) {
         return !dinosaur1.getSex().equals(dinosaur2.getSex());
-    }
-
-    /**
-     * Evaluate whether the two given Dinosaur Locations are adjacent. These
-     * are considered adjacent if the difference in x and y coordinates are
-     * not greater than 1.
-     *
-     * @param location1 - Location of a Dinosaur
-     * @param location2 - Location of another Dinosaur
-     * @return boolean value whether the Locations are adjacent
-     */
-    private boolean isAdjacent(Location location1, Location location2) {
-        int xDifference = Math.abs(location1.x() - location2.x());
-        int yDifference = Math.abs(location1.y() - location2.y());
-        return xDifference <= 1 && yDifference <= 1;
     }
 }

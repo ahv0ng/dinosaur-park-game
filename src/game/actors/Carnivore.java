@@ -67,6 +67,7 @@ public abstract class Carnivore extends Dinosaur {
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Carnivore
      */
+    // TODO: Fix bug where carnivores don't eat corpses
     @Override
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
         FollowBehaviour behaviour;
@@ -85,16 +86,16 @@ public abstract class Carnivore extends Dinosaur {
             behaviour = new FollowBehaviour(eggLocation);
             action = behaviour.getAction(this, map);
         }
-
         Dinosaur dinosaur = Scan.getOtherSpeciesDinosaur(location);
         if (dinosaur != null) {
-            // Follow the Dinosaur
-            behaviour = new FollowBehaviour(dinosaur);
-            action = behaviour.getAction(this, map);
-            // TODO: Fix this implementation (attack will not be made if they are diagonal) - adjacentWater for Dinosaur
-            if (action != null) {
-                // If no action to move closer, then dinosaur must be adjacent already
+            // Attack the Dinosaur
+            if (Scan.isAdjacent(map.locationOf(this), map.locationOf(dinosaur))) {
                 action = new AttackAction(dinosaur);
+            }
+            // If not adjacent, must be nearby, so follow the Dinosaur
+            else {
+                behaviour = new FollowBehaviour(dinosaur);
+                action = behaviour.getAction(this, map);
             }
         }
         // If there is no potential food nearby, it will return null for no Action
