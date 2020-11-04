@@ -18,13 +18,11 @@ public class Archaeopteryx extends Carnivore {
         super("Archaeopteryx", 'x');
         this.setFly(true);
     }
-
+    // TODO: Refactor this in all Dinosaur classes so not repeated
     @Override
     public void die(GameMap map) {
         ArchaeopteryxCorpse corpse = new ArchaeopteryxCorpse();
         map.locationOf(this).addItem(corpse);
-        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger or thirst.");
         map.removeActor(this);
     }
 

@@ -25,6 +25,9 @@ class ScanActors extends ScanComponent {
         Dinosaur currentDinosaur = (Dinosaur) currentLocation.getActor();
         for (Location location : adjacentLocationsIn3Spaces(currentLocation)) {
             Actor actor = location.getActor();
+            if (actor == null) {
+                continue;
+            }
             if (actor instanceof Player) {
                 // Avoid searching for Player
                 continue;

@@ -21,8 +21,6 @@ public class Agilisaur extends Omnivore {
     public void die(GameMap map) {
         AgilisaurCorpse corpse = new AgilisaurCorpse();
         map.locationOf(this).addItem(corpse);
-        System.out.println(this + " at (" + map.locationOf(this).x() + "," +
-                map.locationOf(this).y() + ") died from hunger or thirst.");
         map.removeActor(this);
     }
 

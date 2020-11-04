@@ -253,7 +253,7 @@ public abstract class Dinosaur extends Actor {
             this.thirstPoints = totalThirst;
         }
     }
-
+    // TODO: Fix bug where DoNothingAction console message returned after Dinosaur dies - separate Action for Die?
     /**
      * Evaluate the behaviour of an unconscious Dinosaur.
      *
@@ -263,6 +263,8 @@ public abstract class Dinosaur extends Actor {
     protected Action unconsciousAction(GameMap map) {
         this.daysUnconscious++;
         if (this.daysUnconscious == MAX_DAYS_UNCONSCIOUS) {
+            System.out.println(this + " at (" + map.locationOf(this).x() + "," +
+                    map.locationOf(this).y() + ") died from hunger or thirst.");
             this.die(map);
         }
         return new DoNothingAction();
