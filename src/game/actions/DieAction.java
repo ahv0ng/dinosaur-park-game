@@ -6,7 +6,8 @@ import edu.monash.fit2099.engine.GameMap;
 
 
 /**
- * An Action for when a Dinosaur dies. Use this after an event has occurred which causes a Dinosaur to die.
+ * Special action for when a Dinosaur dies. Use this after an event has occurred which causes a Dinosaur to die.
+ * Extends Action.
  *
  * @author Nicholas Chua and Alden Vong
  */

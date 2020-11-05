@@ -2,6 +2,7 @@ package game.actors;
 
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
+import game.actions.DrinkAction;
 import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
@@ -104,7 +105,6 @@ public abstract class Dinosaur extends Actor {
      */
     protected void setFly(boolean canFly) { this.canFly = canFly; }
 
-    // TODO: Make separate Action for Eat and Drink (refactor)
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         Location location = map.locationOf(this);
@@ -128,17 +128,15 @@ public abstract class Dinosaur extends Actor {
             }
         }
         else if (this.isHungry()) {
-            // Look for food
-            this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
-            action = this.lookForFoodBehaviour(map, location);
+            // Look for or eat food
+            action = this.lookForFoodOrEatBehaviour(map, location);
             if (action != null) {
                 return action;
             }
         }
+        // Look for or drink water
         else if (this.isThirsty()){
-            // Look for water
-            this.drinkAtLocation(location);
-            action = this.lookForWaterBehaviour(map, location);
+            action = this.lookForOrDrinkWaterBehaviour(map, location);
             if (action != null) {
                 return action;
             }
@@ -183,13 +181,6 @@ public abstract class Dinosaur extends Actor {
      * @return boolean value whether Dinosaur is thirsty
      */
     private boolean isThirsty() { return this.thirstPoints <= HUNGRY_THIRSTY_THRESHOLD; }
-
-    /**
-     * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
-     *
-     * @param location - the current Location of Dinosaur
-     */
-    protected abstract void eatAtLocation(Location location);
 
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
@@ -326,37 +317,29 @@ public abstract class Dinosaur extends Actor {
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Dinosaur
      */
-    protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
+    protected abstract Action lookForFoodOrEatBehaviour(GameMap map, Location location);
 
     /**
-     * Evaluate the behaviour of a thirsty Dinosaur
+     * Evaluate the behaviour of a thirsty Dinosaur: drinks at the Location or moves towards
+     * a nearby Water. Returns null if no water in sight.
+     *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
      * @return Action of the thirsty Dinosaur
      */
-    private Action lookForWaterBehaviour(GameMap map, Location location) {
-        FollowBehaviour behaviour;
+    private Action lookForOrDrinkWaterBehaviour(GameMap map, Location location) {
         Action action = null;
-
+        FollowBehaviour behaviour;
+        Water water = Scan.adjacentWater(location);
+        if (water != null) {
+            return new DrinkAction(water);
+        }
         Location waterLocation = Scan.getLocationOfWater(location);
         if (waterLocation != null) {
             behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
-        // If there is no Water nearby, it should return null for no Action
+        // If there is no Water nearby to drink or follow, it should return null for no Action
         return action;
     }
-
-    /**
-     * Drink at the Location. Attempt to drink is successful only if there is an adjacent Water.
-     *
-     * @param location - the current Location of Dinosaur
-     */
-    private void drinkAtLocation(Location location) {
-        Water water = Scan.adjacentWater(location);
-        if (water != null) {
-            this.increaseThirstPoints(water.getFill());
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " drank water.");
-            }
-        }
 }
