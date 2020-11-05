@@ -1,14 +1,12 @@
 package game.actions;
 
-import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Ground;
-import edu.monash.fit2099.engine.Item;
+import edu.monash.fit2099.engine.*;
 import game.actors.Dinosaur;
 import game.ground.Dirt;
 import game.items.WildEdible;
 
-public class EatAction {
+// TODO: Javadoc
+public class EatAction extends Action {
     private Ground groundTarget;
     private Item itemTarget;
 
@@ -29,6 +27,7 @@ public class EatAction {
         else {
             WildEdible edible = (WildEdible) itemTarget;
             dinosaur.increaseHungerPoints(edible.getFill());
+            map.locationOf(actor).removeItem((Item) edible);
             return menuDescription(dinosaur);
         }
     }

@@ -2,6 +2,7 @@ package game.actors;
 
 import edu.monash.fit2099.engine.*;
 import game.actions.AttackAction;
+import game.actions.DrinkAction;
 import game.actions.FeedAction;
 import game.behaviours.BreedingBehaviour;
 import game.behaviours.FollowBehaviour;
@@ -137,7 +138,10 @@ public abstract class Dinosaur extends Actor {
         }
         else if (this.isThirsty()){
             // Look for water
-            this.drinkAtLocation(location);
+            action = this.drinkAtLocation(location);
+            if (action != null) {
+                return action;
+            }
             action = this.lookForWaterBehaviour(map, location);
             if (action != null) {
                 return action;
@@ -352,11 +356,11 @@ public abstract class Dinosaur extends Actor {
      *
      * @param location - the current Location of Dinosaur
      */
-    private void drinkAtLocation(Location location) {
+    private Action drinkAtLocation(Location location) {
         Water water = Scan.adjacentWater(location);
         if (water != null) {
-            this.increaseThirstPoints(water.getFill());
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " drank water.");
+            return new DrinkAction(water);
             }
+        return null;
         }
 }

@@ -1,12 +1,14 @@
 package game.actions;
 
+import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import game.actors.Dinosaur;
 import game.ground.Water;
 
-public class DrinkAction {
+// TODO: Javadoc
+public class DrinkAction extends Action {
     private Ground target;
 
     public DrinkAction(Ground ground) {
