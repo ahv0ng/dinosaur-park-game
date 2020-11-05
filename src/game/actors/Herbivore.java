@@ -60,41 +60,30 @@ public abstract class Herbivore extends Dinosaur {
     }
 
     /**
-     * Eat at the Location. Herbivores can eat grass at their current Location.
-     *
-     * @param location - Location type of the current location of the Herbivore
-     * @return Action of the hungry Herbivore
-     */
-    @Override
-    protected Action eatAtLocation(Location location) {
-        if (location.getGround() instanceof Dirt) {
-            Dirt dirt = (Dirt) location.getGround();
-            if (dirt.hasGrass()) {
-                return new EatAction(dirt);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Look for Food Behaviour specific to Herbivores. Herbivores will look for grass.
+     * Eating and looking for food behaviour specific to Herbivores. Herbivores will look for grass.
      *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Herbivore
      */
     @Override
-    protected Action lookForFoodBehaviour(GameMap map, Location location) {
-        FollowBehaviour behaviour;
+    protected Action lookForFoodOrEatBehaviour(GameMap map, Location location) {
         Action action = null;
+        FollowBehaviour behaviour;
 
+        if (location.getGround() instanceof Dirt) {
+            Dirt dirt = (Dirt) location.getGround();
+            if (dirt.hasGrass()) {
+                return new EatAction(dirt);
+            }
+        }
         // Search for potential foods
         Location grassLocation = Scan.getLocationOfGrass(location);
 
         if (grassLocation != null) {
             // Follow the grass
             behaviour = new FollowBehaviour(Scan.getLocationOfGrass(location));
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
 
         // If there is no potential food nearby, it will return null for no Action

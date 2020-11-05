@@ -37,27 +37,7 @@ public abstract class Carnivore extends Dinosaur {
     protected boolean canEat(Item item) { return item instanceof CarnivoreMealKit; }
 
     /**
-     * Eat at the Location. Carnivores can eat Corpses or Egg at their
-     * current location.
-     *
-     * @param location - Location type of the current location of Carnivore
-     * @return Action of the hungry Carnivore
-     */
-    @Override
-    protected Action eatAtLocation(Location location) {
-        Corpse corpse = Scan.getCorpse(location);
-        if (corpse != null) {
-            return new EatAction(corpse);
-        }
-        Egg egg = Scan.getEgg(location);
-        if (egg != null) {
-            return new EatAction(egg);
-        }
-        return null;
-    }
-
-    /**
-     * Evaluate behaviour of Carnivore when looking for food. Carnivore will
+     * Evaluate behaviour of Carnivore when looking for of eating food. Carnivore will
      * search for Corpses or Egg. If none nearby, it will search for
      * a Dinosaur to attack.
      *
@@ -66,33 +46,40 @@ public abstract class Carnivore extends Dinosaur {
      * @return Action of the hungry Carnivore
      */
     @Override
-    protected Action lookForFoodBehaviour(GameMap map, Location location) {
-        FollowBehaviour behaviour;
+    protected Action lookForFoodOrEatBehaviour(GameMap map, Location location) {
         Action action = null;
+        FollowBehaviour behaviour;
 
+        Corpse corpse = Scan.getCorpse(location);
+        if (corpse != null) {
+            return new EatAction(corpse);
+        }
+        Egg egg = Scan.getEgg(location);
+        if (egg != null) {
+            return new EatAction(egg);
+        }
         Location corpseLocation = Scan.getLocationOfCorpse(location);
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
-
         Location eggLocation = Scan.getLocationOfEgg(location);
         if (eggLocation != null) {
             // Follow the egg
             behaviour = new FollowBehaviour(eggLocation);
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
         Dinosaur dinosaur = Scan.getOtherSpeciesDinosaur(location);
         if (dinosaur != null) {
             // Attack the Dinosaur
             if (Scan.isAdjacent(map.locationOf(this), map.locationOf(dinosaur))) {
-                action = new AttackAction(dinosaur);
+                return new AttackAction(dinosaur);
             }
             // If not adjacent, must be nearby, so follow the Dinosaur
             else {
                 behaviour = new FollowBehaviour(dinosaur);
-                action = behaviour.getAction(this, map);
+                return behaviour.getAction(this, map);
             }
         }
         // If there is no potential food nearby, it will return null for no Action

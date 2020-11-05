@@ -39,13 +39,18 @@ public abstract class Omnivore extends Dinosaur {
     protected boolean canEat(Item item) { return item instanceof Food; }
 
     /**
-     * Eat at the Location. Omnivores can eat grass or corpses at their current location.
+     * Evaluate behaviour of Omnivore when looking for or eating food. Omnivore will search
+     * for Dirt with grass or Corpses or Eggs.
      *
-     * @param location - Location type of the current location of Omnivore
-     * @return Action of the hungry Omnivore
+     * @param map - the game map
+     * @param location - the current location of the Dinosaur
+     * @return Action of the Omnivore once food is found
      */
     @Override
-    protected Action eatAtLocation(Location location) {
+    protected Action lookForFoodOrEatBehaviour(GameMap map, Location location) {
+        Action action = null;
+        FollowBehaviour behaviour;
+
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
@@ -62,41 +67,26 @@ public abstract class Omnivore extends Dinosaur {
         if (egg != null) {
             return new EatAction(egg);
         }
-        return null;
-    }
-
-    /**
-     * Evaluate behaviour of Omnivore when looking for food. Omnivore will search
-     * for Dirt with grass or Corpses.
-     *
-     * @param map - the game map
-     * @param location - the current location of the Dinosaur
-     * @return Action of the Omnivore once food is found
-     */
-    @Override
-    protected Action lookForFoodBehaviour(GameMap map, Location location) {
-        FollowBehaviour behaviour;
-        Action action = null;
 
         Location grassLocation = Scan.getLocationOfGrass(location);
         if (grassLocation != null) {
             // Follow the grass
             behaviour = new FollowBehaviour(grassLocation);
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
 
         Location corpseLocation = Scan.getLocationOfCorpse(location);
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
 
         Location eggLocation = Scan.getLocationOfEgg(location);
         if (eggLocation != null) {
             // Follow the egg
             behaviour = new FollowBehaviour(eggLocation);
-            action = behaviour.getAction(this, map);
+            return behaviour.getAction(this, map);
         }
 
         // If there is no potential food nearby, it will return null for no Action

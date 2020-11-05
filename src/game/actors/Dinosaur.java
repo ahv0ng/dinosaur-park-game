@@ -128,17 +128,13 @@ public abstract class Dinosaur extends Actor {
             }
         }
         else if (this.isHungry()) {
-            // Look for food
-            action = this.eatAtLocation(location);
-            // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
-            if (action != null) {
-                return action;
-            }
-            action = this.lookForFoodBehaviour(map, location);
+            // Look for or eat food
+            action = this.lookForFoodOrEatBehaviour(map, location);
             if (action != null) {
                 return action;
             }
         }
+        // Look for or drink water
         else if (this.isThirsty()){
             action = this.lookForOrDrinkWaterBehaviour(map, location);
             if (action != null) {
@@ -185,14 +181,6 @@ public abstract class Dinosaur extends Actor {
      * @return boolean value whether Dinosaur is thirsty
      */
     private boolean isThirsty() { return this.thirstPoints <= HUNGRY_THIRSTY_THRESHOLD; }
-
-    /**
-     * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
-     *
-     * @param location - the current Location of Dinosaur
-     * @return Action of the hungry Dinosaur
-     */
-    protected abstract Action eatAtLocation(Location location);
 
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
@@ -329,7 +317,7 @@ public abstract class Dinosaur extends Actor {
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Dinosaur
      */
-    protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
+    protected abstract Action lookForFoodOrEatBehaviour(GameMap map, Location location);
 
     /**
      * Evaluate the behaviour of a thirsty Dinosaur: drinks at the Location or moves towards
@@ -341,16 +329,17 @@ public abstract class Dinosaur extends Actor {
      */
     private Action lookForOrDrinkWaterBehaviour(GameMap map, Location location) {
         Action action = null;
+        FollowBehaviour behaviour;
         Water water = Scan.adjacentWater(location);
         if (water != null) {
             return new DrinkAction(water);
         }
         Location waterLocation = Scan.getLocationOfWater(location);
         if (waterLocation != null) {
-            FollowBehaviour behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
-            action = behaviour.getAction(this, map);
+            behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
+            return behaviour.getAction(this, map);
         }
-        // If there is no Water nearby, it should return null for no Action
+        // If there is no Water nearby to drink or follow, it should return null for no Action
         return action;
     }
 }
