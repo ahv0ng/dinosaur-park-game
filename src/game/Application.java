@@ -1,7 +1,6 @@
 package game;
 
 import edu.monash.fit2099.engine.*;
-import game.actors.Allosaur;
 import game.actors.Player;
 import game.actors.Stegosaur;
 import game.ground.*;

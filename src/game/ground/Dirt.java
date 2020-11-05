@@ -99,7 +99,8 @@ public class Dirt extends Ground {
 	}
 
 	/**
-	 * Convert grass attribute to false. Use only when Stegosaur eats grass.
+	 * Convert grass attribute to false and change display character.
+	 * Use when Stegosaur eats grass or grass is harvested.
 	 */
 	public void removeGrass() {
 		this.grass = false;
