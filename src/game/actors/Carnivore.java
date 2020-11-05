@@ -67,7 +67,6 @@ public abstract class Carnivore extends Dinosaur {
      * @param location - the current location of the Dinosaur
      * @return Action of the hungry Carnivore
      */
-    // TODO: Fix bug where carnivores don't eat corpses
     @Override
     protected Action lookForFoodBehaviour(GameMap map, Location location) {
         FollowBehaviour behaviour;

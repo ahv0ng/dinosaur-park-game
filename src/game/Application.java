@@ -132,7 +132,6 @@ public class Application {
 		world.addPlayer(player, gameMap1.at(9, 4));
 
 		// Place a pair of stegosaurs (of opposite sex) in the middle of the map
-		gameMap1.at(28, 12).addActor(new Allosaur()); // TODO: Remove when testing done
 		gameMap1.at(30, 12).addActor(new Stegosaur("Male"));
 		gameMap1.at(32, 12).addActor(new Stegosaur("Female"));
 

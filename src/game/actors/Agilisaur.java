@@ -1,6 +1,8 @@
 package game.actors;
 
+import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
+import game.actions.DieAction;
 import game.items.corpses.AgilisaurCorpse;
 import game.items.eggs.AgilisaurEgg;
 
@@ -18,10 +20,11 @@ public class Agilisaur extends Omnivore {
     }
 
     @Override
-    public void die(GameMap map) {
+    public Action die(GameMap map) {
         AgilisaurCorpse corpse = new AgilisaurCorpse();
         map.locationOf(this).addItem(corpse);
         map.removeActor(this);
+        return new DieAction();
     }
 
     /**

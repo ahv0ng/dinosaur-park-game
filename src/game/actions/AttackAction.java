@@ -36,8 +36,8 @@ public class AttackAction extends Action {
 
 		target.hurt(damage);
 		if (!target.isConscious()) {
-			target.die(map);
 			result += System.lineSeparator() + target + " is killed.";
+			target.die(map);
 		}
 
 		return result;

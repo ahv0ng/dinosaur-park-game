@@ -1,6 +1,8 @@
 package game.actors;
 
+import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
+import game.actions.DieAction;
 import game.items.corpses.AllosaurCorpse;
 import game.items.eggs.AllosaurEgg;
 
@@ -20,10 +22,11 @@ public class Allosaur extends Carnivore {
     }
 
     @Override
-    public void die(GameMap map) {
+    public Action die(GameMap map) {
         AllosaurCorpse corpse = new AllosaurCorpse();
         map.locationOf(this).addItem(corpse);
         map.removeActor(this);
+        return new DieAction();
     }
 
     @Override

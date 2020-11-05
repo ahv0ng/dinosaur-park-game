@@ -1,6 +1,8 @@
 package game.actors;
 
+import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
+import game.actions.DieAction;
 import game.items.corpses.ArchaeopteryxCorpse;
 import game.items.eggs.ArchaeopteryxEgg;
 
@@ -18,12 +20,13 @@ public class Archaeopteryx extends Carnivore {
         super("Archaeopteryx", 'x');
         this.setFly(true);
     }
-    // TODO: Refactor this in all Dinosaur classes so not repeated
+
     @Override
-    public void die(GameMap map) {
+    public Action die(GameMap map) {
         ArchaeopteryxCorpse corpse = new ArchaeopteryxCorpse();
         map.locationOf(this).addItem(corpse);
         map.removeActor(this);
+        return new DieAction();
     }
 
     @Override
