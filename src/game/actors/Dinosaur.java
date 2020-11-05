@@ -140,12 +140,7 @@ public abstract class Dinosaur extends Actor {
             }
         }
         else if (this.isThirsty()){
-            // Look for water
-            action = this.drinkAtLocation(location);
-            if (action != null) {
-                return action;
-            }
-            action = this.lookForWaterBehaviour(map, location);
+            action = this.lookForOrDrinkWaterBehaviour(map, location);
             if (action != null) {
                 return action;
             }
@@ -337,35 +332,25 @@ public abstract class Dinosaur extends Actor {
     protected abstract Action lookForFoodBehaviour(GameMap map, Location location);
 
     /**
-     * Evaluate the behaviour of a thirsty Dinosaur
+     * Evaluate the behaviour of a thirsty Dinosaur: drinks at the Location or moves towards
+     * a nearby Water. Returns null if no water in sight.
+     *
      * @param map - the game map
      * @param location - the current location of the Dinosaur
      * @return Action of the thirsty Dinosaur
      */
-    private Action lookForWaterBehaviour(GameMap map, Location location) {
-        FollowBehaviour behaviour;
+    private Action lookForOrDrinkWaterBehaviour(GameMap map, Location location) {
         Action action = null;
-
+        Water water = Scan.adjacentWater(location);
+        if (water != null) {
+            return new DrinkAction(water);
+        }
         Location waterLocation = Scan.getLocationOfWater(location);
         if (waterLocation != null) {
-            behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
+            FollowBehaviour behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
             action = behaviour.getAction(this, map);
         }
         // If there is no Water nearby, it should return null for no Action
         return action;
     }
-
-    /**
-     * Drink at the Location. Attempt to drink is successful only if there is an adjacent Water.
-     *
-     * @param location - the current Location of Dinosaur
-     * @return Action of the thirsty Dinosaur
-     */
-    private Action drinkAtLocation(Location location) {
-        Water water = Scan.adjacentWater(location);
-        if (water != null) {
-            return new DrinkAction(water);
-            }
-        return null;
-        }
 }
