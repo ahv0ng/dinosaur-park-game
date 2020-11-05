@@ -1,13 +1,15 @@
 package game.items.corpses;
 
 import edu.monash.fit2099.engine.Item;
+import game.items.WildEdible;
 
 /**
- * A class representing living things that have died.
+ * A class representing living things that have died. A corpse of a particular species can be eaten by a Dinosaur of
+ *  a different species.
  *
  * @author Nicholas Chua and Alden Vong
  */
-public abstract class Corpse extends Item {
+public abstract class Corpse extends Item implements WildEdible {
     // Dinosaurs can eat this Item, but not fed by Players, so there is no feed method.
     private int FILL;
 

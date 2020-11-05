@@ -2,13 +2,15 @@ package game.items.eggs;
 
 import edu.monash.fit2099.engine.Location;
 import game.items.PortableItem;
+import game.items.WildEdible;
 
 /**
- * Abstract class. Extends PortableItem.
+ * Abstract class. Extends PortableItem. An egg of a particular species can be eaten by a Dinosaur of
+ * a different species.
  *
  * @author Nicholas Chua and Alden Vong
  */
-public abstract class Egg extends PortableItem {
+public abstract class Egg extends PortableItem implements WildEdible {
     private int timeAlive;
     private final String dinosaurName;
 
