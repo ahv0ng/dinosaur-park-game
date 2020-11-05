@@ -31,7 +31,7 @@ public class Scan {
     public static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
         return ScanLocations.adjacentLocationsIn3Spaces(currentLocation);
     }
-    // TODO: Check with Nick that location of this in ScanComponent is correct
+
     /**
      * Using the base class ScanComponent, return true if the two given locations
      * are adjacent (difference in x and y coordinates are not greater than 1),
