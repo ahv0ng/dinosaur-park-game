@@ -6,9 +6,9 @@ import edu.monash.fit2099.engine.GameMap;
 
 
 /**
- * An Action for when a Dinosaur dies.
+ * An Action for when a Dinosaur dies. Use this after an event has occurred which causes a Dinosaur to die.
  *
- * Use this after an event has occurred which causes a Dinosaur to die.
+ * @author Nicholas Chua and Alden Vong
  */
 public class DieAction extends Action {
     /**
