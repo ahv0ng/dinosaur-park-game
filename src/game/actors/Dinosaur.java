@@ -105,7 +105,6 @@ public abstract class Dinosaur extends Actor {
      */
     protected void setFly(boolean canFly) { this.canFly = canFly; }
 
-    // TODO: Make separate Action for Eat and Drink (refactor)
     @Override
     public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
         Location location = map.locationOf(this);
@@ -130,7 +129,11 @@ public abstract class Dinosaur extends Actor {
         }
         else if (this.isHungry()) {
             // Look for food
-            this.eatAtLocation(location); // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
+            action = this.eatAtLocation(location);
+            // TODO: Put this into lookForFoodBehaviour (double Action) - same with drinkAtLocation
+            if (action != null) {
+                return action;
+            }
             action = this.lookForFoodBehaviour(map, location);
             if (action != null) {
                 return action;
@@ -192,8 +195,9 @@ public abstract class Dinosaur extends Actor {
      * Eat at the Location. Abstract eating method that differs between types of Dinosaurs.
      *
      * @param location - the current Location of Dinosaur
+     * @return Action of the hungry Dinosaur
      */
-    protected abstract void eatAtLocation(Location location);
+    protected abstract Action eatAtLocation(Location location);
 
     @Override
     public Actions getAllowableActions(Actor otherActor, String direction, GameMap map) {
@@ -355,6 +359,7 @@ public abstract class Dinosaur extends Actor {
      * Drink at the Location. Attempt to drink is successful only if there is an adjacent Water.
      *
      * @param location - the current Location of Dinosaur
+     * @return Action of the thirsty Dinosaur
      */
     private Action drinkAtLocation(Location location) {
         Water water = Scan.adjacentWater(location);

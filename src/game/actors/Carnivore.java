@@ -1,6 +1,7 @@
 package game.actors;
 
 import edu.monash.fit2099.engine.*;
+import game.actions.EatAction;
 import game.items.corpses.Corpse;
 import game.actions.AttackAction;
 import game.behaviours.FollowBehaviour;
@@ -40,22 +41,19 @@ public abstract class Carnivore extends Dinosaur {
      * current location.
      *
      * @param location - Location type of the current location of Carnivore
+     * @return Action of the hungry Carnivore
      */
     @Override
-    protected void eatAtLocation(Location location) {
+    protected Action eatAtLocation(Location location) {
         Corpse corpse = Scan.getCorpse(location);
         if (corpse != null) {
-            this.increaseHungerPoints(corpse.getFill());
-            location.removeItem(corpse);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
+            return new EatAction(corpse);
         }
-
         Egg egg = Scan.getEgg(location);
         if (egg != null) {
-            this.increaseHungerPoints(egg.getFill());
-            location.removeItem(egg);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
+            return new EatAction(egg);
         }
+        return null;
     }
 
     /**

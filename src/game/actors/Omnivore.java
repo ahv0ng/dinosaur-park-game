@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
+import game.actions.EatAction;
 import game.behaviours.FollowBehaviour;
 import game.ground.Dirt;
 import game.items.corpses.Corpse;
@@ -41,31 +42,27 @@ public abstract class Omnivore extends Dinosaur {
      * Eat at the Location. Omnivores can eat grass or corpses at their current location.
      *
      * @param location - Location type of the current location of Omnivore
+     * @return Action of the hungry Omnivore
      */
     @Override
-    protected void eatAtLocation(Location location) {
+    protected Action eatAtLocation(Location location) {
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
-                this.increaseHungerPoints(dirt.getFill());
-                dirt.removeGrass();
-                System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+                return new EatAction(dirt);
             }
         }
 
         Corpse corpse = Scan.getCorpse(location);
         if (corpse != null) {
-            this.increaseHungerPoints(corpse.getFill());
-            location.removeItem(corpse);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate a corpse.");
+            return new EatAction(corpse);
         }
 
         Egg egg = Scan.getEgg(location);
         if (egg != null) {
-            this.increaseHungerPoints(egg.getFill());
-            location.removeItem(egg);
-            System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate an egg.");
+            return new EatAction(egg);
         }
+        return null;
     }
 
     /**

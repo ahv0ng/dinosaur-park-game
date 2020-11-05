@@ -4,6 +4,7 @@ import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
+import game.actions.EatAction;
 import game.behaviours.FollowBehaviour;
 import game.ground.Dirt;
 import game.scanning.Scan;
@@ -62,17 +63,17 @@ public abstract class Herbivore extends Dinosaur {
      * Eat at the Location. Herbivores can eat grass at their current Location.
      *
      * @param location - Location type of the current location of the Herbivore
+     * @return Action of the hungry Herbivore
      */
     @Override
-    protected void eatAtLocation(Location location) {
+    protected Action eatAtLocation(Location location) {
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
-                this.increaseHungerPoints(dirt.getFill());
-                dirt.removeGrass();
-                System.out.println(this + " at (" + location.x() + "," + location.y() + ")" + " ate grass.");
+                return new EatAction(dirt);
             }
         }
+        return null;
     }
 
     /**
