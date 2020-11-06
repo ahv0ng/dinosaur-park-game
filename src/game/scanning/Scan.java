@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Scan {
 
     /**
-     * Using the base class ScanComponent, return the adjacent Locations within
+     * Using ScanLocations, return the adjacent Locations within
      * three spaces of the currentLocation.
      *
      * @param currentLocation - current Location of the caller
@@ -31,9 +31,9 @@ public class Scan {
     public static ArrayList<Location> adjacentLocationsIn3Spaces(Location currentLocation) {
         return ScanLocations.adjacentLocationsIn3Spaces(currentLocation);
     }
-    // TODO: Check with Nick that location of this in ScanComponent is correct
+
     /**
-     * Using the base class ScanComponent, return true if the two given locations
+     * Using ScanLocations, return true if the two given locations
      * are adjacent (difference in x and y coordinates are not greater than 1),
      * false otherwise.
      *
@@ -42,9 +42,7 @@ public class Scan {
      * @return boolean value whether the location1 and location2 are adjacent
      */
     public static boolean isAdjacent(Location location1, Location location2) {
-        int xDifference = Math.abs(location1.x() - location2.x());
-        int yDifference = Math.abs(location1.y() - location2.y());
-        return xDifference <= 1 && yDifference <= 1;
+        return ScanLocations.isAdjacent(location1, location2);
     }
 
     /**

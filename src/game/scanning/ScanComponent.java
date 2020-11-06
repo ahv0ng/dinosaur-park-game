@@ -95,19 +95,4 @@ abstract class ScanComponent {
         }
         return false;
     }
-
-    /**
-     * Evaluate whether the two given locations are adjacent. These
-     * are considered adjacent if the difference in x and y coordinates are
-     * not greater than 1.
-     *
-     * @param location1 - a Location
-     * @param location2 - a Location
-     * @return boolean value whether the location1 and location2 are adjacent
-     */
-    protected boolean isAdjacent(Location location1, Location location2) {
-        int xDifference = Math.abs(location1.x() - location2.x());
-        int yDifference = Math.abs(location1.y() - location2.y());
-        return xDifference <= 1 && yDifference <= 1;
-    }
 }
