@@ -23,10 +23,7 @@ public class Archaeopteryx extends Carnivore {
 
     @Override
     public Action die(GameMap map) {
-        ArchaeopteryxCorpse corpse = new ArchaeopteryxCorpse();
-        map.locationOf(this).addItem(corpse);
-        map.removeActor(this);
-        return new DieAction();
+        return new DieAction(new ArchaeopteryxCorpse());
     }
 
     @Override

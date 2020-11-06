@@ -21,10 +21,7 @@ public class Agilisaur extends Omnivore {
 
     @Override
     public Action die(GameMap map) {
-        AgilisaurCorpse corpse = new AgilisaurCorpse();
-        map.locationOf(this).addItem(corpse);
-        map.removeActor(this);
-        return new DieAction();
+        return new DieAction(new AgilisaurCorpse());
     }
 
     /**

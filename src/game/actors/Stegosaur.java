@@ -33,10 +33,7 @@ public class Stegosaur extends Herbivore {
 
     @Override
     public Action die(GameMap map) {
-        StegosaurCorpse corpse = new StegosaurCorpse();
-        map.locationOf(this).addItem(corpse);
-        map.removeActor(this);
-        return new DieAction();
+        return new DieAction(new StegosaurCorpse());
     }
 
     /**

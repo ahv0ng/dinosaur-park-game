@@ -23,10 +23,7 @@ public class Allosaur extends Carnivore {
 
     @Override
     public Action die(GameMap map) {
-        AllosaurCorpse corpse = new AllosaurCorpse();
-        map.locationOf(this).addItem(corpse);
-        map.removeActor(this);
-        return new DieAction();
+        return new DieAction(new AllosaurCorpse());
     }
 
     @Override
