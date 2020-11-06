@@ -52,24 +52,30 @@ public abstract class Carnivore extends Dinosaur {
 
         Corpse corpse = Scan.getCorpse(location);
         if (corpse != null) {
+            // Eat the corpse
             return new EatAction(corpse);
         }
+
         Egg egg = Scan.getEgg(location);
         if (egg != null) {
+            // Eat the egg
             return new EatAction(egg);
         }
+
         Location corpseLocation = Scan.getLocationOfCorpse(location);
         if (corpseLocation != null) {
             // Follow the corpse
             behaviour = new FollowBehaviour(corpseLocation);
             return behaviour.getAction(this, map);
         }
+
         Location eggLocation = Scan.getLocationOfEgg(location);
         if (eggLocation != null) {
             // Follow the egg
             behaviour = new FollowBehaviour(eggLocation);
             return behaviour.getAction(this, map);
         }
+
         Dinosaur dinosaur = Scan.getOtherSpeciesDinosaur(location);
         if (dinosaur != null) {
             // Attack the Dinosaur
@@ -82,6 +88,7 @@ public abstract class Carnivore extends Dinosaur {
                 return behaviour.getAction(this, map);
             }
         }
+
         // If there is no potential food nearby, it will return null for no Action
         return action;
     }

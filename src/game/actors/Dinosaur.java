@@ -330,15 +330,20 @@ public abstract class Dinosaur extends Actor {
     private Action lookForOrDrinkWaterBehaviour(GameMap map, Location location) {
         Action action = null;
         FollowBehaviour behaviour;
+
         Water water = Scan.adjacentWater(location);
         if (water != null) {
+            // Drink the water
             return new DrinkAction(water);
         }
+
         Location waterLocation = Scan.getLocationOfWater(location);
         if (waterLocation != null) {
+            // Follow the water
             behaviour = new FollowBehaviour(Scan.getLocationOfWater(location));
             return behaviour.getAction(this, map);
         }
+
         // If there is no Water nearby to drink or follow, it should return null for no Action
         return action;
     }

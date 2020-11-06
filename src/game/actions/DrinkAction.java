@@ -29,6 +29,7 @@ public class DrinkAction extends Action {
         dinosaur.increaseThirstPoints(this.target.getFill());
         return menuDescription(actor);
     }
+
     @Override
     public String menuDescription(Actor actor) {
         return actor + " drank water ";

@@ -54,17 +54,20 @@ public abstract class Omnivore extends Dinosaur {
         if (location.getGround() instanceof Dirt) {
             Dirt dirt = (Dirt) location.getGround();
             if (dirt.hasGrass()) {
+                // Eat the grass
                 return new EatAction(dirt);
             }
         }
 
         Corpse corpse = Scan.getCorpse(location);
         if (corpse != null) {
+            // Eat the corpse
             return new EatAction(corpse);
         }
 
         Egg egg = Scan.getEgg(location);
         if (egg != null) {
+            // Eat the egg
             return new EatAction(egg);
         }
 

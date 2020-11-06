@@ -24,9 +24,10 @@ public class MateAction extends Action {
 
     @Override
     public String execute(Actor actor, GameMap map) {
-        returnFemale((Dinosaur) actor, mate).mate();
+        this.returnFemale((Dinosaur) actor, mate).mate();
         return menuDescription(actor);
     }
+
     @Override
     public String menuDescription(Actor actor) {return actor + " mates with " + mate; }
 
